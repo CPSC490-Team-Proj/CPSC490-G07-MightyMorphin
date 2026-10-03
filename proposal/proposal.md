@@ -4,8 +4,9 @@
 **CPSC 490 Undergraduate Seminar in Computer Science — Proposal for Capstone Project**
 
 **Group 07 — Mighty Morphins** · Sponsor: EL-1
-Authors: Nguyen, Nguyen (GwenNguyen2604), Christopher Pham (cpham2005), 〈…〉
-Date: 〈YYYY-MM-DD〉
+Authors: Nguyen, Nguyen (GwenNguyen2604), Christopher Pham (cpham2005), 
+Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson 
+(liamw5265) Date: 〈2026-09-18〉
 
 > **This file is the proposal document, not a README.** Its section numbers,
 > titles, and guidance are copied from the course Word template, so it
