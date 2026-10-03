@@ -99,7 +99,11 @@ The Online Materials Database project aims to develop a web application that sim
 > importance or usefulness of the problem solving or project. Further
 > describes what makes your proposal different from existing ones.
 
-〈Your introduction.〉
+&emsp;Engineering and manufacturing decisions rely heavily on accurate information for verifying material quality compliance, and performance.  Important information such as vendor information, material properties and specifications is primarily recorded in the form of test reports and Certificates of Conformance (CoC). Although these documents are archived, the data itself is not stored in a structured format therefore you need to search for individual documents rather than querying a database.<br><br>
+&emsp;The current method of storing documents creates several problems, Engineers need to manually locate individual documents and manually search through them to find specific data points.  Comparing information across vendors or material types requires manual reviewing multiple documents.  This process becomes significantly inefficient as the number of records increases.<br><br>
+&emsp;The goal of this project is to design and develop a centralized system for managing materials information contained in these CoC and test reports.  The system focuses on extracting data from existing and future documents and stores them in a structed format.  This data can be easily queried and analyzed to support better informed engineering decisions.  The main problem that this project solves is the significant amount of manual data entry and searching required by the current process.<br><br>
+&emsp;This project differs from a traditional document-management system like Dropbox or a cloud file server, because the primary focus is not simply storing documents. Instead, relevant data is extracted from the documents and stored in a structured database.  The system also maintains references between the structured data and the original documents, allowing engineers to access the original PDF file whenever for further review.
+
 
 ### 1.1 Related Work
 
@@ -139,6 +143,13 @@ every goal in §2 must trace back to a problem here.** A goal with no problem
 behind it is scope you invented; a problem with no goal is a problem you are
 not actually solving. Check both directions before you submit — this mapping
 is what the final project report is graded against.
+
+- <b>P.1 Unstructured Material Data:</b> Data from CoCs and test documents are primarily stored as either scanned documents or PDFs, making information difficult to query, analyze, and reuse.
+- <b>P.2 Manual Data Extraction:</b> Extracting data from documents manually requires significant effort because there is no automated process for consistently extracting data from CoCs and testing documents.
+- <b>P.3 Inconsistent Document Formants:</b> CoCs and test data documents come from many different sources, the data is not all in the same structured format.  This makes repeated extractions of data difficult.
+- <b>P.4 Lack of Centralized Data Access:</b> There is no centralized materials repository that allows users to efficiently query historical records.  This causes overhead if users need to look to multiple sources for this data. 
+- <b>P.5 Limited Material Data Analysis:</b> Data is stored in scanned documents and PDFs rather in a structured format.  Progress is negatively affected as users cannot efficiently query, analyze, and visualize historical data for engineering decisions.
+
 
 | Problem | Addressed by |
 |---|---|
