@@ -122,8 +122,11 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 
 | Problem | Addressed by |
 |---|---|
-| P1 〈one line〉 | 〈Goal 1 (#n)〉 |
-| P2 〈one line〉 | 〈Goal 2 (#n)〉 |
+| P1 Unstructured Material Data | Scanning and scraping the data from the PDFs and storing that data into a cloud database and implementing that data into a GUI that illustrates patters in the material as well as allows uesers to filter search query |
+| P2 Manual Data Extraction | Automated scanning programming that allows users to drag and drop file to extract metadata into database |
+| P3 Inconsistent Document Formats | Take in to account that there are several formats of data and forms we would first need to identify form types and keywords to extract necessary data |
+| P4 Lack of Centralized Data Access | During GUI creation we will implement search filters for materials, dates, providers, and more upon stakeholder request |
+| P5 Limited Material Data Analysis | Creation of this program will allow reliably and efficient work flow with centralized and organized data. Users will be able to look up material data, compare them in specific situations, and filter searches for relevent material |
 
 ## 2. Goals and Objectives
 
