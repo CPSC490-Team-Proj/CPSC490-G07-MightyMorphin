@@ -3,8 +3,8 @@
 **Department of Computer Science**
 **CPSC 490 Undergraduate Seminar in Computer Science — Proposal for Capstone Project**
 
-**Group 〈N〉 — 〈Group Name〉** · Sponsor: 〈RTX-3 / EL-1 / SNX-n / independent〉
-Authors: 〈Last, First (GitHub username)〉, 〈…〉
+**Group 07 — Mighty Morphins** · Sponsor: EL-1
+Authors: Nguyen, Nguyen (GwenNguyen2604), 〈…〉
 Date: 〈YYYY-MM-DD〉
 
 > **This file is the proposal document, not a README.** Its section numbers,
