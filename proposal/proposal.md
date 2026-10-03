@@ -104,29 +104,16 @@ Date: 〈YYYY-MM-DD〉
 
 
 ### 1.1 Related Work
-
-> Describe the related or existing work in detail. This section is like a
-> survey on the selected problem or topic.
-
-〈Your survey. Cite with bracketed numbers matching §8 — every reference must
-be a source your team has actually read.〉
-
-**Do a comparative analysis, not a list of summaries.** Find the existing
-ideas, products, papers, or tools that attack the same problem and compare
-them against each other on the dimensions that matter for your project, with
-honest pros and cons. Then say plainly what your project does differently and
-why that difference is worth the effort.
+&emsp;Several existing technologies address parts of the problem involdved with extracting and managing information from material documents. Google Cloud Document AI and Microsoft Azure Document Intelligence provide tools for extracting information from documents, while Ansys Granta ML focuses specifily on storing and managing materials data.  Altho these systems funcation similarly to the propoded software, our approach to the probelem is a more speficic solution while the other softwares are more general.<br><br>
+&emsp;<b>Google Cloud Document AI</b> provides document-prcoessing tools that can extract text, key-value pairs, tables, and other structured information form PDF files nad images[1].  Its Form Parser is designed to recognize information from structured documetns with requiring a custom model to be trained[4].  Google also provided custome extractors that allow users to define a schema containing the information they want to extract.  The make Cloud Document AI useful when documents contain similar information but use different layouts.  However, Cloud Document AI only provides a solution for the data extractin problem, the extracted data still needs to be stored somewhere.  An additional application wouls still be needed to store this data after it is extracted.<br><br>
+&emsp;<b>Microsoft Azure Document Intelligence</b> provides similar document-processing capabilities.  It combines Optical Character Recogniction (OCR) and document-analysis models to extract text, tables, key-values pairs, and document structure[2].  Microsoft also suppert for custome document extractions, making this service useful when extracting data from documents that have different layouts.  Similar to Google Cloud Document AI these softwares are general purpose document processing softwares, the data extracted still needs to be stored somewhere.<br><br>
+&emsp;<b>Ansys Granta MI</b> provides a solution to the storing of the data probelm rather data extration.  Granta MI is designed to create store, manage, search, compare, and analyzie material information[3].  It can combine an orginization's material information with the built-in materials information and intregrate the inforamtion with softwares like CAD or DAE.  Granta MI is a solution to the materials database and analysis tool but it lacks the function of extracting information.  A major feature of the proposed software is that it can extract data from different formated documents but Granta MI can't do that.
 
 | Existing approach | What it does | Pros | Cons | Why ours differs |
 |---|---|---|---|---|
-| 〈product / paper [1]〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
-| 〈product / paper [2]〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
-| 〈product / paper [3]〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
-
-〈Discuss the table in prose — the table is evidence, the paragraph is the
-argument. "Nothing like this exists" is almost never true and reads as a
-missing survey; if a close competitor exists, say so and explain why you are
-still building this.〉
+| Google Cloud Document AI / paper [1] | Extracts text, key-value pairs, tables, and structured fields from PDFs and images | Handles scanned and digital documants supports custom extraction schemas and differering document layouts | Primarly solves document extraction, a separate materials database, validations system, and user interface are key requirments | The proposed project integrates document extraction with data validation, storage, searching, and analysis |
+| Microsoft Azure Document Intelligence / paper [2] | Uses OCR and document-analysis models to extract text, tables, structures and kay-value pairs. | Supports structured, semi-semi structred, and unstructured docuemnts.  Provides pretrained and customizable extraction capabilities | Primarly solves document extraction, a separate materials database, validations system, and user interface are key requirments| Our system is designed around specific feilds and workflows found in material CoCs and test repots. |
+| Ansys Grnta MI / paper [3] | Centralized materials spec database, provides tools for searching, comparing, and analysis.  Allows for intrgration with custome materials inforamtion | Designed specifically for materials information.  Supports analysis and intrgration with Other softwares such as CAD and CAE | Focuses primaly on materials data management rahter than data extration. | The proposed project connects data extration with data storage for data analysis |
 
 ### 1.2 Problem Statements
 
@@ -328,14 +315,12 @@ what fraction of each artifact was AI-assisted, and how you verified it.〉
 
 ## 8. References
 
-> [1] Burges, C. J. C. Tutorial on Support Vector Machines for Pattern
-> Recognition. Kluwer Academic Publishers, 1998.
-> [2] Chen, P., Fan, R., and Lin, C. A study on SMO-type decomposition
-> methods for support vector machines. IEEE Transactions on Neural Networks,
-> 2006.
-> [3] For Wikipedia, specify the URL here
-> [4] For a web source, specify the URL here plus date accessed
-
-〈Number references in the order first cited and cite them in the text as
-[1], [2]. Every entry must be a source a team member has actually read and
-can produce on request.〉
+[1] Google Cloud Document AI Documentation.
+    <https://docs.cloud.google.com/document-ai/docs/overview?hl=en>. [Accessed: Oct. 3, 2026].<br><br>
+[2] Microsoft, "General Document Model," Azure AI Document
+    Intelligence Documentation.<https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/prebuilt/general-document?view=doc-intel-4.0.0&utm_source=chatgpt.com>.
+    [Accessed: Oct. 3, 2026].<br><br>
+[3] Ansys, "Granta MI Pro," Ansys Materials.
+    <https://ansys.synopsys.com/products/materials/granta-mi>. [Accessed: Oct. 3, 2026].<br><br>
+[4] Google Cloud "Form Parser" Document AI Documentation.
+  <https://docs.cloud.google.com/document-ai/docs/processors-list?hl=en#processor_form-parser>. [Accessed: Oct. 3, 2026].<br><br>
