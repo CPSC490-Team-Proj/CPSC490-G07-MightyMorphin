@@ -91,16 +91,6 @@ Date: 〈YYYY-MM-DD〉
 &emsp;This proposal describes the problems motivating the Online Materials Database, the project's goals and objectives, and the proposed technical approach for addressing them.<br><br>
 
 ## 1. Introduction
-
-> Describe the necessary background on the project field to help the reader
-> understand the field. Assume the reader has B.S. degree in computer science
-> but not necessary knowledgeable in the selected area. You may also briefly
-> describe motivation of the project if any.
->
-> Specify the problem identified and to be solved in this project, the
-> importance or usefulness of the problem solving or project. Further
-> describes what makes your proposal different from existing ones.
-
 &emsp;Engineering and manufacturing decisions rely heavily on accurate information for verifying material quality compliance, and performance.  Important information such as vendor information, material properties and specifications is primarily recorded in the form of test reports and Certificates of Conformance (CoC). Although these documents are archived, the data itself is not stored in a structured format therefore you need to search for individual documents rather than querying a database.<br><br>
 &emsp;The current method of storing documents creates several problems, Engineers need to manually locate individual documents and manually search through them to find specific data points.  Comparing information across vendors or material types requires manual reviewing multiple documents.  This process becomes significantly inefficient as the number of records increases.<br><br>
 &emsp;The goal of this project is to design and develop a centralized system for managing materials information contained in these CoC and test reports.  The system focuses on extracting data from existing and future documents and stores them in a structed format.  This data can be easily queried and analyzed to support better informed engineering decisions.  The main problem that this project solves is the significant amount of manual data entry and searching required by the current process.<br><br>
@@ -120,19 +110,6 @@ Date: 〈YYYY-MM-DD〉
 | Ansys Grnta MI / paper [3] | Centralized materials spec database, provides tools for searching, comparing, and analysis.  Allows for intrgration with custome materials inforamtion | Designed specifically for materials information.  Supports analysis and intrgration with Other softwares such as CAD and CAE | Focuses primaly on materials data management rahter than data extration. | The proposed project connects data extration with data storage for data analysis |
 
 ### 1.2 Problem Statements
-
-> Briefly state the problem to solve in this project.
-
-〈Your problem statement(s), **concise** — a few sentences each, no
-background (that was §1) and no solution (that is §3). Number them P1, P2, …
-so later sections can refer back.〉
-
-**Every problem here must connect to the goals and objectives in §2, and
-every goal in §2 must trace back to a problem here.** A goal with no problem
-behind it is scope you invented; a problem with no goal is a problem you are
-not actually solving. Check both directions before you submit — this mapping
-is what the final project report is graded against.
-
 - <b>P.1 Unstructured Material Data:</b> Data from CoCs and test documents are primarily stored as either scanned documents or PDFs, making information difficult to query, analyze, and reuse.
 - <b>P.2 Manual Data Extraction:</b> Extracting data from documents manually requires significant effort because there is no automated process for consistently extracting data from CoCs and testing documents.
 - <b>P.3 Inconsistent Document Formants:</b> CoCs and test data documents come from many different sources, the data is not all in the same structured format.  This makes repeated extractions of data difficult.
