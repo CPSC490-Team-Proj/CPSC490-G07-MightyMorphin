@@ -84,7 +84,9 @@ Date: 〈YYYY-MM-DD〉
 > paragraph. Abstract should not exceed one page. Any abstract exceeded
 > one-page limit must be shortened.
 
-〈Your abstract. Write it last.〉
+Edwards Lifesciences currently receives material information from vendors through documents such as Certificates of Conformance (CoCs) and material test reports. These documents are stored as PDF files accross different locations, instead of being maintained in a centralized, structured database. As a result, users who need to compare or analyze material data across multiple reports must locate the relevant documents and manually extract the necessary information.
+The Online Materials Database project aims to develop a web application that simplifies the collection and retrieval of these data. The proposed system will process scanned PDF documents, extract relevant material data, and store the resulting structured information in a relational database hosted using AWS services. Through the web application, authorized users will be able to access, search, and filter the collected material data, including information associated with CoCs and internally generated test reports. The system is intended to reduce repetitive manual data extraction and provide a centralized source of historical material information that can support more efficient retrieval and analysis.
+
 
 ## 1. Introduction
 
