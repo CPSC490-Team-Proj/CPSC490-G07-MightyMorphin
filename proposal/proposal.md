@@ -1,4 +1,4 @@
-# Project Proposal — 〈Project Title〉
+# Project Proposal — 〈Online Material Database〉
 
 **Department of Computer Science**
 **CPSC 490 Undergraduate Seminar in Computer Science — Proposal for Capstone Project**
