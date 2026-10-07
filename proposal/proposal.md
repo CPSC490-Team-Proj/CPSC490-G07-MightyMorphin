@@ -130,44 +130,42 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 | P5 Limited Material Data Analysis | Creation of this program will allow reliably and efficient work flow with centralized and organized data. Users will be able to look up material data, compare them in specific situations, and filter searches for relevant material |
 
 ## 2. Goals and Objectives
+The Online Materials Database project aims to reduce the manual effort required to retrieve and analyze material information from Certificates of Conformance (CoCs) and material test reports. The project will accomplish this by developing an automated document-processing pipeline, establishing centralized structured storage for extracted material information, and providing an internal web application through which authorized users can access and analyze the collected data. The following goals and objectives define the primary capabilities to be developed and provide measurable criteria for evaluating the completed system. <br><br>
 
-> Describe goals and objectives. Goals are general statements of what you are
-> trying to accomplish with the project or problems to solve. Objectives are
-> specific, measurable statements of what you want to complete to reach the
-> project goals. Most projects have 2-3 goals.
->
-> List the objectives for each goal. To write objectives, look at the goal
-> statement and list what you need to complete using action words like use
-> case names in order to meet the goal.
->
-> Note that the goals and objectives in a proposal will be an important
-> metric to evaluate whether or not you successfully finished your project
-> when you turn in your final project report.
+- **Goal 1: Automated Material Data Extraction and Verification** (Epic #11)
+- The first goal is to automate the process of converting material information contained in PDF documents into structured data suitable for storage and analysis. This goal addresses the current dependence on manual data extraction as well as the challenges created by scanned documents and inconsistent document formats. <br><br>
 
-Each **goal** is tracked as an **Epic** issue and each **objective** as a
-**User Story** issue in the team repository (see the setup guide's *Epics and user stories* section).
-**Every epic and user story in the repository is linked from this section** —
-CI gate G8 fails if one exists that this section does not link. That is what
-keeps the goals in this document and the work on the board from drifting
-apart.
+  - Objective 1.1: Implement a document-ingestion workflow that accepts supported CoCs and material test reports in PDF format and submits them for automated processing. (#12)
 
-Write each objective the way the guidance above asks — **an action word plus
-the measure that says it is done**, not a role-play sentence:
+  - Objective 1.2: Implement extraction of required material identification and mechanical-property information from supported digitally generated PDF documents. (#13)
 
-- **Goal 1: 〈e.g. Secure account management〉** (Epic #〈n〉)
-  - Objective 1.1: 〈Implement member registration and login with hashed
-    credentials, session expiry, and rejection of malformed input.〉 (#〈n〉)
-  - Objective 1.2: 〈Demonstrate the login round-trip in a runnable prototype
-    at the Week-8 in-class check.〉 (#〈n〉)
-- **Goal 2: 〈your second goal〉** (Epic #〈n〉)
-  - Objective 2.1: 〈Action word + what you will complete + how it will be
-    measured〉 (#〈n〉)
+  - Objective 1.3: Implement Optical Character Recognition (OCR) or an equivalent document-processing method to extract information from supported scanned PDF documents. (#14)
 
-〈Replace the brackets with your own 2–3 goals and their objectives, and put
-the **real issue numbers** in as you file them — gate G8 checks that every
-epic and story in your repository is linked from this section. A fully worked
-version of this, with live issues and a populated board, is in the course
-example repository.〉
+  - Objective 1.4: Support extraction from multiple document layouts by identifying relevant fields and information across representative CoC and test-report formats supplied by the sponsor. (#15)
+
+  - Objective 1.5: Implement a verification mechanism that identifies incomplete, invalid, or uncertain extraction results and flags information requiring additional review before it is accepted as verified material data. (#16)
+
+- **Goal 2: Centralized Material Data Storage and Management** (Epic #17)
+- The second goal is to provide centralized, structured storage for material information extracted from CoCs and test reports. Rather than requiring users to repeatedly retrieve individual PDF documents, extracted information will be converted into relational records that can be efficiently retrieved and reused by other components of the system.
+
+  - Objective 2.1: Design and implement a relational data model capable of representing materials, mechanical properties, document types, and available supporting information such as vendor and lot information. (#18)
+
+  - Objective 2.2: Store extracted and verified material information in a relational database hosted using an AWS service approved for the project environment. (#19)
+
+  - Objective 2.3: Maintain traceability between structured database records and their corresponding source CoC or test-report documents so that users can identify the source of stored material (#20)
+
+- **Goal 3: Material Data Access and Analysis** (Epic #21)
+- The third goal is to provide authorized Edwards Lifesciences users with an internal web application for accessing material information stored by the system. The application will reduce the need to manually locate and review individual reports when searching for historical material information and will provide a foundation for comparing information across multiple records.
+
+  - Objective 3.1: Develop an internal web application that allows authorized users to access material records stored in the centralized database. (#22)
+
+  - Objective 3.2: Implement search and filtering capabilities that allow users to retrieve records by material and vendor, with additional filters incorporated as requirements are identified with the sponsor. (#23)
+
+  - Objective 3.3: Provide views that distinguish information originating from Certificates of Conformance from information originating from internally generated material test reports. (#24)
+
+  - Objective 3.4: Display material identification, mechanical properties, available supporting information, and source-document information for retrieved records. (#25)
+
+  - Objective 3.5: Provide functionality for retrieving and comparing material-property data across multiple stored records to support analysis of historical material information. (#26)
 
 ## 3. Proposed Approaches
 
