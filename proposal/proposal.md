@@ -60,6 +60,16 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 ## 2. Goals and Objectives
 The Online Materials Database project aims to reduce the manual effort required to retrieve and analyze material information from Certificates of Conformance (CoCs) and material test reports. The project will accomplish this by developing an automated document-processing pipeline, establishing centralized structured storage for extracted material information, and providing an internal web application through which authorized users can access and analyze the collected data. The following goals and objectives define the primary capabilities to be developed and provide measurable criteria for evaluating the completed system. <br><br>
 
+- **Goal: Edwards Lifescience project Objectives** [(Epic #1)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441216&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C1)
+
+- **Goal 0: Proposal** [(Epic #4)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441178&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C4)
+  - Task: Draft §1 Introduction background [(#6)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261446190&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C6)
+  - Task: Draft §1 Introduction Problem Statements[(#5)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261443686&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C5)
+  - Task: Draft §0 Abstract [(#7)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261452481&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C7)
+  - Task: Goals and Objectives [(#37)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277634640&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C37)
+
+- **Goal: Project design and architecture** [(Epic #42)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277843799&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C42)
+
 - **Goal 1: Automated Material Data Extraction and Verification** [(Epic #11)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334452&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C11)
   The first goal is to automate the process of converting material information contained in PDF documents into structured data suitable for storage and analysis. This goal addresses the current dependence on manual data extraction as well as the challenges created by scanned documents and inconsistent document formats.
 
@@ -93,7 +103,7 @@ The Online Materials Database project aims to reduce the manual effort required 
 
   - Objective 3.3: Provide views that distinguish information originating from Certificates of Conformance from information originating from internally generated material test reports. [(#25)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334168&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C25)
 
-  - Objective 3.4: Display material identification, mechanical properties, available supporting information, and source-document information for retrieved records. [(#25)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334145&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C26)
+  - Objective 3.4: Display material identification, mechanical properties, available supporting information, and source-document information for retrieved records. [(#26)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334145&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C26)
 
   - Objective 3.5: Provide functionality for retrieving and comparing material-property data across multiple stored records to support analysis of historical material information. [(#27)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334126&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C27)
 
