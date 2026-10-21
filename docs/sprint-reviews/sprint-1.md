@@ -36,7 +36,11 @@ far better than a padded list.〉
 
 | Story | Owner | Points | PR |
 |---|---|---|---|
-| 〈#n title〉 | @〈user〉 | 〈3〉 | 〈#pr〉 |
+| 〈#5 Introduction Problem Statements〉 | @cpham2005 @Kameo101 | 〈3〉 | 〈#pr〉 |
+| 〈#6 Introduction Background〉 | @liamw5265 | 〈3〉 | 〈#pr〉 |
+| 〈#7 Abstract〉 | @Bhavesh1024 @GwenNguyen2604 | 〈3〉 | 〈#pr〉 |
+| 〈#29 Sync Develop with main〉 | @Kameo101 | 〈3〉 | 〈#pr〉 |
+| 〈#34 Add Hyperlinks and credits to proposal〉 | @liamw5265 @cpham2005 @Bhavesh1024 @Kameo101 | 〈3〉 | 〈#pr〉 |
 
 ## Carried over — and why
 
@@ -56,8 +60,7 @@ requirements during implementation?〉
 
 ## Prototype increment
 
-〈What the prototype can do at the end of this sprint that it couldn't at the
-start; how it was demonstrated.〉
+We have the ability to begin the prototype given that we have established a stable workflow. This is completed by assigning tasks to every member and its priority.
 
 ## Feedback we received, and what we did about it
 
@@ -66,7 +69,7 @@ row. "We were told and did nothing" is a legitimate row — with a reason.
 
 | Feedback (source) | What we changed | Issue / PR |
 |---|---|---|
-| 〈advisor meeting, issue #〈n〉: "the ER model has no cardinality"〉 | 〈added cardinality and reviewed against checklist D4〉 | 〈#n / PR #n〉 |
+| 〈advisor meeting, issue #34: "Work completed within proposal has no hyperlink for reference to creator"〉 | added hyperlinks to every part of the proposal draft that was written and edited | 〈#34 / PR #n34 |
 
 ## Contribution snapshot
 
@@ -75,7 +78,11 @@ starter, and an early warning the team can act on itself.
 
 | Member | Meetings attended | Merged PRs | Issues closed | Reviews given |
 |---|---|---|---|---|
-| @〈user〉 | 〈n〉 | 〈n〉 | 〈n〉 | 〈n〉 |
+| @Kameo101 | 3 | 1 | 3 | 3 |
+| @GwenNguyen2604 | 3 | 0 | 3 | 1 |
+| @Bhavesh1024 | 3 | 0 | 2 | 0 |
+| @cpham2005 | 3 | 0 | 2 | 3 |
+| @liamw5265 | 3 | 1 | 2 | 0 |
 
 〈If one member is far below the others, say what the team is doing about it
 here — and note anything the numbers hide, e.g. pairing (use
