@@ -111,24 +111,83 @@ The Online Materials Database project aims to reduce the manual effort required 
 )
 ## 3. Proposed Approaches
 
-> Describe your proposed approach to solve the problem, specifying how you
-> will achieve the stated goals. List some possible strategies.
+The proposed system replaces manual lookup of Certificates of Conformance(COC) and
+test reports. This uses a pipeline that is made of four stages: document ingestion,
+data extraction, verification, and structured storage with web access. Each
+stage addresses one or more of the problems that were identified in §1.2.
 
-〈Your approach — **clear and concise**. State the strategy you chose, the
-alternatives you considered, and the reasoning that decided between them.
-Think of this as the argument, not the manual: a reader should finish this
-section understanding *what* you will do and *why that* rather than the
-alternatives.〉
+**Digital and scanned documents.** All of the incoming PDFs fall into two categories which are:
 
-**Keep the details out of this section.** Tooling, platforms, frameworks,
-DBMS choices, environment setup, diagrams, and the work breakdown all belong
-in §4 (Required Environment, Resources, and Planned Activities). If a
-sentence here names a version number, a library, or a configuration, it
-probably belongs in §4 — leave a pointer instead ("the implementation stack
-is detailed in §4").
+- Documents generated digitally, which contain an embedded text layer
 
-〈A few paragraphs, or a short list of candidate strategies with one line of
-trade-off each. If it runs past a page, you are writing §4.〉
+- Scanned documents, which are images of paper forms.
+
+The system will detect
+which category a document belongs to on upload and route it accordingly.
+Digital documents will have their text and tables read directly, which is
+fast and using this method also avoids recognition errors that scanned documents may have. These Scanned documents will first be cleaned
+up (straightened and contrast adjusted as well as other methods) and then passed through optical
+character recognition before entering the same extraction step. Using two
+paths rather than applying OCR to every document keeps accuracy high for the
+majority of documents while still supporting older scanned records that may need to be added.
+
+**Handling different document formats.** Because CoCs and test reports come
+from many vendors, the same information appears in different positions and
+under different labels. To solve this the system will first identify the type and source of
+each document, then apply a field mapping for that format, falling back on
+label based matching for layouts it has not seen before. All
+results are normalized into a single common record with consistent field
+names and units, regardless of the source format. New vendor formats can then
+be supported by adding a mapping rather than changing the extraction logic. This approach may change once the team has actual test documents to reference, since some formats may already be standardized, but those documents are not yet in the team's possession.
+
+**Verifying extracted data.** Automated extraction will not be correct every
+time. To make sure no error chance is overlooked, the program will ensure no extracted value is treated as trustworthy by default. Each result
+will be checked for missing required fields, incorrect data types or units,
+values outside plausible ranges, and low recognition confidence.
+Records that fail any check are flagged for review. A user can then compare the
+extracted values against the original document, correct them, and approve the
+record. Only approved records are stored as verified material data, and
+each correction and approval is logged, which should minimize any and all errors the program could possibly produce.
+
+**Storage and access.** Verified data will be stored in a relational database
+that models materials, mechanical properties, documents, vendors, and lots as
+related records. A relational design suits this data because it is highly
+structured and repetitive, and because users need to filter and compare
+values across many records. Every record keeps a reference to the original
+PDF so that users can always trace a value back to its source and verify if highly sensitive data is included. Authorized
+Edwards users will access the system through an internal web application
+that supports document upload, the review queue, search and filtering by
+material and vendor, and side by side comparison of material properties. A
+web application was chosen because it requires no installation, centralizes
+access control, and gives every user the same source of truth.
+
+**Alternatives considered.** Four alternatives were considered. First,
+general purpose cloud document extraction services [1][2] extract text and
+fields well but provide no materials database, verification workflow, or
+user interface, so most of the system would still need to be built. Second,
+a dedicated materials data platform [3] offers strong storage and analysis
+but no extraction, which leaves manual data entry (P.2) unsolved. Third,
+keeping the current manual process costs nothing but addresses none of the
+stated problems. Fourth, the sponsor's existing cloud data platform (Snowflake), which
+includes AI-based document processing, could handle document ingestion
+directly. This option is attractive because the sponsor already uses and
+supports the platform, the data would stay within the sponsor's environment,
+and the team would only need to build the code that verifies the ingested
+results. However, the team has not yet confirmed how well the platform
+handles scanned documents and varied vendor formats, and the option depends
+on the sponsor's platform access and setup. This option is still under
+evaluation with the sponsor, and a final decision will be made in
+sprint 3. The team therefore proposes an integrated pipeline
+that connects extraction, verification, storage, and analysis and is
+tailored to the fields found in CoCs and test reports. The ingestion step
+will either be built by the team or handled by the sponsor's platform,
+depending on the outcome of that evaluation; the verification, storage, and
+web application components are required in either case.
+
+The implementation stack, hosting environment, and design diagrams are
+detailed in §4.
+
+[#52](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=278577328&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C52)
 
 ## 4. Required Environment, Resources, and Planned Activities
 
