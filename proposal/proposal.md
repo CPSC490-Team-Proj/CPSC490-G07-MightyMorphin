@@ -120,11 +120,10 @@ The development of the Edwards Lifescience Materials Database requires various s
 |Programming Language|Python| - Backend development <br>- Document extraction <br>- Data processing|
 |Database Management System|TDB|Store extracted data|
 Backend Framework|TBD|- Handles application logic <br>- Communication between components|
-|Frontend Framework|TBD||
-|Document Processing|TDB||
+|Frontend Framework|TBD|User Interface|
+|Document Processing|TDB|Extract data from uploaded documents|
 |Development Environment|Visual Studio Code|Write, debug, test code|
-|Version Control|||
-|Operating System|||
+|Version Control|Git and Github|Track sprint progress, tasks, and assignments|
 
 
 ![Use Case Diagram]()
