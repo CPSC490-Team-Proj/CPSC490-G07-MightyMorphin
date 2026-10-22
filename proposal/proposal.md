@@ -106,6 +106,7 @@ The Online Materials Database project aims to reduce the manual effort required 
   - Objective 3.4: Display material properties and source information [[story:#26]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/26)
 
   - Objective 3.5: Compare material-property data across stored records [[story:#27]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27)
+  
 
 ## 3. Proposed Approaches
 
