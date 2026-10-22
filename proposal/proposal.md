@@ -62,6 +62,9 @@ The Online Materials Database project aims to reduce the manual effort required 
 
 - **Goal: Edwards Lifescience project Objectives** [[epic #1]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441216&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C1)
 
+- **Goal: Edwards Lifescience Project Forms** [[epic:#45]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/45)
+  - 
+
 - **Goal: Proposal** [[epic #4]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441178&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C4)
   - Task: Draft §1 Introduction background [[story:#6]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261446190&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C6)
   - Task: Draft §1 Introduction Problem Statements[[story:#5]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261443686&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C5)
