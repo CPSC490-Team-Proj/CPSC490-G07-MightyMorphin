@@ -60,17 +60,19 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 ## 2. Goals and Objectives
 The Online Materials Database project aims to reduce the manual effort required to retrieve and analyze material information from Certificates of Conformance (CoCs) and material test reports. The project will accomplish this by developing an automated document-processing pipeline, establishing centralized structured storage for extracted material information, and providing an internal web application through which authorized users can access and analyze the collected data. The following goals and objectives define the primary capabilities to be developed and provide measurable criteria for evaluating the completed system. <br><br>
 
-- **Goal: Edwards Lifescience project Objectives** [(Epic #1)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441216&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C1)
+- **Goal: Edwards Lifescience project Objectives** [[epic #1]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441216&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C1)
 
-- **Goal 0: Proposal** [(Epic #4)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441178&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C4)
-  - Task: Draft §1 Introduction background [(#6)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261446190&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C6)
-  - Task: Draft §1 Introduction Problem Statements[(#5)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261443686&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C5)
-  - Task: Draft §0 Abstract [(#7)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261452481&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C7)
-  - Task: Goals and Objectives [(#37)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277634640&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C37)
+- **Goal: Proposal** [[epic #4]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441178&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C4)
+  - Task: Draft §1 Introduction background [[story:#6]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261446190&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C6)
+  - Task: Draft §1 Introduction Problem Statements[[story:#5]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261443686&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C5)
+  - Task: Draft §0 Abstract [[story:#7]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261452481&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C7)
+  - Task: Goals and Objectives [[story:#37]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277634640&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C37)
 
-- **Goal: Project design and architecture** [(Epic #42)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277843799&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C42)
+- **Goal 0: Project design and architecture** [[epic #42]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277843799&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C42)
+  - Objective 0.1: Design and Architecture [[story:$48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)
+  - Objective 0.2: Epic Specification Documents [[story:#49]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)
 
-- **Goal 1: Automated Material Data Extraction and Verification** [(Epic #11)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334452&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C11)
+- **Goal 1: Automated Material Data Extraction and Verification** [[epic #11]](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334452&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C11)
   The first goal is to automate the process of converting material information contained in PDF documents into structured data suitable for storage and analysis. This goal addresses the current dependence on manual data extraction as well as the challenges created by scanned documents and inconsistent document formats.
 
   - Objective 1.1: Implement a document-ingestion workflow that accepts supported CoCs and material test reports in PDF format and submits them for automated processing. [[story:#12]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12)
