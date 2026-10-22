@@ -18,7 +18,7 @@ This is what the sprint's 5% is assessed on. Be concrete and link things.
 | 〈proposal/proposal.md〉 | Creation of section 1  [[#6]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/6)〉 | 〈PR #〉 |
 | 〈proposal/proposal.md〉 | Creation of section 2  [[#37]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/37)〉 | 〈PR #〉 |
 
-**Prototype moved:** Prototype has not yet been created. We are still working on the workflow related to pull requests, issues, sprint management, epics, story points, and documentation.
+**Prototype moved:** In sprint 1 the creation of all sections within the proposal are brand new and are reviewed and edited by the team.
 
 ## Velocity
 
@@ -34,14 +34,18 @@ This is what the sprint's 5% is assessed on. Be concrete and link things.
 | 〈#5 Introduction Problem Statements〉 | @cpham2005 @Kameo101 | 〈3〉 | 〈#8〉 |
 | 〈#6 Introduction Background〉 | @liamw5265 | 〈3〉 | 〈#pr〉 |
 | 〈#7 Abstract〉 | @Bhavesh1024 @GwenNguyen2604 | 〈3〉 | 〈#pr〉 |
-| 〈#30 Sync Develop with main〉 | @Kameo101 | 〈3〉 | 〈#pr〉 |
-| 〈#35 Add Hyperlinks and credits to proposal〉 | @liamw5265 @cpham2005 @Bhavesh1024 @Kameo101 | 〈3〉 | 〈#35〉 |
+| 〈[[#29]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/29) Sync Develop with main〉 | @Kameo101 | 〈1〉 | 〈[[#30]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/pull/30)〉 |
+| 〈[[#34]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/34) Add Hyperlinks and credits to proposal〉 | @liamw5265 @cpham2005 @Bhavesh1024 @Kameo101 | 〈1〉 | 〈[[#35]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/pull/35)〉 |
+| 〈[[#51]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/51) Fix typed issue links in proposal | @Bhavesh1024 | 〈1〉 | 〈[[#56]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/pull/56)〉 |
+| 〈[[#57]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/57) Update README.md with Project Information and Sprint Board | @Bhavesh1024 | 〈3〉 | 〈[[#61]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/pull/61)〉 |
+| [[〈#54]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/54) Synchronize Section 2 Goals and Objectives with GitHub issues | @liamw5265 | 〈2〉 | 〈[[#62]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/pull/62)〉 |
+| 〈[[#53]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/53) Abstract〉 | @liamw5265 | 〈3〉 | 〈[[#60]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/pull/60)〉 |
 
 ## Carried over — and why
 
 | Story | Owner | Why not finished | Decision |
 |---|---|---|---|
-| #〈n〉 | @〈user〉 | 〈honest reason〉 | 〈re-scoped / moved to Sprint 2 / split into #…〉 |
+| n/a | n/a | n/a | n/a |
 
 ## Loop health (docs/aidlc/loop-engineering.md §8)
 
@@ -64,7 +68,7 @@ row. "We were told and did nothing" is a legitimate row — with a reason.
 
 | Feedback (source) | What we changed | Issue / PR |
 |---|---|---|
-| 〈advisor meeting, issue #34: "Work completed within proposal has no hyperlink for reference to creator"〉 | added hyperlinks to every part of the proposal draft that was written and edited | 〈#34 / PR #n34 |
+| 〈advisor meeting, issue #34: "Work completed within proposal has no hyperlink for reference to creator"〉 | added hyperlinks to every part of the proposal draft that was written and edited | [[#34]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/34) / PR [[#35]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/pull/35) |
 | 〈advisor meeting: "Workflow is detrimental and not being followed"〉 | Created proper tickets with story points for related issues to help manage progress | N/A |
 
 ## Contribution snapshot
@@ -74,15 +78,13 @@ starter, and an early warning the team can act on itself.
 
 | Member | Meetings attended | Merged PRs | Issues closed | Reviews given |
 |---|---|---|---|---|
-| @Kameo101 | 3 | 1 | 3 | 3 |
-| @GwenNguyen2604 | 3 | 0 | 3 | 1 |
-| @Bhavesh1024 | 3 | 0 | 2 | 0 |
-| @cpham2005 | 3 | 0 | 2 | 3 |
-| @liamw5265 | 3 | 1 | 2 | 0 |
+| @Kameo101 | 4 | 2 | 3 | 3 |
+| @GwenNguyen2604 | 4 | 0 | 3 | 4 |
+| @Bhavesh1024 | 4 | 2 | 2 | 0 |
+| @cpham2005 | 4 | 1 | 3 | 4 |
+| @liamw5265 | 4 | 3 | 2 | 1 |
 
-〈If one member is far below the others, say what the team is doing about it
-here — and note anything the numbers hide, e.g. pairing (use
-`Co-authored-by:` so it shows up), or a big unmerged branch.〉
+Numbers convey co-authors.
 
 ## What we change next sprint
 
