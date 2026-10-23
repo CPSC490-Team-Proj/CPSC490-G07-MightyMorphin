@@ -189,65 +189,73 @@ detailed in §4.
 [#52](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=278577328&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C52)
 
 ## 4. Required Environment, Resources, and Planned Activities
+The development of the Edwards Lifescience Materials Database requires various software technologies, development environment, and technical skills.  The table below outlines the planned resources and their purpose within the project
+|Category|Technology/Resource|Purpose|
+|-----|-----|-----|
+|Programming Language|Python| - Backend development <br>- Document extraction <br>- Data processing|
+|Database Management System|TDB|Store extracted data|
+Backend Framework|TBD|- Handles application logic <br>- Communication between components|
+|Frontend Framework|TBD|User Interface|
+|Document Processing|TDB|Extract data from uploaded documents|
+|Development Environment|Visual Studio Code|Write, debug, test code|
+|Version Control|Git and Github|Track sprint progress, tasks, and assignments|
 
-> Review the required and available resources and environment to complete
-> your project. For example, server, platform, software tools, operating
-> systems, DBMS, or any required skills.
->
-> Describe the expected activities to achieve the stated goals, e.g.,
-> software development process.
 
-〈Your environment, resources, and planned activities.〉
+![Use Case Diagram]()
 
-**Diagrams belong in this section.** Include at minimum a high-level
-architecture diagram and a system (context) diagram; add the ER/EER model and
-a data-flow diagram where they help the reader understand what you are
-building and what it depends on. Draw them with any graphical tool
-(Lucidchart, draw.io, Miro, Mermaid, ERDPlus, Figma), keep the authoritative
-copies in `docs/design/` with both editable source and exported image, and
-reference them here.
+*Figure 1. Use Case Diagram.*
 
-〈Number every figure, caption it, and point at it from the prose — "Figure 1
-shows the three deployment tiers and the trust boundary between them." A
-figure the text never mentions is decoration. See `docs/design/DIAGRAMS.md`
-for tools, conventions, and the rule that every box and arrow must be
-verified against reality.〉
+![ER Diagram]()
+
+*Figure 2. ER Diagram.*
+
+![System Architecture]()
+
+*Figure 3. System Architecture Diagram.*
+
+![Data Flow Diagram]()
+
+*Figure 4. Data Flow Diagram.*
 
 ### Specification and design documents
-
-**Every specification and design document the team writes is listed here**
-with the objective it serves. This section is the index of the project's
-technical detail: §3 holds the argument, §4 holds the documents that make it
-buildable. CI gate G9 fails if a document exists in `docs/specs/` or
-`docs/design/` that this section does not link.
-
 | Document | Kind | Covers | Issues |
-|---|---|---|---|
-| 〈docs/specs/account-management.md〉 | specification | 〈account management requirements〉 | 〈#n, #n〉 |
-| 〈docs/design/architecture.md〉 | design | 〈system architecture + data model〉 | 〈#n〉 |
-
-〈The scaffold ships `docs/specs/example-spec.md` and
-`docs/design/example-design.md` as worked examples — read them, then delete
-them once you have your own, and list yours here.〉
-
-〈Replace these rows with your own. Each document names its epic and stories
-in its own first lines too (gate G2), so the trail runs both ways.〉
-
+|----------|------|--------|--------|
+|[Use Case Diagram]()|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
+|[ER Diagram]()|Design|Maps out relationships between entities within the database system|[#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|
+|[System Architecture]()|Design|Maps out relationships between core components within the system|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
+|[Data Flow Diagram]()|Design|Maps how information moves, transforms, and stored within the system|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|
+|[Goal 1 Specification Document]()|Specification|Specification document for Goal 1: Automated Material Data Extraction and Verification|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|
+|[Goal 2 Specification Document]()|Specification|Specification document for Goal 2: Centralized Material Data Storage and Management|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/58)|
+|[Goal 3 Specification Document]()|Specification|Specification document for Goal 3: Material Data Access and Analysis|[#59](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/59)|
 ### Planned activities — the work items
-
-The goals and objectives live in §2 as epics and user stories. **This section
-links every *other* work item: features, enhancements, bugs, tasks, and
-sub-tasks** — the concrete activities that deliver those objectives. CI gate
-G8 fails if such an issue exists that this section does not link.
 
 | Issue | Type | Activity | Parent | Owner | Sprint |
 |---|---|---|---|---|---|
-| 〈#n〉 | 〈task〉 | 〈stand up the prototype login endpoint〉 | 〈#story〉 | 〈owner〉 | 〈Sprint 1〉 |
-| 〈#n〉 | 〈feature/enhancement/bug/task/sub-task〉 | 〈…〉 | 〈#story〉 | 〈…〉 | 〈…〉 |
+|[#5](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/5)|Task|Draft §1 Introduction Problem Statements|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Kameo101](https://github.com/Kameo101)<br>[@cpham2005](https://github.com/cpham2005)|Sprint 1|
+|[#6](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/6)|Task|Draft §1 Introduction background|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@liamw5265](https://github.com/liamw5265)|Sprint 1|
+|[#7](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/7)|Task|Draft §0 Abstract|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)<br>[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
+|[#37](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/37)|Task|Draft §2 Goals and Objectives|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 1|
+|[#52](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/52)|Task|Complete Section 3: Proposed Approaches|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Kameo101](https://github.com/Kameo101)|Sprint 1|
+|[#53](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/53)|Task|Complete Section 4: Required Environment, Resources, and Planned Activities|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@liamw5265](https://github.com/liamw5265)|Sprint 1|
+|[#29](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/29)|Task|Sync develop with main|[#1](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)|[@Kameo101](https://github.com/Kameo101)|Sprint 1|
+|[#54](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/54)|Task|Synchronize Section 2 Goals and Objectives with GitHub issues|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@cpham2005](https://github.com/cpham2005)|Sprint 1|
+|[#34](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/34)|Task|Add hyperlinks and credits to Proposal.md|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Kameo101](https://github.com/Kameo101)<br>[@cpham2005](https://github.com/cpham2005)<br>[@Bhavesh1024](https://github.com/Bhavesh1024)<br>[@liamw5265](https://github.com/liamw5265)|Sprint 1|
+|[#51](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/51)|Task|Fix typed hyperlink references in proposal.md|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
+|[#57](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/57)|Task|Update README.md with Project Information and Sprint Board||[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
+|[#55](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/55)|Task|Complete Sprint 1 Review||[@cpham2005](https://github.com/cpham2005)|Sprint 1|
+|[#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36)|Task|Task 0.1.1: Create Use Case Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@liamw5265](https://github.com/liamw5265)|Sprint 2|
+|[#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|Task|Task 0.1.2: Create ER Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Kameo101](https://github.com/Kameo101)|Sprint 2|
+|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|Task|Task 0.1.3: Create Systems Architecture Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 2|
+|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|Task|Task 0.1.4: Create Data Flow Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@cpham2005](https://github.com/cpham2005)|Sprint 2|
+|[#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|Task|Task 0.1.5: Create UI Wireframe|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 2|
+|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|Task|Task 0.2.1: Complete Goal 1 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/85)|Task|Task 0.2.2: Complete Goal 2 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#59](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/59)|Task|Task 0.2.3: Complete Goal 3 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#63](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/63)|Bug|Cherry pick develop revision to main branch|[#1](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Spring 1|
+|[#47](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/47)|Task|Task: Define the tech stack and AWS services|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@cpham2005](https://github.com/cpham2005)|Spring 2|
+|[#43](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/43)|Task|Task: Project Intake Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@Kameo101](https://github.com/Kameo101)|Spring 3|
+|[#44](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/44)|Task|Task: Solution Architecture Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@cpham2005](https://github.com/cpham2005)|Spring 3|
 
-〈Replace these rows with your own, and keep the table current as you file new
-issues — with §2 it gives a reader every planned activity in one place, each
-traceable to the objective it serves.〉
 
 ## 5. Project Outcomes
 
