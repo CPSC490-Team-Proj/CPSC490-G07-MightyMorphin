@@ -82,8 +82,8 @@ starter, and an early warning the team can act on itself.
 |---|---|---|---|---|
 | @Kameo101 | 4 | 2 | 3 | 3 |
 | @GwenNguyen2604 | 4 | 1 | 3 | 4 |
-| @Bhavesh1024 | 4 | 2 | 2 | 0 |
-| @cpham2005 | 4 | 1 | 3 | 4 |
+| @Bhavesh1024 | 4 | 2 | 2 | 1 |
+| @cpham2005 | 4 | 1 | 3 | 5 |
 | @liamw5265 | 4 | 3 | 2 | 2 |
 
 Numbers convey co-authors.
