@@ -60,55 +60,54 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 ## 2. Goals and Objectives
 The Online Materials Database project aims to reduce the manual effort required to retrieve and analyze material information from Certificates of Conformance (CoCs) and material test reports. The project will accomplish this by developing an automated document-processing pipeline, establishing centralized structured storage for extracted material information, and providing an internal web application through which authorized users can access and analyze the collected data. The following goals and objectives define the primary capabilities to be developed and provide measurable criteria for evaluating the completed system. <br><br>
 
-- **Goal: Edwards Lifescience project Objectives** [(Epic #1)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441216&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C1)
+- **Goal: Edward Lifescience project Objectives** [[epic:#1]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)
 
-- **Goal 0: Proposal** [(Epic #4)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441178&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C4)
-  - Task: Draft §1 Introduction background [(#6)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261446190&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C6)
-  - Task: Draft §1 Introduction Problem Statements[(#5)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261443686&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C5)
-  - Task: Draft §0 Abstract [(#7)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261452481&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C7)
-  - Task: Goals and Objectives [(#37)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277634640&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C37)
+- **Goal: Edwards Lifescience Project Forms** [[epic:#45]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/45)
 
-- **Goal: Project design and architecture** [(Epic #42)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277843799&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C42)
+- **Goal: Rough draft Proposal.md** [[epic:#4]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)
 
-- **Goal 1: Automated Material Data Extraction and Verification** [(Epic #11)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334452&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C11)
+- **Goal 0: Design and Specification Documents** [[epic:#42]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)
+  - Objective 0.1: Design and Architecture [[story:#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)
+  - Objective 0.2: Epic Specification Documents [[story:#49]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)
+
+- **Goal 1: Automated Material Data Extraction and Verification** [[epic:#11]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/11)
   The first goal is to automate the process of converting material information contained in PDF documents into structured data suitable for storage and analysis. This goal addresses the current dependence on manual data extraction as well as the challenges created by scanned documents and inconsistent document formats.
 
-  - Objective 1.1: Implement a document-ingestion workflow that accepts supported CoCs and material test reports in PDF format and submits them for automated processing. [(#12)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334439&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C12)
+  - Objective 1.1: Implement PDF document ingestion for supported CoCs and material test reports [[story:#12]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12)
 
-  - Objective 1.2: Implement extraction of required material identification and mechanical-property information from supported digitally generated PDF documents. [(#13)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334414&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C13)
+  - Objective 1.2: Extract material and mechanical-property data from digital PDFs [[story:#13]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/13)
 
-  - Objective 1.3: Implement Optical Character Recognition (OCR) or an equivalent document-processing method to extract information from supported scanned PDF documents. [(#14)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334403&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C14)
+  - Objective 1.3: Extract material data from scanned PDF documents using OCR [[story:#14]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14)
 
-  - Objective 1.4: Support extraction from multiple document layouts by identifying relevant fields and information across representative CoC and test-report formats supplied by the sponsor. [(#15)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334403&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C14)
+  - Objective 1.4: Support extraction from multiple CoC and test-report layouts [[story:#15]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15)
 
-  - Objective 1.5: Implement a verification mechanism that identifies incomplete, invalid, or uncertain extraction results and flags information requiring additional review before it is accepted as verified material data. [(#16)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334353&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C16)
+  - Objective 1.5: Objective 1.5: Verify and flag uncertain extraction results [[story:#16]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)
 
-- **Goal 2: Centralized Material Data Storage and Management** [(Epic #17)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334329&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C17)
+- **Goal 2: Centralized Material Data Storage and Management** [[epic:#17]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/17)
   The second goal is to provide centralized, structured storage for material information extracted from CoCs and test reports. Rather than requiring users to repeatedly retrieve individual PDF documents, extracted information will be converted into relational records that can be efficiently retrieved and reused by other components of the system.
 
-  - Objective 2.1: Design and implement a relational data model capable of representing materials, mechanical properties, document types, and available supporting information such as vendor and lot information. [(#18)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334314&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C18)
+  - Objective 2.1: Design and implement the relational materials data model [[story:#18]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18)
 
-  - Objective 2.2: Store extracted and verified material information in a relational database hosted using an AWS service approved for the project environment. [(#19)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334290&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C19)
+  - Objective 2.2: Store material information in an AWS-hosted relational database [[story:#19]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)
 
-  - Objective 2.3: Maintain traceability between structured database records and their corresponding source CoC or test-report documents so that users can identify the source of stored material [(#20)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334267&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C20)
+  - Objective 2.3: Maintain traceability between material records and source documents [[story:#20]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20)
 
-  - Objective 2.4: Implement application-level material record operations [(#21)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334245&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C21)
+  - Objective 2.4: Implement application-level material record operations [[story:#21]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21)
 
-- **Goal 3: Material Data Access and Analysis** [(Epic #22)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334221&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C22)
+- **Goal 3: Material Data Access and Analysis** [[epic:#22]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/22)
   The third goal is to provide authorized Edwards Lifesciences users with an internal web application for accessing material information stored by the system. The application will reduce the need to manually locate and review individual reports when searching for historical material information and will provide a foundation for comparing information across multiple records.
 
-  - Objective 3.1: Develop an internal web application that allows authorized users to access material records stored in the centralized database. [(#23)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334201&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C23)
+  - Objective 3.1: Develop an internal web application for authorized users [[story:#23]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/23)
 
-  - Objective 3.2: Implement search and filtering capabilities that allow users to retrieve records by material and vendor, with additional filters incorporated as requirements are identified with the sponsor. [(#24)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334180&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C24)
+  - Objective 3.2: Implement material and vendor search and filtering [[story:#24]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24)
 
-  - Objective 3.3: Provide views that distinguish information originating from Certificates of Conformance from information originating from internally generated material test reports. [(#25)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334168&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C25)
+  - Objective 3.3: Distinguish CoC data from internal test-report data [[story:#25]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/25)
 
-  - Objective 3.4: Display material identification, mechanical properties, available supporting information, and source-document information for retrieved records. [(#26)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334145&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C26)
+  - Objective 3.4: Display material properties and source information [[story:#26]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/26)
 
-  - Objective 3.5: Provide functionality for retrieving and comparing material-property data across multiple stored records to support analysis of historical material information. [(#27)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334126&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C27)
+  - Objective 3.5: Compare material-property data across stored records [[story:#27]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27)
+  
 
-[(#37)](  https://github.com/orgs/CPSC490-Team-Proj/projects/1?pane=issue&itemId=277634640&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C37
-)
 ## 3. Proposed Approaches
 
 > Describe your proposed approach to solve the problem, specifying how you
@@ -131,65 +130,73 @@ is detailed in §4").
 trade-off each. If it runs past a page, you are writing §4.〉
 
 ## 4. Required Environment, Resources, and Planned Activities
+The development of the Edwards Lifescience Materials Database requires various software technologies, development environment, and technical skills.  The table below outlines the planned resources and their purpose within the project
+|Category|Technology/Resource|Purpose|
+|-----|-----|-----|
+|Programming Language|Python| - Backend development <br>- Document extraction <br>- Data processing|
+|Database Management System|TDB|Store extracted data|
+Backend Framework|TBD|- Handles application logic <br>- Communication between components|
+|Frontend Framework|TBD|User Interface|
+|Document Processing|TDB|Extract data from uploaded documents|
+|Development Environment|Visual Studio Code|Write, debug, test code|
+|Version Control|Git and Github|Track sprint progress, tasks, and assignments|
 
-> Review the required and available resources and environment to complete
-> your project. For example, server, platform, software tools, operating
-> systems, DBMS, or any required skills.
->
-> Describe the expected activities to achieve the stated goals, e.g.,
-> software development process.
 
-〈Your environment, resources, and planned activities.〉
+![Use Case Diagram]()
 
-**Diagrams belong in this section.** Include at minimum a high-level
-architecture diagram and a system (context) diagram; add the ER/EER model and
-a data-flow diagram where they help the reader understand what you are
-building and what it depends on. Draw them with any graphical tool
-(Lucidchart, draw.io, Miro, Mermaid, ERDPlus, Figma), keep the authoritative
-copies in `docs/design/` with both editable source and exported image, and
-reference them here.
+*Figure 1. Use Case Diagram.*
 
-〈Number every figure, caption it, and point at it from the prose — "Figure 1
-shows the three deployment tiers and the trust boundary between them." A
-figure the text never mentions is decoration. See `docs/design/DIAGRAMS.md`
-for tools, conventions, and the rule that every box and arrow must be
-verified against reality.〉
+![ER Diagram]()
+
+*Figure 2. ER Diagram.*
+
+![System Architecture]()
+
+*Figure 3. System Architecture Diagram.*
+
+![Data Flow Diagram]()
+
+*Figure 4. Data Flow Diagram.*
 
 ### Specification and design documents
-
-**Every specification and design document the team writes is listed here**
-with the objective it serves. This section is the index of the project's
-technical detail: §3 holds the argument, §4 holds the documents that make it
-buildable. CI gate G9 fails if a document exists in `docs/specs/` or
-`docs/design/` that this section does not link.
-
 | Document | Kind | Covers | Issues |
-|---|---|---|---|
-| 〈docs/specs/account-management.md〉 | specification | 〈account management requirements〉 | 〈#n, #n〉 |
-| 〈docs/design/architecture.md〉 | design | 〈system architecture + data model〉 | 〈#n〉 |
-
-〈The scaffold ships `docs/specs/example-spec.md` and
-`docs/design/example-design.md` as worked examples — read them, then delete
-them once you have your own, and list yours here.〉
-
-〈Replace these rows with your own. Each document names its epic and stories
-in its own first lines too (gate G2), so the trail runs both ways.〉
-
+|----------|------|--------|--------|
+|[Use Case Diagram]()|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
+|[ER Diagram]()|Design|Maps out relationships between entities within the database system|[#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|
+|[System Architecture]()|Design|Maps out relationships between core components within the system|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
+|[Data Flow Diagram]()|Design|Maps how information moves, transforms, and stored within the system|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|
+|[Goal 1 Specification Document]()|Specification|Specification document for Goal 1: Automated Material Data Extraction and Verification|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|
+|[Goal 2 Specification Document]()|Specification|Specification document for Goal 2: Centralized Material Data Storage and Management|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/58)|
+|[Goal 3 Specification Document]()|Specification|Specification document for Goal 3: Material Data Access and Analysis|[#59](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/59)|
 ### Planned activities — the work items
-
-The goals and objectives live in §2 as epics and user stories. **This section
-links every *other* work item: features, enhancements, bugs, tasks, and
-sub-tasks** — the concrete activities that deliver those objectives. CI gate
-G8 fails if such an issue exists that this section does not link.
 
 | Issue | Type | Activity | Parent | Owner | Sprint |
 |---|---|---|---|---|---|
-| 〈#n〉 | 〈task〉 | 〈stand up the prototype login endpoint〉 | 〈#story〉 | 〈owner〉 | 〈Sprint 1〉 |
-| 〈#n〉 | 〈feature/enhancement/bug/task/sub-task〉 | 〈…〉 | 〈#story〉 | 〈…〉 | 〈…〉 |
+|[#5](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/5)|Task|Draft §1 Introduction Problem Statements|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Kameo101](https://github.com/Kameo101)<br>[@cpham2005](https://github.com/cpham2005)|Sprint 1|
+|[#6](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/6)|Task|Draft §1 Introduction background|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@liamw5265](https://github.com/liamw5265)|Sprint 1|
+|[#7](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/7)|Task|Draft §0 Abstract|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)<br>[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
+|[#37](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/37)|Task|Draft §2 Goals and Objectives|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 1|
+|[#52](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/52)|Task|Complete Section 3: Proposed Approaches|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Kameo101](https://github.com/Kameo101)|Sprint 1|
+|[#53](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/53)|Task|Complete Section 4: Required Environment, Resources, and Planned Activities|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@liamw5265](https://github.com/liamw5265)|Sprint 1|
+|[#29](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/29)|Task|Sync develop with main|[#1](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)|[@Kameo101](https://github.com/Kameo101)|Sprint 1|
+|[#54](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/54)|Task|Synchronize Section 2 Goals and Objectives with GitHub issues|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@cpham2005](https://github.com/cpham2005)|Sprint 1|
+|[#34](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/34)|Task|Add hyperlinks and credits to Proposal.md|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Kameo101](https://github.com/Kameo101)<br>[@cpham2005](https://github.com/cpham2005)<br>[@Bhavesh1024](https://github.com/Bhavesh1024)<br>[@liamw5265](https://github.com/liamw5265)|Sprint 1|
+|[#51](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/51)|Task|Fix typed hyperlink references in proposal.md|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
+|[#57](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/57)|Task|Update README.md with Project Information and Sprint Board||[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
+|[#55](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/55)|Task|Complete Sprint 1 Review||[@cpham2005](https://github.com/cpham2005)|Sprint 1|
+|[#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36)|Task|Task 0.1.1: Create Use Case Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@liamw5265](https://github.com/liamw5265)|Sprint 2|
+|[#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|Task|Task 0.1.2: Create ER Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Kameo101](https://github.com/Kameo101)|Sprint 2|
+|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|Task|Task 0.1.3: Create Systems Architecture Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 2|
+|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|Task|Task 0.1.4: Create Data Flow Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@cpham2005](https://github.com/cpham2005)|Sprint 2|
+|[#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|Task|Task 0.1.5: Create UI Wireframe|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 2|
+|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|Task|Task 0.2.1: Complete Goal 1 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/85)|Task|Task 0.2.2: Complete Goal 2 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#59](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/59)|Task|Task 0.2.3: Complete Goal 3 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#63](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/63)|Bug|Cherry pick develop revision to main branch|[#1](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Spring 1|
+|[#47](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/47)|Task|Task: Define the tech stack and AWS services|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@cpham2005](https://github.com/cpham2005)|Spring 2|
+|[#43](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/43)|Task|Task: Project Intake Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@Kameo101](https://github.com/Kameo101)|Spring 3|
+|[#44](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/44)|Task|Task: Solution Architecture Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@cpham2005](https://github.com/cpham2005)|Spring 3|
 
-〈Replace these rows with your own, and keep the table current as you file new
-issues — with §2 it gives a reader every planned activity in one place, each
-traceable to the objective it serves.〉
 
 ## 5. Project Outcomes
 
