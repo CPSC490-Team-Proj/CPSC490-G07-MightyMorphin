@@ -60,55 +60,54 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 ## 2. Goals and Objectives
 The Online Materials Database project aims to reduce the manual effort required to retrieve and analyze material information from Certificates of Conformance (CoCs) and material test reports. The project will accomplish this by developing an automated document-processing pipeline, establishing centralized structured storage for extracted material information, and providing an internal web application through which authorized users can access and analyze the collected data. The following goals and objectives define the primary capabilities to be developed and provide measurable criteria for evaluating the completed system. <br><br>
 
-- **Goal: Edwards Lifescience project Objectives** [(Epic #1)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441216&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C1)
+- **Goal: Edward Lifescience project Objectives** [[epic:#1]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)
 
-- **Goal 0: Proposal** [(Epic #4)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261441178&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C4)
-  - Task: Draft §1 Introduction background [(#6)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261446190&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C6)
-  - Task: Draft §1 Introduction Problem Statements[(#5)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261443686&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C5)
-  - Task: Draft §0 Abstract [(#7)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=261452481&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C7)
-  - Task: Goals and Objectives [(#37)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277634640&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C37)
+- **Goal: Edwards Lifescience Project Forms** [[epic:#45]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/45)
 
-- **Goal: Project design and architecture** [(Epic #42)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=277843799&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C42)
+- **Goal: Rough draft Proposal.md** [[epic:#4]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)
 
-- **Goal 1: Automated Material Data Extraction and Verification** [(Epic #11)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334452&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C11)
+- **Goal 0: Design and Specification Documents** [[epic:#42]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)
+  - Objective 0.1: Design and Architecture [[story:#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)
+  - Objective 0.2: Epic Specification Documents [[story:#49]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)
+
+- **Goal 1: Automated Material Data Extraction and Verification** [[epic:#11]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/11)
   The first goal is to automate the process of converting material information contained in PDF documents into structured data suitable for storage and analysis. This goal addresses the current dependence on manual data extraction as well as the challenges created by scanned documents and inconsistent document formats.
 
-  - Objective 1.1: Implement a document-ingestion workflow that accepts supported CoCs and material test reports in PDF format and submits them for automated processing. [(#12)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334439&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C12)
+  - Objective 1.1: Implement PDF document ingestion for supported CoCs and material test reports [[story:#12]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12)
 
-  - Objective 1.2: Implement extraction of required material identification and mechanical-property information from supported digitally generated PDF documents. [(#13)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334414&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C13)
+  - Objective 1.2: Extract material and mechanical-property data from digital PDFs [[story:#13]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/13)
 
-  - Objective 1.3: Implement Optical Character Recognition (OCR) or an equivalent document-processing method to extract information from supported scanned PDF documents. [(#14)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334403&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C14)
+  - Objective 1.3: Extract material data from scanned PDF documents using OCR [[story:#14]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14)
 
-  - Objective 1.4: Support extraction from multiple document layouts by identifying relevant fields and information across representative CoC and test-report formats supplied by the sponsor. [(#15)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334403&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C14)
+  - Objective 1.4: Support extraction from multiple CoC and test-report layouts [[story:#15]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15)
 
-  - Objective 1.5: Implement a verification mechanism that identifies incomplete, invalid, or uncertain extraction results and flags information requiring additional review before it is accepted as verified material data. [(#16)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334353&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C16)
+  - Objective 1.5: Objective 1.5: Verify and flag uncertain extraction results [[story:#16]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)
 
-- **Goal 2: Centralized Material Data Storage and Management** [(Epic #17)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334329&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C17)
+- **Goal 2: Centralized Material Data Storage and Management** [[epic:#17]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/17)
   The second goal is to provide centralized, structured storage for material information extracted from CoCs and test reports. Rather than requiring users to repeatedly retrieve individual PDF documents, extracted information will be converted into relational records that can be efficiently retrieved and reused by other components of the system.
 
-  - Objective 2.1: Design and implement a relational data model capable of representing materials, mechanical properties, document types, and available supporting information such as vendor and lot information. [(#18)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334314&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C18)
+  - Objective 2.1: Design and implement the relational materials data model [[story:#18]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18)
 
-  - Objective 2.2: Store extracted and verified material information in a relational database hosted using an AWS service approved for the project environment. [(#19)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334290&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C19)
+  - Objective 2.2: Store material information in an AWS-hosted relational database [[story:#19]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)
 
-  - Objective 2.3: Maintain traceability between structured database records and their corresponding source CoC or test-report documents so that users can identify the source of stored material [(#20)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334267&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C20)
+  - Objective 2.3: Maintain traceability between material records and source documents [[story:#20]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20)
 
-  - Objective 2.4: Implement application-level material record operations [(#21)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334245&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C21)
+  - Objective 2.4: Implement application-level material record operations [[story:#21]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21)
 
-- **Goal 3: Material Data Access and Analysis** [(Epic #22)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334221&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C22)
+- **Goal 3: Material Data Access and Analysis** [[epic:#22]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/22)
   The third goal is to provide authorized Edwards Lifesciences users with an internal web application for accessing material information stored by the system. The application will reduce the need to manually locate and review individual reports when searching for historical material information and will provide a foundation for comparing information across multiple records.
 
-  - Objective 3.1: Develop an internal web application that allows authorized users to access material records stored in the centralized database. [(#23)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334201&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C23)
+  - Objective 3.1: Develop an internal web application for authorized users [[story:#23]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/23)
 
-  - Objective 3.2: Implement search and filtering capabilities that allow users to retrieve records by material and vendor, with additional filters incorporated as requirements are identified with the sponsor. [(#24)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334180&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C24)
+  - Objective 3.2: Implement material and vendor search and filtering [[story:#24]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24)
 
-  - Objective 3.3: Provide views that distinguish information originating from Certificates of Conformance from information originating from internally generated material test reports. [(#25)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334168&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C25)
+  - Objective 3.3: Distinguish CoC data from internal test-report data [[story:#25]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/25)
 
-  - Objective 3.4: Display material identification, mechanical properties, available supporting information, and source-document information for retrieved records. [(#26)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334145&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C26)
+  - Objective 3.4: Display material properties and source information [[story:#26]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/26)
 
-  - Objective 3.5: Provide functionality for retrieving and comparing material-property data across multiple stored records to support analysis of historical material information. [(#27)](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=264334126&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C27)
+  - Objective 3.5: Compare material-property data across stored records [[story:#27]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27)
+  
 
-[(#37)](  https://github.com/orgs/CPSC490-Team-Proj/projects/1?pane=issue&itemId=277634640&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C37
-)
 ## 3. Proposed Approaches
 
 The proposed system replaces manual lookup of Certificates of Conformance(COC) and
