@@ -203,7 +203,7 @@ Backend Framework|TBD|- Handles application logic <br>- Communication between co
 
 ![Use Case Diagram](../docs/design/use-case.png)
 
-*Figure 1. Use Case Diagram.*
+*Figure 1. Use Case Diagram.* 
 
 ![ER Diagram]()
 
