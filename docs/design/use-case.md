@@ -1,90 +1,95 @@
-@startuml
-left to right direction
+## Design -- Use Case Diagram
+Epic: [#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42) · Stories: [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36)<br>
+Owner: Liam Wilson · Sprint: 2 · Status: draft
 
-skinparam packageStyle rectangle
-skinparam shadowing false
-skinparam actorStyle stickman
+```Mermaid
+flowchart LR
+    %% Actors
+    RD["R&D"]
+    MFG["Manufacturing"]
+    MDL["Modeling"]
+    SYSAD["System Administrator"]
 
-actor "R&D" as rd
-actor "Manufacturing" as mfg
-actor "Modeling" as mdl
-actor "System Administrator" as sysad
+    %% System Boundary
+    subgraph SYSTEM["Material Data Management System"]
+        direction TB
 
+        %% Document Processing
+        subgraph DP["Document Processing"]
+            UC1(["Import PDF Documents"])
+            UC2(["Batch Process Documents"])
+            UC3(["Extract Material Data"])
+            UC4(["Validate Extracted Data"])
+            UC5(["Import Material Records"])
+        end
 
-rectangle "Material Data Management System" {
-  ' Document Processing
-  package "Document Processing"{
-    usecase "Import PDF Documents" as UC1
-    usecase "Batch Process Documents" as UC2
-    usecase "Extract Material Data" as UC3
-    usecase "Validate Extracted Data" as UC4
-    usecase "Import Material Records" as UC5
-  }
-  
-  ' Material Information Records
-  package "Material Information Records" {
-    usecase "Search Material Records" as UC6
-    usecase "Filter Material Records" as UC7
-    usecase "View Material Specifications" as UC8
-    usecase "View Material Properties" as UC9
-    usecase "View Material Processing Info" as UC10
-  }
-  
-  ' Material Analysis
-  package "Material Analysis" {
-    usecase "Compare Data to Specifications" as UC11
-    usecase "View Historical Material Trends" as UC12
-    usecase "Identify Out-of-Spec Materials" as UC13
-    usecase "View Mechanical Property Ranges" as UC14
-  }
-  
-  ' System Administration
-  package "System Administration" {
-    usecase "Manage User Accounts" as UC15
-    usecase "Manage User Permissions" as UC16
-    usecase "Monitor Processing Jobs" as UC17
-  }
-  
+        %% Material Information Records
+        subgraph MIR["Material Information Records"]
+            UC6(["Search Material Records"])
+            UC7(["Filter Material Records"])
+            UC8(["View Material Specifications"])
+            UC9(["View Material Properties"])
+            UC10(["View Material Processing Info"])
+        end
 
-}
+        %% Material Analysis
+        subgraph MA["Material Analysis"]
+            UC11(["Compare Data to Specifications"])
+            UC12(["View Historical Material Trends"])
+            UC13(["Identify Out-of-Spec Materials"])
+            UC14(["View Mechanical Property Ranges"])
+        end
 
-' R&D
-rd -- UC3
-rd -- UC6
-rd -- UC7
-rd -- UC8
-rd -- UC9
-rd -- UC10
+        %% System Administration
+        subgraph SA["System Administration"]
+            UC15(["Manage User Accounts"])
+            UC16(["Manage User Permissions"])
+            UC17(["Monitor Processing Jobs"])
+        end
+    end
 
-' Manufacturing
-mfg -- UC1
-mfg -- UC2
-mfg -- UC3
-mfg -- UC4
-mfg -- UC5
-mfg -- UC6
-mfg -- UC7
-mfg -- UC8
-mfg -- UC9
-mfg -- UC10
-mfg -- UC11
-mfg -- UC12
-mfg -- UC13
+    %% R&D
+    RD --- UC3
+    RD --- UC6
+    RD --- UC7
+    RD --- UC8
+    RD --- UC9
+    RD --- UC10
 
-' Modeling
-mdl -- UC1
-mdl -- UC2
-mdl -- UC3
-mdl -- UC5
-mdl -- UC6
-mdl -- UC7
-mdl -- UC12
-mdl -- UC14
+    %% Manufacturing
+    MFG --- UC1
+    MFG --- UC2
+    MFG --- UC3
+    MFG --- UC4
+    MFG --- UC5
+    MFG --- UC6
+    MFG --- UC7
+    MFG --- UC8
+    MFG --- UC9
+    MFG --- UC10
+    MFG --- UC11
+    MFG --- UC12
+    MFG --- UC13
 
-' System Administrator
-sysad -- UC15
-sysad -- UC16
-sysad -- UC17
+    %% Modeling
+    MDL --- UC1
+    MDL --- UC2
+    MDL --- UC3
+    MDL --- UC5
+    MDL --- UC6
+    MDL --- UC7
+    MDL --- UC12
+    MDL --- UC14
 
+    %% System Administrator
+    SYSAD --- UC15
+    SYSAD --- UC16
+    SYSAD --- UC17
 
-@enduml
+    %% Styling
+    classDef actor fill:#ffffff,stroke:#333,stroke-width:2px
+    classDef usecase fill:#ffffff,stroke:#333,stroke-width:1px
+
+    class RD,MFG,MDL,SYSAD actor
+    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17 usecase
+```
