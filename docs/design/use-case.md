@@ -86,9 +86,7 @@ flowchart LR
     SYSAD --- UC16
     SYSAD --- UC17
 
-    %% Styling
-    classDef actor fill:#ffffff,stroke:#444444,stroke-width:2px
-    classDef usecase fill:#ffffff,stroke:#444444,stroke-width:1px
+
 
     class RD,MFG,MDL,SYSAD actor
     class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17 usecase
