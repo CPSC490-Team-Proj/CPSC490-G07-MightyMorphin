@@ -2,7 +2,7 @@
 Epic: [#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42) · Stories: [#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48), [#18](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18), [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) · Task: [#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)<br>
 Owner: Fidelis Okorie · Sprint: 2 · Status: draft
 
-This document defines the relational data model for the verified material
+In this document, it defines the relational data model for the verified material
 data described in proposal §3: "materials, mechanical properties, documents,
 vendors, and lots as related records", where "every record keeps a reference
 to the original PDF" and "each correction and approval is logged." It also
@@ -244,14 +244,14 @@ queries over tables already listed.
 
 ## 6. What is NOT designed yet
 
-- **Database product and exact column types.** §4 lists the DBMS as TBD, and
-  the Snowflake option is still under evaluation with the sponsor (§3). The
+- **Database product and exact column types.** As §4 says, the DBMS is currently TBD, and
+  the Snowflake option is still under evaluation with the sponsor (§3). We do not have test documents to see how it all works yet. The
   types above are generic SQL types.
-- **Property names and units.** The team does not yet have real CoCs or test
-  reports, so the rows of `PROPERTY_TYPE` are not fixed.
-- **Where specification limits come from.** `MATERIAL_SPEC` assumes Edwards
+- **Property names and units.** The team does not yet have real CoCs or test as menntioned above
+  reports, so the rows of `PROPERTY_TYPE` are not set in stone and can be changed in the future when documents are aquired.
+- **Where specification limits come from.** For `MATERIAL_SPEC` we are just assuming that Edwards
   can supply the allowed range per material and property; this is not yet
-  confirmed with the sponsor.
+  confirmed with the sponsor with a document to confirm it.
 - **What "processing info" contains.** `PROCESSING_STEP` stores it as ordered
   text until real documents show its structure.
 - **Permissions per role.** `ROLE` records which group a user belongs to; what
