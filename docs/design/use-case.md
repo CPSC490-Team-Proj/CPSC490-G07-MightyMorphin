@@ -42,9 +42,8 @@ flowchart LR
 
         %% System Administration
         subgraph SA["System Administration"]
-            UC15(["Manage User Accounts"])
-            UC16(["Manage User Permissions"])
-            UC17(["Monitor Processing Jobs"])
+            UC15(["Manage User Permissions"])
+            UC16(["Monitor Processing Jobs"])
         end
     end
 
@@ -84,10 +83,9 @@ flowchart LR
     %% System Administrator
     SYSAD --- UC15
     SYSAD --- UC16
-    SYSAD --- UC17
 
 
 
     class RD,MFG,MDL,SYSAD actor
-    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17 usecase
+    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11,UC12,UC13,UC14,UC15,UC16 usecase
 ```
