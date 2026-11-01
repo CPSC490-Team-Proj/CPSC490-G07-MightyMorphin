@@ -247,8 +247,8 @@ queries over tables already listed.
 - **Database product and exact column types.** As §4 says, the DBMS is currently TBD, and
   the Snowflake option is still under evaluation with the sponsor (§3). We do not have test documents to see how it all works yet. The
   types above are generic SQL types.
-- **Property names and units.** The team does not yet have real CoCs or test as menntioned above
-  reports, so the rows of `PROPERTY_TYPE` are not set in stone and can be changed in the future when documents are aquired.
+- **Property names and units.** The team does not yet have real CoCs or test
+  reports as mentioned above, so the rows of `PROPERTY_TYPE` are not set in stone and can be changed in the future when documents are acquired.
 - **Where specification limits come from.** For `MATERIAL_SPEC` we are just assuming that Edwards
   can supply the allowed range per material and property; this is not yet
   confirmed with the sponsor with a document to confirm it.
