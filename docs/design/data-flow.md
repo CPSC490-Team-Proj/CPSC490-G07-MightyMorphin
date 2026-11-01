@@ -4,25 +4,23 @@ Owner: Christopher Pham · Sprint: 2 · Status: Draft
 
 
 ```mermaid
+---
+config:
+  theme: base
+---
 flowchart LR
-  physicalMedia[Physical Media]:::orange
-  scanner[Scanner]:::orange
-  pdfFile[PDF File]:::yellow
-  pdfExtractor[PDF Data Scraper]:::indigo
-  extractedData[Extracted Data]:::indigo
-  filterEngine[Filter Engine]:::teal
-  outputData[Filtered Output]:::green
+    physicalMedia["Physical Media"] -- scanning --> scanner["Scanner"]
+    scanner -- conversion --> pdfFile["PDF File"]
+    pdfFile -- scraping --> pdfExtractor["PDF Data Scraper"]
+    pdfExtractor -- raw data --> extractedData["Extracted Data"]
+    extractedData -- processing --> filterEngine["Filter Engine"]
+    filterEngine -- cleaned data --> outputData["Filtered Output"]
 
-  physicalMedia -->|scanning| scanner
-  scanner -->|conversion| pdfFile
-  pdfFile -->|scraping| pdfExtractor
-  pdfExtractor -->|raw data| extractedData
-  extractedData -->|processing| filterEngine
-  filterEngine -->|cleaned data| outputData
-
-  classDef orange stroke:#fb923c,fill:#fff7ed
-  classDef yellow stroke:#facc15,fill:#fefce8
-  classDef indigo stroke:#818cf8,fill:#eef2ff
-  classDef teal stroke:#2dd4bf,fill:#f0fdfa
-  classDef green stroke:#4ade80,fill:#f0fdf4
+     physicalMedia
+     scanner
+     pdfFile
+     pdfExtractor
+     extractedData
+     filterEngine
+     outputData
 ```
