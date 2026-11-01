@@ -213,7 +213,7 @@ Backend Framework|TBD|- Handles application logic <br>- Communication between co
 
 *Figure 3. System Architecture Diagram.*
 
-![Data Flow Diagram](../docs/data-flow.png)
+![Data Flow Diagram](../docs/design/data-flow.png)
 
 *Figure 4. Data Flow Diagram.*
 
