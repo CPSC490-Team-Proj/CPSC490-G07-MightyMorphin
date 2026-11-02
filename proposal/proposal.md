@@ -209,7 +209,7 @@ Backend Framework|TBD|- Handles application logic <br>- Communication between co
 
 *Figure 2. ER Diagram.*
 
-![System architecture showing the user interface, backend API, extraction and analysis modules, SSO provider, AWS S3 PDF storage, and Snowflake materials database](../docs/design/system-architecture-diagram.png)
+![System architecture showing the user interface, backend API, extraction and analysis modules, organization SSO, the existing on-site PDF document system, and Snowflake materials database](../docs/design/system-architecture-diagram.png)
 
 *Figure 3. System Architecture Diagram.*
 
@@ -222,7 +222,7 @@ Backend Framework|TBD|- Handles application logic <br>- Communication between co
 |----------|------|--------|--------|
 |[Use Case Diagram]()|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
 |[ER Diagram]()|Design|Maps out relationships between entities within the database system|[#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|
-|[System Architecture](../docs/design/system-architecture-diagram.png)|Design|Maps out relationships between core components within the system|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
+|[System Architecture](../docs/design/system-architecture-diagram.md)|Design|Maps out relationships between core components within the system; exported image: [PNG](../docs/design/system-architecture-diagram.png)|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
 |[Data Flow Diagram]()|Design|Maps how information moves, transforms, and stored within the system|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|
 |[Goal 1 Specification Document]()|Specification|Specification document for Goal 1: Automated Material Data Extraction and Verification|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|
 |[Goal 2 Specification Document]()|Specification|Specification document for Goal 2: Centralized Material Data Storage and Management|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/58)|
