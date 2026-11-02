@@ -209,7 +209,7 @@ Backend Framework|TBD|- Handles application logic <br>- Communication between co
 
 *Figure 2. ER Diagram.*
 
-![System Architecture]()
+![System architecture showing the user interface, backend API, extraction and analysis modules, SSO provider, AWS S3 PDF storage, and Snowflake materials database](../docs/design/system-architecture-diagram.png)
 
 *Figure 3. System Architecture Diagram.*
 
