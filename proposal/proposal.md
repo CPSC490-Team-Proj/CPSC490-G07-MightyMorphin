@@ -201,9 +201,9 @@ Backend Framework|TBD|- Handles application logic <br>- Communication between co
 |Version Control|Git and Github|Track sprint progress, tasks, and assignments|
 
 
-![Use Case Diagram]()
+![Use Case Diagram](../docs/design/use-case.png)
 
-*Figure 1. Use Case Diagram.*
+*Figure 1. Use Case Diagram.* 
 
 ![ER Diagram](../docs/design/er-diagram.png)
 
@@ -223,7 +223,7 @@ For the Full Column and keys view: `docs/design/er-diagram.md`.
 ### Specification and design documents
 | Document | Kind | Covers | Issues |
 |----------|------|--------|--------|
-|[Use Case Diagram]()|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
+|[Use Case Diagram](../docs/design/use-case.md)|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
 |[ER Diagram](../docs/design/er-diagram.md)|Design|This defines the relational data model for the material data the system extracts and it verifies them as well, following the company requirements and to meet reliability. The way it works is it stores each uploaded CoC or test report, the material, lot and vendor it describes, and every mechanical property value with its unit and extraction confidence which then could be used to re-review the document to correct any mistakes. Each material record links to exactly one source document so any value can be traced back to its PDF (#20). To keep everything documented as well, every correction and approval is logged. Specification limits also support the out of spec and comparison use cases in the use case diagram, although the details may change upon receiving a test document from the company. The DBMS and the final list of properties are not decided yet; the full diagram with every column is in docs/design/er-diagram.md.|[[task:#38]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|
 |[System Architecture]()|Design|Maps out relationships between core components within the system|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
 |[Data Flow Diagram]()|Design|Maps how information moves, transforms, and stored within the system|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|
