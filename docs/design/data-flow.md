@@ -1,5 +1,5 @@
 ## Design -- Data Flow Diagram
-Epic: [#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42) · Stories: [#40] (https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)
+Epic: [#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42) · Stories: [#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)
 Owner: Christopher Pham · Sprint: 2 · Status: Draft
 
 ```mermaid
