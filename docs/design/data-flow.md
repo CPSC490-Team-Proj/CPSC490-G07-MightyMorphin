@@ -8,19 +8,22 @@ Owner: Christopher Pham · Sprint: 2 · Status: Draft
 config:
   theme: base
 ---
+---
+config:
+  theme: base
+---
 flowchart LR
-    physicalMedia["Physical Media"] -- scanning --> scanner["Scanner"]
+    physicalMedia["Physical Media"] -- scan --> scanner["Scanner"]
     scanner -- conversion --> pdfFile["PDF File"]
-    pdfFile -- scraping --> pdfExtractor["PDF Data Scraper"]
+    pdfFile -- store --> pdfArchive[("PDF Archive")]
+    pdfArchive -- scraping --> pdfExtractor["PDF Data Scraper"]
     pdfExtractor -- raw data --> extractedData["Extracted Data"]
-    extractedData -- processing --> filterEngine["Filter Engine"]
+    extractedData -- review --> reviewer["Validate Data"]
+    reviewer -- approve --> storedData[("AWS Database")]
+    reviewer -- reject --> faulty["faulty Data"]
+    storedData -- processing --> filterEngine["Filter Engine"]
     filterEngine -- cleaned data --> outputData["Filtered Output"]
+    faulty -- "re-scrape archived PDF" --> pdfArchive
 
-     physicalMedia
-     scanner
-     pdfFile
-     pdfExtractor
-     extractedData
-     filterEngine
-     outputData
+    reviewer@{ shape: diam}
 ```
