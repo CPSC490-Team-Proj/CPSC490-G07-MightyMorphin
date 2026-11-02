@@ -201,13 +201,16 @@ Backend Framework|TBD|- Handles application logic <br>- Communication between co
 |Version Control|Git and Github|Track sprint progress, tasks, and assignments|
 
 
-![Use Case Diagram]()
+![Use Case Diagram](../docs/design/use-case.png)
 
 *Figure 1. Use Case Diagram.*
 
-![ER Diagram]()
+![ER Diagram](../docs/design/er-diagram.png)
 
 *Figure 2. ER Diagram.*
+
+Key: Two bars = exactly one; bar and circle = zero or one; circle and fork = zero or many.
+For the Full Column and keys view: `docs/design/er-diagram.md`.
 
 ![System architecture showing the user interface, backend API, extraction and analysis modules, organization SSO, the existing on-site PDF document system, and Snowflake materials database](../docs/design/system-architecture-diagram.png)
 
@@ -220,8 +223,8 @@ Backend Framework|TBD|- Handles application logic <br>- Communication between co
 ### Specification and design documents
 | Document | Kind | Covers | Issues |
 |----------|------|--------|--------|
-|[Use Case Diagram]()|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
-|[ER Diagram]()|Design|Maps out relationships between entities within the database system|[#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|
+|[Use Case Diagram](../docs/design/use-case.md)|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
+|[ER Diagram](../docs/design/er-diagram.md)|Design|This defines the relational data model for the material data the system extracts and it verifies them as well, following the company requirements and to meet reliability. The way it works is it stores each uploaded CoC or test report, the material, lot and vendor it describes, and every mechanical property value with its unit and extraction confidence which then could be used to re-review the document to correct any mistakes. Each material record links to exactly one source document so any value can be traced back to its PDF (#20). To keep everything documented as well, every correction and approval is logged. Specification limits also support the out of spec and comparison use cases in the use case diagram, although the details may change upon receiving a test document from the company. The DBMS and the final list of properties are not decided yet; the full diagram with every column is in docs/design/er-diagram.md.|[[task:#38]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|
 |[System Architecture](../docs/design/system-architecture-diagram.md)|Design|Maps out relationships between core components within the system; exported image: [PNG](../docs/design/system-architecture-diagram.png)|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
 |[Data Flow Diagram]()|Design|Maps how information moves, transforms, and stored within the system|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|
 |[Goal 1 Specification Document]()|Specification|Specification document for Goal 1: Automated Material Data Extraction and Verification|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|
@@ -244,7 +247,7 @@ Backend Framework|TBD|- Handles application logic <br>- Communication between co
 |[#57](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/57)|Task|Update README.md with Project Information and Sprint Board||[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
 |[#55](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/55)|Task|Complete Sprint 1 Review||[@cpham2005](https://github.com/cpham2005)|Sprint 1|
 |[#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36)|Task|Task 0.1.1: Create Use Case Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@liamw5265](https://github.com/liamw5265)|Sprint 2|
-|[#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|Task|Task 0.1.2: Create ER Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Kameo101](https://github.com/Kameo101)|Sprint 2|
+|[[task:#38]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|Task|Task 0.1.2: Create ER Diagram|[[story:#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Kameo101](https://github.com/Kameo101)|Sprint 2|
 |[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|Task|Task 0.1.3: Create Systems Architecture Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 2|
 |[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|Task|Task 0.1.4: Create Data Flow Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@cpham2005](https://github.com/cpham2005)|Sprint 2|
 |[#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|Task|Task 0.1.5: Create UI Wireframe|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 2|
