@@ -1,5 +1,5 @@
 > Epic: #[42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42) · Story: #[48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48) · Task: #[39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)
-Owner: Bhavesh Malhi 
+> Owner: Bhavesh Malhi · Sprint: 2 · Status: draft 
 # System Architecture Diagram
 
 This architecture shows the planned application components and their communication. The application is assumed to run in AWS, Snowflake is the materials data platform, and original PDFs remain in the organization's existing on-site document system. The SSO provider is shown as an external dependency; its specific product is not selected here.
