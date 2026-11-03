@@ -8,7 +8,7 @@ config:
   theme: base
 ---
 flowchart LR
-    provider(["User/Data Provider"]) -- input media --> physicalMedia["Physical Media"]
+    provider(["User/Data Provider"]) -- "input PDF/Documents" --> physicalMedia["Physical Media"]
     physicalMedia -- scan --> scanner["Scanner"]
     scanner -- conversion --> pdfFile["PDF File"]
     pdfFile -- store --> pdfArchive[("PDF Archive")]
@@ -17,12 +17,16 @@ flowchart LR
     extractedData -- review --> reviewer["Validate Data"]
     reviewer -- approve --> storedData[("AWS Database")]
     reviewer -- reject --> faulty["faulty Data"]
-    storedData -- processing --> filterEngine["Filter Engine"]
-    filterEngine -- cleaned data --> outputData["Filtered Output"]
     faulty -- "bad extraction: re-scrape" --> pdfArchive
     faulty -- "bad scan: re-scan" --> scanner
-    outputData -- retrieve query --> analyst(["User/Analyst"])
-    analyst -- review/report creation --> analysis["Analysis and Reporting"]
+
+    storedData -- automatic processing --> filterEngine["Filter Engine"]
+    filterEngine -- cleaned data --> outputData["Filtered Output"]
+
+    analyst(["User/Analyst"]) -- submit query --> queryProcess["Query Process"]
+    queryProcess -- retrieve already-filtered data --> outputData
+    outputData -- view results --> analyst
+    analyst -- "review/report creation" --> analysis["Analysis and Reporting"]
 
     reviewer@{ shape: diam}
 ```
