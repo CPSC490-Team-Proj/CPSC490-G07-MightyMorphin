@@ -8,27 +8,30 @@ This architecture shows the planned application components and their communicati
 flowchart TB
     user["Authorized user<br/>R&amp;D and manufacturing"]
 
-    subgraph aws["AWS application environment<br/>hosting services to be finalized"]
-        ui["Web UI<br/>Upload, search, review"]
-        api["Backend API<br/>Routes requests and coordinates services"]
-        extraction["Extraction module<br/>Parse, OCR when needed, validate"]
-        analysis["Analysis module<br/>Search, filtering, comparison"]
+    subgraph aws["AWS application environment"]
+        direction TB
+        ui["Web UI<br/>Upload · review · search"]
+        api["Backend API<br/>Request routing · service coordination"]
+        subgraph services["Application services"]
+            direction LR
+            extraction["Extraction<br/>Parse · OCR · validate"]
+            analysis["Analysis<br/>Search · filter · compare"]
+        end
+        ui -->|Application requests| api
+        api -->|Document reference| extraction
+        api -->|Analysis request| analysis
     end
 
-    sso["Organization SSO<br/>Provider not specified"]
-    onsite["Existing on-site document system<br/>Stores original PDF files"]
+    sso["Organization SSO<br/>Provider not selected"]
+    onsite["Existing on-site document system<br/>Original PDF storage"]
     snowflake[("Snowflake<br/>Structured materials data")]
 
-    user -->|Uses application| ui
-    ui -->|Sign-in and access decision| sso
-    ui -->|User requests| api
-    api -->|Stores PDF and receives document reference| onsite
-    onsite -->|Retrieves source PDF| extraction
-    api -->|Document reference| extraction
-    api -->|Analysis request| analysis
-    extraction -->|Validated material records| snowflake
-    analysis <-->|Queries and result sets| snowflake
-    api <-->|Reads and writes records| snowflake
+    user -->|Uses| ui
+    ui -->|Sign-in · access decision| sso
+    api -->|Store PDF · return reference| onsite
+    onsite -->|Read source PDF| extraction
+    extraction -->|Validated records| snowflake
+    analysis -->|Query · compare| snowflake
 ```
 
 ## Component Responsibilities
