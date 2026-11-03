@@ -189,17 +189,19 @@ detailed in §4.
 [#52](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=278577328&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C52)
 
 ## 4. Required Environment, Resources, and Planned Activities
-The development of the Edwards Lifescience Materials Database requires various software technologies, development environment, and technical skills.  The table below outlines the planned resources and their purpose within the project
+The development of the Edwards Lifescience Materials Database requires various software technologies, a development environment, and technical skills. The table below outlines the planned resources and their purpose within the project.
+
 |Category|Technology/Resource|Purpose|
 |-----|-----|-----|
 |Programming Language|Python| - Backend development <br>- Document extraction <br>- Data processing|
 |Database Management System|PostgreSQL (Amazon RDS)|Store extracted data|
 |File Storage (PDFs)|Amazon S3|Store PDFs|
-|Backend Framework|FastAPI (python)|- Handles application logic <br>- Communication between components|
-|Frontend Framework|React/Vue|User Interface (upload documents, view extracted data)|
+|Backend Framework|FastAPI (Python)|- Handles application logic <br>- Communication between components|
+|UI/UX Design|Figma|Design [wireframes](docs/design/ui-wireframe.png) and mockups of user interface [#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|
+|Frontend Framework|React/Vue|User interface (upload documents, view extracted data)|
 |Document Processing|Textract/Tesseract|Extract data from uploaded documents|
 |Development Environment|Visual Studio Code|Write, debug, test code|
-|Version Control|Git and Github|Track sprint progress, tasks, and assignments|
+|Version Control|Git and GitHub|Track sprint progress, tasks, and assignments|
 
 
 ![Use Case Diagram](../docs/design/use-case.png)
