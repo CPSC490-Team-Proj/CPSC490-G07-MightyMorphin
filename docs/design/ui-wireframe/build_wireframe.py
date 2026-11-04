@@ -113,7 +113,7 @@ for i,(a,b) in enumerate([
 ('Design boundary','This wireframe specifies layout and behavior, not a final visual theme.')]):
     yy=1730+i*80;text(1184,yy,a,20,True);text(1184,yy+31,b,17)
 text(40,2370,'Source: task #41, proposal sections 2–3, and existing use-case / ER design. All displayed records and values are examples.',18)
-im.save(OUT/'ui-wireframe.png')
+im.save(OUT.parent/'ui-wireframe.png')
 for name,px,py in [('upload',40,130),('review-queue',1160,130),('validation',40,895),('materials',1160,895),('analysis',40,1660)]:
     im.crop((px-8,py-8,px+1088,py+695)).save(OUT/f'ui-wireframe-{name}.png')
 svg.append('</svg>');(OUT/'ui-wireframe.svg').write_text('\n'.join(svg),encoding='utf-8')

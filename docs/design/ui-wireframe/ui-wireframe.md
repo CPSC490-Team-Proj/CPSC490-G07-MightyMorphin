@@ -2,7 +2,7 @@
 
 Task: [#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41) · Status: draft for team review
 
-![UI wireframe overview](ui-wireframe.png)
+![UI wireframe overview](../ui-wireframe.png)
 
 The layouts illustrate desktop screens for authorized Edwards users. All names, records and property values are examples. Navigation and permissions are conceptual; the screens are static wireframes.
 
@@ -17,7 +17,7 @@ The layouts illustrate desktop screens for authorized Edwards users. All names, 
 | Navigation | Persistent navigation on every screen; overview panel 06 describes transitions |
 | Inputs, buttons, tables and feedback | Included across all primary screens, with invalid-file, failed-processing, unresolved-review and empty-search examples |
 | Use cases and functional requirements | Covers import/batch processing, extraction review, search/filter, properties, source documents and comparison; trends/ranges are view choices. Specification comparisons remain conditional on sponsor-supplied limits. |
-| Repository deliverable | `ui-wireframe.png` is prepared at the required path; files are included locally; committing and pushing remain separate steps. |
+| Repository deliverable | [Overview PNG](../ui-wireframe.png) is kept at the path specified by task #41. |
 
 ## Interaction rules
 
