@@ -8,7 +8,7 @@ Authors: Nguyen Nguyen (GwenNguyen2604), Christopher Pham (cpham2005),
 Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson 
 (liamw5265) Date: 〈2026-09-18〉
 
-## 0. Abstract
+## 0. Abstract 
 &emsp;At Edwards Lifesciences, material information is contained in documents such as Certificates of Conformance (CoCs) received from external vendors and material test reports generated internally. Although these documents contain information about materials and their mechanical properties, the data contained within them is not currently maintained in a centralized, structured database. When users need to analyze material data across different samples or requests, they must locate the relevant reports and manually extract the necessary information. This process makes retrieving and comparing historical material information time consuming and prone to user mistakes, particularly when information from many documents is required.<br><br>
 &emsp;The Online Materials Database project proposes a web application that converts information contained in these documents into structured and searchable material records. The proposed system will accept material documentation in PDF format, and extract relevant information such as material identification and mechanical properties. Extracted information will be verified where possible and stored in a relational database hosted using AWS services. The web application will provide authorized users with a centralized interface for accessing this information and searching or filtering records.<br><br>
 &emsp;Developing such a system presents challenges beyond simply storing and displaying documents. Test documents and CoCs generated across a long period of time spanning years, with CoCs being from multiple vendors, can have inconsistent document format. This requires the system to accommodate different methods of obtaining and interpreting their contents. The accuracy of extracted information is particularly important because incorrectly interpreted material properties could affect the reliability of the resulting database. Automating this process while supporting heterogeneous documents therefore requires consideration of document processing, information extraction and verification, database design, and usability. A successful system would reduce repeated manual extraction of historical material data and make information more readily available for retrieval and analysis.
@@ -17,7 +17,7 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 &emsp;This proposal describes the problems motivating the Online Materials Database, the project's goals and objectives, and the proposed technical approach for addressing them.<br><br>
 [#7](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=261452481&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C7)
 
-## 1. Introduction
+## 1. Introduction 
 &emsp;Engineering and manufacturing decisions rely heavily on accurate information for verifying material quality compliance, and performance. Important information such as vendor information, material properties and specifications is primarily recorded in the form of test reports and Certificates of Conformance (CoC). Although these documents are archived, the data itself is not stored in a structured format therefore you need to search for individual documents rather than querying a database.<br><br>
 &emsp;The current method of storing documents creates several problems, Engineers need to manually locate individual documents and manually search through them to find specific data points. Comparing information across vendors or material types requires manual reviewing of multiple documents. This process becomes significantly inefficient as the number of records increases.<br><br>
 &emsp;The goal of this project is to design and develop a centralized system for managing materials information contained in these CoC and test reports. The system focuses on extracting data from existing and future documents and stores them in a structured format. This data can be easily queried and analyzed to support better informed engineering decisions. The main problem that this project solves is the significant amount of manual data entry and searching required by the current process.<br><br>
@@ -40,7 +40,7 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 
 [#6](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=261446190&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C6)
 
-### 1.2 Problem Statements
+### 1.2 Problem Statements 
 - <b>P.1 Unstructured Material Data:</b> Data from CoCs and test documents are primarily stored as either scanned documents or PDFs, making information difficult to query, analyze, and reuse.
 - <b>P.2 Manual Data Extraction:</b> Extracting data from documents manually requires significant effort because there is no automated process for consistently extracting data from CoCs and testing documents.
 - <b>P.3 Inconsistent Document Formats:</b> CoCs and test data documents come from many different sources, the data is not all in the same structured format.  This makes repeated extractions of data difficult.
@@ -189,17 +189,16 @@ detailed in §4.
 [#52](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=278577328&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C52)
 
 ## 4. Required Environment, Resources, and Planned Activities
-
 The development of the Edwards Lifescience Materials Database requires various software technologies, development environment, and technical skills.  The table below outlines the planned resources and their purpose within the project
-| Category | Technology/Resource | Purpose |
-| --- | --- | --- |
-| Programming Language | Python | Backend development<br>Document extraction<br>Data processing |
-| Database Management System | TDB | Store extracted data |
-| Backend Framework | TBD | Handles application logic<br>Communication between components |
-| Frontend Framework | TBD | User interface |
-| Document Processing | TDB | Extract data from uploaded documents |
-| Development Environment | Visual Studio Code | Write, debug, and test code |
-| Version Control | Git and GitHub | Track sprint progress, tasks, and assignments |
+|Category|Technology/Resource|Purpose|
+|-----|-----|-----|
+|Programming Language|Python| - Backend development <br>- Document extraction <br>- Data processing|
+|Database Management System|TDB|Store extracted data|
+Backend Framework|TBD|- Handles application logic <br>- Communication between components|
+|Frontend Framework|TBD|User Interface|
+|Document Processing|TDB|Extract data from uploaded documents|
+|Development Environment|Visual Studio Code|Write, debug, test code|
+|Version Control|Git and Github|Track sprint progress, tasks, and assignments|
 
 
 ![Use Case Diagram](../docs/design/use-case.png)
