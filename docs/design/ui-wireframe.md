@@ -8,7 +8,7 @@ The layouts illustrate desktop screens for authorized Edwards users. All names, 
 
 ## Acceptance criteria coverage
 
-| Task #41 criterion | Coverage |
+| [Task #41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41) criterion | Coverage |
 |---|---|
 | Document upload | Screen 01: digital/scanned PDFs, batch selection, document type per file, vendor, processing action and feedback |
 | Review and validation | Screens 02–03: processing status, flagged/pending queue, source preview, editable extracted fields, correction note, approval and review history |
