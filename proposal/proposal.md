@@ -81,7 +81,7 @@ The Online Materials Database project aims to reduce the manual effort required 
 
   - Objective 1.4: Support extraction from multiple CoC and test-report layouts [[story:#15]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15)
 
-  - Objective 1.5: Objective 1.5: Verify and flag uncertain extraction results [[story:#16]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)
+  - Objective 1.5: Verify and flag uncertain extraction results [[story:#16]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)
 
 - **Goal 2: Centralized Material Data Storage and Management** [[epic:#17]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/17)
   The second goal is to provide centralized, structured storage for material information extracted from CoCs and test reports. Rather than requiring users to repeatedly retrieve individual PDF documents, extracted information will be converted into relational records that can be efficiently retrieved and reused by other components of the system.
@@ -189,16 +189,19 @@ detailed in §4.
 [#52](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=278577328&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C52)
 
 ## 4. Required Environment, Resources, and Planned Activities
-The development of the Edwards Lifescience Materials Database requires various software technologies, development environment, and technical skills.  The table below outlines the planned resources and their purpose within the project
+The development of the Edwards Lifescience Materials Database requires various software technologies, a development environment, and technical skills. The table below outlines the planned resources and their purpose within the project.
+
 |Category|Technology/Resource|Purpose|
 |-----|-----|-----|
 |Programming Language|Python| - Backend development <br>- Document extraction <br>- Data processing|
-|Database Management System|TDB|Store extracted data|
-Backend Framework|TBD|- Handles application logic <br>- Communication between components|
-|Frontend Framework|TBD|User Interface|
-|Document Processing|TDB|Extract data from uploaded documents|
+|Database Management System|PostgreSQL (Amazon RDS)|Store extracted data|
+|File Storage (PDFs)|Amazon S3|Store PDFs|
+|Backend Framework|FastAPI (Python)|- Handles application logic <br>- Communication between components|
+|UI/UX Design|Figma|Design wireframes and mockups of user interface [#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|
+|Frontend Framework|React/Vue|User interface (upload documents, view extracted data)|
+|Document Processing|Textract/Tesseract|Extract data from uploaded documents|
 |Development Environment|Visual Studio Code|Write, debug, test code|
-|Version Control|Git and Github|Track sprint progress, tasks, and assignments|
+|Version Control|Git and GitHub|Track sprint progress, tasks, and assignments|
 
 
 ![Use Case Diagram](../docs/design/use-case.png)
@@ -259,12 +262,13 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|Task|Task 0.1.4: Create Data Flow Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@cpham2005](https://github.com/cpham2005)|Sprint 2|
 |[#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|Task|Task 0.1.5: Create UI Wireframe|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 2|
 |[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|Task|Task 0.2.1: Complete Goal 1 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
-|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/85)|Task|Task 0.2.2: Complete Goal 2 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/58)|Task|Task 0.2.2: Complete Goal 2 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
 |[#59](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/59)|Task|Task 0.2.3: Complete Goal 3 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
-|[#63](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/63)|Bug|Cherry pick develop revision to main branch|[#1](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Spring 1|
-|[#47](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/47)|Task|Task: Define the tech stack and AWS services|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@cpham2005](https://github.com/cpham2005)|Spring 2|
-|[#43](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/43)|Task|Task: Project Intake Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@Kameo101](https://github.com/Kameo101)|Spring 3|
-|[#44](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/44)|Task|Task: Solution Architecture Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@cpham2005](https://github.com/cpham2005)|Spring 3|
+|[#67](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/67) | Task | Port typed issue-link fixes from develop into main and reconcile Section 2 | [#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4) | [@GwenNguyen2604](https://github.com/GwenNguyen2604) | Sprint 2 |
+|[#63](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/63)|Bug|Cherry pick develop revision to main branch|[#1](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 1|
+|[#47](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/47)|Task|Task: Define the tech stack and AWS services|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@cpham2005](https://github.com/cpham2005)|Sprint 2|
+|[#43](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/43)|Task|Task: Project Intake Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
+|[#44](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/44)|Task|Task: Solution Architecture Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@cpham2005](https://github.com/cpham2005)|Sprint 3|
 
 
 ## 5. Project Outcomes
@@ -293,7 +297,7 @@ not this semester's proposal work.** Identify the tasks (your objectives from
 be built. State the assumptions it rests on (sponsor availability, data
 access, hardware).〉
 
-| Task (objective) | Milestone | Owner | Est. hours | Spring phase |
+| Task (objective) | Milestone | Owner | Est. hours | Sprint phase |
 |---|---|---|---|---|
 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
