@@ -206,7 +206,7 @@ The development of the Edwards Lifescience Materials Database requires various s
 
 ![Use Case Diagram](../docs/design/use-case.png)
 
-*Figure 1. Use Case Diagram.* 
+*Figure 1. Use Case Diagram.*
 
 ![ER Diagram](../docs/design/er-diagram.png)
 
@@ -215,7 +215,7 @@ The development of the Edwards Lifescience Materials Database requires various s
 Key: Two bars = exactly one; bar and circle = zero or one; circle and fork = zero or many.
 For the Full Column and keys view: `docs/design/er-diagram.md`.
 
-![System Architecture]()
+![System architecture showing the user interface, backend API, extraction and analysis modules, organization SSO, the existing on-site PDF document system, and Snowflake materials database](../docs/design/system-architecture-diagram.png)
 
 *Figure 3. System Architecture Diagram.*
 
@@ -234,7 +234,7 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |----------|------|--------|--------|
 |[Use Case Diagram](../docs/design/use-case.md)|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
 |[ER Diagram](../docs/design/er-diagram.md)|Design|This defines the relational data model for the material data the system extracts and it verifies them as well, following the company requirements and to meet reliability. The way it works is it stores each uploaded CoC or test report, the material, lot and vendor it describes, and every mechanical property value with its unit and extraction confidence which then could be used to re-review the document to correct any mistakes. Each material record links to exactly one source document so any value can be traced back to its PDF (#20). To keep everything documented as well, every correction and approval is logged. Specification limits also support the out of spec and comparison use cases in the use case diagram, although the details may change upon receiving a test document from the company. The DBMS and the final list of properties are not decided yet; the full diagram with every column is in docs/design/er-diagram.md.|[[task:#38]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|
-|[System Architecture]()|Design|Maps out relationships between core components within the system|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
+|[System Architecture](../docs/design/system-architecture-diagram.md)|Design|Maps out relationships between core components within the system; exported image: [PNG](../docs/design/system-architecture-diagram.png)|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
 |[Data Flow Diagram](../docs/design/data-flow.md)|Design|Maps how information moves, transforms, and stored within the system. Diagram demonstrates how desired media is scanned, stored, and how data is scraped, reviewed, then stored.|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|
 |[UI Wireframes](../docs/design/ui-wireframe/ui-wireframe.md)|Design|Primary screen layouts and navigation for upload, review, stored records and analysis; [PNG](../docs/design/ui-wireframe.png) and [editable SVG](../docs/design/ui-wireframe/ui-wireframe.svg)|[#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|
 |[Goal 1 Specification Document](../docs/specs/data-extraction-spec.md)|Specification|Specification document for Goal 1: Automated Material Data Extraction and Verification|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|
@@ -259,6 +259,7 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |[#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36)|Task|Task 0.1.1: Create Use Case Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@liamw5265](https://github.com/liamw5265)|Sprint 2|
 |[[task:#38]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|Task|Task 0.1.2: Create ER Diagram|[[story:#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Kameo101](https://github.com/Kameo101)|Sprint 2|
 |[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|Task|Task 0.1.3: Create Systems Architecture Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 2|
+|[#77](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/77)|Bug|Architecture.png needs to be fixed|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|[@Kameo101](https://github.com/Kameo101)|Sprint 2|
 |[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|Task|Task 0.1.4: Create Data Flow Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@cpham2005](https://github.com/cpham2005)|Sprint 2|
 |[#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|Task|Task 0.1.5: Create UI Wireframe|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 2|
 |[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|Task|Task 0.2.1: Complete Goal 1 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
@@ -269,6 +270,8 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |[#47](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/47)|Task|Task: Define the tech stack and AWS services|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@cpham2005](https://github.com/cpham2005)|Sprint 2|
 |[#43](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/43)|Task|Task: Project Intake Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
 |[#44](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/44)|Task|Task: Solution Architecture Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@cpham2005](https://github.com/cpham2005)|Sprint 3|
+|[#78](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78)|Task|Reconcile technology stack across proposal, architecture and specifications|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|Unassigned|Sprint 3|
+|[#78](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78)|Feature|Feature: Reconcile technology stack across proposal, architecture and specifications|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
 
 
 ## 5. Project Outcomes
