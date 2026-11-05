@@ -271,6 +271,7 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |[#43](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/43)|Task|Task: Project Intake Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
 |[#44](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/44)|Task|Task: Solution Architecture Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@cpham2005](https://github.com/cpham2005)|Sprint 3|
 |[#78](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78)|Task|Reconcile technology stack across proposal, architecture and specifications|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|Unassigned|Sprint 3|
+|[#78](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78)|Feature|Feature: Reconcile technology stack across proposal, architecture and specifications|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
 
 
 ## 5. Project Outcomes
