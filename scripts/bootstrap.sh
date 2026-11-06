@@ -142,8 +142,8 @@ else
   # GraphQL rather than 'gh project list': the CLI's --owner flag needs the
   # read:org scope even for a personal account, and otherwise fails with
   # "unknown owner type".
-  OWNER_ID=$(gh api graphql -f query="{ user(login: \"$OWNER\") { id } }" -q .data.user.id 2>/dev/null)
-  EXISTING=$(gh api graphql -f query="{ user(login: \"$OWNER\") { projectsV2(first: 50) { nodes { id title url } } } }" 2>/dev/null)
+  OWNER_ID=$(gh api graphql -f query="{ organization(login: \"$OWNER\") { id } }" -q .data.organization.id 2>/dev/null)
+  EXISTING=$(gh api graphql -f query="{ organization(login: \"$OWNER\") { projectsV2(first: 50) { nodes { id title url } } } }" 2>/dev/null)
   PID=$(jq -r --arg t "$TITLE" '.data.user.projectsV2.nodes[]? | select(.title==$t) | .id' <<<"$EXISTING" | head -1)
   BOARD_URL=$(jq -r --arg t "$TITLE" '.data.user.projectsV2.nodes[]? | select(.title==$t) | .url' <<<"$EXISTING" | head -1)
 
