@@ -1,269 +1,278 @@
-# Project Proposal — 〈Project Title〉
+# Project Proposal — Online Material Database
 
 **Department of Computer Science**
 **CPSC 490 Undergraduate Seminar in Computer Science — Proposal for Capstone Project**
 
-**Group 〈N〉 — 〈Group Name〉** · Sponsor: 〈RTX-3 / EL-1 / SNX-n / independent〉
-Authors: 〈Last, First (GitHub username)〉, 〈…〉
-Date: 〈YYYY-MM-DD〉
+**Group 07 — Mighty Morphins** · Sponsor: EL-1
+Authors: Nguyen Nguyen (GwenNguyen2604), Christopher Pham (cpham2005), 
+Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson 
+(liamw5265) Date: 〈2026-09-18〉
 
-> **This file is the proposal document, not a README.** Its section numbers,
-> titles, and guidance are copied from the course Word template, so it
-> converts cleanly for Canvas submission. Write continuous academic prose —
-> no task lists, no emoji, no repo jargon.
->
-> Each section below opens with the template's own guidance in a quote block.
-> **Delete the quote blocks and every 〈bracket〉 before submitting.**
->
-> **Getting this into the Word template for Canvas.** The template numbers
-> its headings **automatically** (a multilevel list: top-level sections at
-> level 1, *Related Work* and *Problem Statements* at level 2). The numbers
-> typed below exist so the repo copy is readable and checkable — so when you
-> move the text into Word, do not end up with both sets.
->
-> The reliable route, and the one most teams should use: **open the course
-> template and paste your prose section by section**, leaving Word's own
-> numbering to do the numbering. Ten minutes, no surprises.
->
-> If you prefer to convert, `pandoc` can do it (install with
-> `winget install pandoc`):
->
->     pandoc proposal/proposal.md -o proposal.docx --reference-doc="CPSC 490 Project Proposal Template Fall 2026.docx"
->
-> Then in Word: delete the typed `0.` / `1.` / `1.1` prefixes (Word re-adds
-> them from the list), and set *Related Work* and *Problem Statements* to the
-> template's level-2 heading so they number as 1.1 and 1.2. Check figure
-> placement, then submit.
->
-> **Formatting requirements — the submitted Word document is graded against
-> these, explicitly:**
->
-> - **Cover page: use the template's cover page, unchanged in layout.** Fill
->   in only its fields — project title, group number and name, sponsor,
->   authors, date — and keep the template's own placement, fonts and spacing
->   for it. The header block at the top of this file carries the same fields
->   so the paste is a transcription, not a redesign.
-> - **Font: Times New Roman, 11-point.** Body text, headings and captions
->   take their size and style from the template's own styles — do not
->   restyle anything by hand.
-> - **Line spacing: 1.5.** **Margins: 1.0 inch** on all four sides.
-> - **Section format, numbering and indentation must match the Word template
->   exactly** — the multilevel-list numbering, heading levels, and paragraph
->   indentation are the template's, not yours. If your document's §1.1 looks
->   different from the template's §1.1, fix yours.
-> - **Length: the Final Project Proposal Paper (due Sun Dec 20) must exceed
->   50 pages** under exactly this formatting — font, spacing and margins are
->   fixed above precisely so page count means the same thing for every team.
->   The Preview paper (due Sun Nov 29) is the same document part-way; it has
->   no minimum, but it is graded on the same formatting.
->
-> A paste into the template inherits all of this automatically **if you paste
-> as text and let Word's styles apply** (Home → Paste → *Keep Text Only*, or
-> apply the template's styles after pasting). A pandoc conversion with
-> `--reference-doc` inherits it too — but verify font, spacing and margins
-> afterward rather than assuming.
->
-> Either way, keep this Markdown copy current — it is what peer review and CI
-> can actually read. If your team writes in Word instead, commit the `.docx`
-> here as well.
+## 0. Abstract 
+&emsp;At Edwards Lifesciences, material information is contained in documents such as Certificates of Conformance (CoCs) received from external vendors and material test reports generated internally. Although these documents contain information about materials and their mechanical properties, the data contained within them is not currently maintained in a centralized, structured database. When users need to analyze material data across different samples or requests, they must locate the relevant reports and manually extract the necessary information. This process makes retrieving and comparing historical material information time consuming and prone to user mistakes, particularly when information from many documents is required.<br><br>
+&emsp;The Online Materials Database project proposes a web application that converts information contained in these documents into structured and searchable material records. The proposed system will accept material documentation in PDF format, and extract relevant information such as material identification and mechanical properties. Extracted information will be verified where possible and stored in a relational database hosted using AWS services. The web application will provide authorized users with a centralized interface for accessing this information and searching or filtering records.<br><br>
+&emsp;Developing such a system presents challenges beyond simply storing and displaying documents. Test documents and CoCs generated across a long period of time spanning years, with CoCs being from multiple vendors, can have inconsistent document format. This requires the system to accommodate different methods of obtaining and interpreting their contents. The accuracy of extracted information is particularly important because incorrectly interpreted material properties could affect the reliability of the resulting database. Automating this process while supporting heterogeneous documents therefore requires consideration of document processing, information extraction and verification, database design, and usability. A successful system would reduce repeated manual extraction of historical material data and make information more readily available for retrieval and analysis.
+<br><br>
+&emsp;The primary goals of the project are to develop a data extraction workflow for supported CoCs and test reports, establish centralized relational storage for the resulting material information, provide mechanisms for verifying extracted information, and develop an internal web application through which users can access the database. The expected outcome is a functional system that transforms supported material documents into structured records and allows authorized users to search, filter, and view historical material information. The system is intended to provide a foundation that can be expanded as additional document formats, material attributes, and analysis requirements are identified.<br><br>
+&emsp;This proposal describes the problems motivating the Online Materials Database, the project's goals and objectives, and the proposed technical approach for addressing them.<br><br>
+[#7](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=261452481&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C7)
 
----
+## 1. Introduction 
+&emsp;Engineering and manufacturing decisions rely heavily on accurate information for verifying material quality compliance, and performance. Important information such as vendor information, material properties and specifications is primarily recorded in the form of test reports and Certificates of Conformance (CoC). Although these documents are archived, the data itself is not stored in a structured format therefore you need to search for individual documents rather than querying a database.<br><br>
+&emsp;The current method of storing documents creates several problems, Engineers need to manually locate individual documents and manually search through them to find specific data points. Comparing information across vendors or material types requires manual reviewing of multiple documents. This process becomes significantly inefficient as the number of records increases.<br><br>
+&emsp;The goal of this project is to design and develop a centralized system for managing materials information contained in these CoC and test reports. The system focuses on extracting data from existing and future documents and stores them in a structured format. This data can be easily queried and analyzed to support better informed engineering decisions. The main problem that this project solves is the significant amount of manual data entry and searching required by the current process.<br><br>
+&emsp;This project differs from a traditional document-management system like Dropbox or a cloud file server, because the primary focus is not simply storing documents. Instead, relevant data is extracted from the documents and stored in a structured database. The system also maintains references between the structured data and the original documents, allowing engineers to access the original PDF file whenever for further review..
 
-## 0. Abstract
-
-> The primary purpose of abstract is to help the reader understand the main
-> message of current document (proposal in this case) without reading the
-> entire document. Therefore an abstract should include at least one or two
-> paragraph of background (or motivation) information for the project, a
-> brief description of the problem you are trying to solve in this proposal,
-> a proposed ideas or solutions, the significance of your proposed idea
-> elaborating why the proposed idea is non-trivial, significant, or
-> beneficial in one or two paragraphs, the project goals and outcomes in one
-> paragraph, and a brief description of what you will discuss in this
-> proposal, giving a brief outline of this document in 1-2 sentences in one
-> paragraph. Abstract should not exceed one page. Any abstract exceeded
-> one-page limit must be shortened.
-
-〈Your abstract. Write it last.〉
-
-## 1. Introduction
-
-> Describe the necessary background on the project field to help the reader
-> understand the field. Assume the reader has B.S. degree in computer science
-> but not necessary knowledgeable in the selected area. You may also briefly
-> describe motivation of the project if any.
->
-> Specify the problem identified and to be solved in this project, the
-> importance or usefulness of the problem solving or project. Further
-> describes what makes your proposal different from existing ones.
-
-〈Your introduction.〉
 
 ### 1.1 Related Work
-
-> Describe the related or existing work in detail. This section is like a
-> survey on the selected problem or topic.
-
-〈Your survey. Cite with bracketed numbers matching §8 — every reference must
-be a source your team has actually read.〉
-
-**Do a comparative analysis, not a list of summaries.** Find the existing
-ideas, products, papers, or tools that attack the same problem and compare
-them against each other on the dimensions that matter for your project, with
-honest pros and cons. Then say plainly what your project does differently and
-why that difference is worth the effort.
+&emsp;Several existing technologies address parts of the problem involved with extracting and managing information from material documents. Google Cloud Document AI and Microsoft Azure Document Intelligence provide tools for extracting information from documents, while Ansys Granta ML focuses specifically on storing and managing materials data. Altho these systems function similarly to the proposed software, our approach to the problem is a more specific solution while the other softwares are more general.<br><br>
+&emsp;<b>Google Cloud Document AI</b> provides document-processing tools that can extract text, key-value pairs, tables, and other structured information from PDF files and images[1]. Its Form Parser is designed to recognize information from structured documents requiring a custom model to be trained[4]. Google also provided custom extractors that allow users to define a schema containing the information they want to extract. The make Cloud Document AI useful when documents contain similar information but use different layouts. However, Cloud Document AI only provides a solution for the data extraction problem, the extracted data still needs to be stored somewhere. An additional application would still be needed to store this data after it is extracted.<br><br>
+&emsp;<b>Microsoft Azure Document Intelligence</b> provides similar document-processing capabilities. It combines Optical Character Recognition (OCR) and document-analysis models to extract text, tables, key-values pairs, and document structure[2]. Microsoft also supports custom document extractions, making this service useful when extracting data from documents that have different layouts. Similar to Google Cloud Document AI these softwares are general purpose document processing softwares, the data extracted still needs to be stored somewhere.<br><br>
+&emsp;<b>Ansys Granta MI</b> provides a solution to the storing of the data problem rather than data extraction. Granta MI is designed to create, store, manage, search, compare, and analyze material information[3]. It can combine an organization's material information with the built-in materials information and integrate the information with softwares like CAD or DAE. Granta MI is a solution to the materials database and analysis tool but it lacks the function of extracting information. A major feature of the proposed software is that it can extract data from different formatted documents but Granta MI can't do that.<br><br>
+&emsp;<b>Shape Memory Materials Database</b> provides a reliable and accessible location for storing and displaying data on materials. The information pertains to the shape memory of the metals in the form of a chart. By utilizing a charting illustration researchers can compare the material's extremes to find the prime material for specific situations. Using the element table there are several selections to choose from and provides a simple choice board that researchers know and use. There is also a search filter to differentiate the data that is used to create the so the users know the data is reliable.<br><br>
 
 | Existing approach | What it does | Pros | Cons | Why ours differs |
 |---|---|---|---|---|
-| 〈product / paper [1]〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
-| 〈product / paper [2]〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
-| 〈product / paper [3]〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
+| Google Cloud Document AI / paper [1] | Extracts text, key-value pairs, tables, and structured fields from PDFs and images | Handles scanned and digital documants supports custom extraction schemas and differering document layouts | Primarly solves document extraction, a separate materials database, validations system, and user interface are key requirments | The proposed project integrates document extraction with data validation, storage, searching, and analysis |
+| Microsoft Azure Document Intelligence / paper [2] | Uses OCR and document-analysis models to extract text, tables, structures and kay-value pairs. | Supports structured, semi-semi structred, and unstructured docuemnts.  Provides pretrained and customizable extraction capabilities | Primarly solves document extraction, a separate materials database, validations system, and user interface are key requirments| Our system is designed around specific feilds and workflows found in material CoCs and test repots. |
+| Ansys Grnta MI / paper [3] | Centralized materials spec database, provides tools for searching, comparing, and analysis.  Allows for intrgration with custome materials inforamtion | Designed specifically for materials information.  Supports analysis and intrgration with Other softwares such as CAD and CAE | Focuses primaly on materials data management rahter than data extration. | The proposed project connects data extration with data storage for data analysis |
+| Shape Memory Materials Database / product [4] | This product outputs data and structures the chart to reprsent the data on shape memory alloys | The chart proivided can compare two major attributes (temperature and structure) to find best materials for two extremes | The program is not open to providing your own data; and its all public information | The product we want to create allows for implementation of Edward's own unique documenation and data collection; which is privately accessible to Edwards affiliates |
 
-〈Discuss the table in prose — the table is evidence, the paragraph is the
-argument. "Nothing like this exists" is almost never true and reads as a
-missing survey; if a close competitor exists, say so and explain why you are
-still building this.〉
+[#6](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=261446190&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C6)
 
-### 1.2 Problem Statements
-
-> Briefly state the problem to solve in this project.
-
-〈Your problem statement(s), **concise** — a few sentences each, no
-background (that was §1) and no solution (that is §3). Number them P1, P2, …
-so later sections can refer back.〉
-
-**Every problem here must connect to the goals and objectives in §2, and
-every goal in §2 must trace back to a problem here.** A goal with no problem
-behind it is scope you invented; a problem with no goal is a problem you are
-not actually solving. Check both directions before you submit — this mapping
-is what the final project report is graded against.
+### 1.2 Problem Statements 
+- <b>P.1 Unstructured Material Data:</b> Data from CoCs and test documents are primarily stored as either scanned documents or PDFs, making information difficult to query, analyze, and reuse.
+- <b>P.2 Manual Data Extraction:</b> Extracting data from documents manually requires significant effort because there is no automated process for consistently extracting data from CoCs and testing documents.
+- <b>P.3 Inconsistent Document Formats:</b> CoCs and test data documents come from many different sources, the data is not all in the same structured format.  This makes repeated extractions of data difficult.
+- <b>P.4 Lack of Centralized Data Access:</b> There is no centralized materials repository that allows users to efficiently query historical records.  This causes overhead if users need to look to multiple sources for this data. 
+- <b>P.5 Limited Material Data Analysis:</b> Data is stored in scanned documents and PDFs rather than in a structured format.  Progress is negatively affected as users cannot efficiently query, analyze, and visualize historical data for engineering decisions.
 
 | Problem | Addressed by |
 |---|---|
-| P1 〈one line〉 | 〈Goal 1 (#n)〉 |
-| P2 〈one line〉 | 〈Goal 2 (#n)〉 |
+| P1 Unstructured Material Data | Scanning and scraping the data from the PDFs and storing that data into a cloud database and implementing that data into a GUI that illustrates patterns in the material as well as allows users to filter search query |
+| P2 Manual Data Extraction | Automated scanning programming that allows users to drag and drop file to extract metadata into database |
+| P3 Inconsistent Document Formats | Take into account that there are several formats of data and forms we would first need to identify form types and keywords to extract necessary data |
+| P4 Lack of Centralized Data Access | During GUI creation we will implement search filters for materials, dates, providers, and more upon stakeholder request |
+| P5 Limited Material Data Analysis | Creation of this program will allow reliably and efficient work flow with centralized and organized data. Users will be able to look up material data, compare them in specific situations, and filter searches for relevant material |
+
+[#5](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=261443686&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C5)
 
 ## 2. Goals and Objectives
+The Online Materials Database project aims to reduce the manual effort required to retrieve and analyze material information from Certificates of Conformance (CoCs) and material test reports. The project will accomplish this by developing an automated document-processing pipeline, establishing centralized structured storage for extracted material information, and providing an internal web application through which authorized users can access and analyze the collected data. The following goals and objectives define the primary capabilities to be developed and provide measurable criteria for evaluating the completed system. <br><br>
 
-> Describe goals and objectives. Goals are general statements of what you are
-> trying to accomplish with the project or problems to solve. Objectives are
-> specific, measurable statements of what you want to complete to reach the
-> project goals. Most projects have 2-3 goals.
->
-> List the objectives for each goal. To write objectives, look at the goal
-> statement and list what you need to complete using action words like use
-> case names in order to meet the goal.
->
-> Note that the goals and objectives in a proposal will be an important
-> metric to evaluate whether or not you successfully finished your project
-> when you turn in your final project report.
+- **Goal: Edward Lifescience project Objectives** [[epic:#1]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)
 
-Each **goal** is tracked as an **Epic** issue and each **objective** as a
-**User Story** issue in the team repository (see the setup guide's *Epics and user stories* section).
-**Every epic and user story in the repository is linked from this section** —
-CI gate G8 fails if one exists that this section does not link. That is what
-keeps the goals in this document and the work on the board from drifting
-apart.
+- **Goal: Edwards Lifescience Project Forms** [[epic:#45]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/45)
 
-Write each objective the way the guidance above asks — **an action word plus
-the measure that says it is done**, not a role-play sentence:
+- **Goal: Rough draft Proposal.md** [[epic:#4]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)
 
-- **Goal 1: 〈e.g. Secure account management〉** (Epic #〈n〉)
-  - Objective 1.1: 〈Implement member registration and login with hashed
-    credentials, session expiry, and rejection of malformed input.〉 (#〈n〉)
-  - Objective 1.2: 〈Demonstrate the login round-trip in a runnable prototype
-    at the Week-8 in-class check.〉 (#〈n〉)
-- **Goal 2: 〈your second goal〉** (Epic #〈n〉)
-  - Objective 2.1: 〈Action word + what you will complete + how it will be
-    measured〉 (#〈n〉)
+- **Goal 0: Design and Specification Documents** [[epic:#42]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)
+  - Objective 0.1: Design and Architecture [[story:#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)
+  - Objective 0.2: Epic Specification Documents [[story:#49]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)
 
-〈Replace the brackets with your own 2–3 goals and their objectives, and put
-the **real issue numbers** in as you file them — gate G8 checks that every
-epic and story in your repository is linked from this section. A fully worked
-version of this, with live issues and a populated board, is in the course
-example repository.〉
+- **Goal 1: Automated Material Data Extraction and Verification** [[epic:#11]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/11)
+  The first goal is to automate the process of converting material information contained in PDF documents into structured data suitable for storage and analysis. This goal addresses the current dependence on manual data extraction as well as the challenges created by scanned documents and inconsistent document formats.
+
+  - Objective 1.1: Implement PDF document ingestion for supported CoCs and material test reports [[story:#12]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12)
+
+  - Objective 1.2: Extract material and mechanical-property data from digital PDFs [[story:#13]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/13)
+
+  - Objective 1.3: Extract material data from scanned PDF documents using OCR [[story:#14]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14)
+
+  - Objective 1.4: Support extraction from multiple CoC and test-report layouts [[story:#15]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15)
+
+  - Objective 1.5: Verify and flag uncertain extraction results [[story:#16]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)
+
+- **Goal 2: Centralized Material Data Storage and Management** [[epic:#17]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/17)
+  The second goal is to provide centralized, structured storage for material information extracted from CoCs and test reports. Rather than requiring users to repeatedly retrieve individual PDF documents, extracted information will be converted into relational records that can be efficiently retrieved and reused by other components of the system.
+
+  - Objective 2.1: Design and implement the relational materials data model [[story:#18]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18)
+
+  - Objective 2.2: Store material information in an AWS-hosted relational database [[story:#19]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)
+
+  - Objective 2.3: Maintain traceability between material records and source documents [[story:#20]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20)
+
+  - Objective 2.4: Implement application-level material record operations [[story:#21]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21)
+
+- **Goal 3: Material Data Access and Analysis** [[epic:#22]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/22)
+  The third goal is to provide authorized Edwards Lifesciences users with an internal web application for accessing material information stored by the system. The application will reduce the need to manually locate and review individual reports when searching for historical material information and will provide a foundation for comparing information across multiple records.
+
+  - Objective 3.1: Develop an internal web application for authorized users [[story:#23]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/23)
+
+  - Objective 3.2: Implement material and vendor search and filtering [[story:#24]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24)
+
+  - Objective 3.3: Distinguish CoC data from internal test-report data [[story:#25]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/25)
+
+  - Objective 3.4: Display material properties and source information [[story:#26]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/26)
+
+  - Objective 3.5: Compare material-property data across stored records [[story:#27]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27)
+  
 
 ## 3. Proposed Approaches
 
-> Describe your proposed approach to solve the problem, specifying how you
-> will achieve the stated goals. List some possible strategies.
+The proposed system replaces manual lookup of Certificates of Conformance(COC) and
+test reports. This uses a pipeline that is made of four stages: document ingestion,
+data extraction, verification, and structured storage with web access. Each
+stage addresses one or more of the problems that were identified in §1.2.
 
-〈Your approach — **clear and concise**. State the strategy you chose, the
-alternatives you considered, and the reasoning that decided between them.
-Think of this as the argument, not the manual: a reader should finish this
-section understanding *what* you will do and *why that* rather than the
-alternatives.〉
+**Digital and scanned documents.** All of the incoming PDFs fall into two categories which are:
 
-**Keep the details out of this section.** Tooling, platforms, frameworks,
-DBMS choices, environment setup, diagrams, and the work breakdown all belong
-in §4 (Required Environment, Resources, and Planned Activities). If a
-sentence here names a version number, a library, or a configuration, it
-probably belongs in §4 — leave a pointer instead ("the implementation stack
-is detailed in §4").
+- Documents generated digitally, which contain an embedded text layer
 
-〈A few paragraphs, or a short list of candidate strategies with one line of
-trade-off each. If it runs past a page, you are writing §4.〉
+- Scanned documents, which are images of paper forms.
+
+The system will detect
+which category a document belongs to on upload and route it accordingly.
+Digital documents will have their text and tables read directly, which is
+fast and using this method also avoids recognition errors that scanned documents may have. These Scanned documents will first be cleaned
+up (straightened and contrast adjusted as well as other methods) and then passed through optical
+character recognition before entering the same extraction step. Using two
+paths rather than applying OCR to every document keeps accuracy high for the
+majority of documents while still supporting older scanned records that may need to be added.
+
+**Handling different document formats.** Because CoCs and test reports come
+from many vendors, the same information appears in different positions and
+under different labels. To solve this the system will first identify the type and source of
+each document, then apply a field mapping for that format, falling back on
+label based matching for layouts it has not seen before. All
+results are normalized into a single common record with consistent field
+names and units, regardless of the source format. New vendor formats can then
+be supported by adding a mapping rather than changing the extraction logic. This approach may change once the team has actual test documents to reference, since some formats may already be standardized, but those documents are not yet in the team's possession.
+
+**Verifying extracted data.** Automated extraction will not be correct every
+time. To make sure no error chance is overlooked, the program will ensure no extracted value is treated as trustworthy by default. Each result
+will be checked for missing required fields, incorrect data types or units,
+values outside plausible ranges, and low recognition confidence.
+Records that fail any check are flagged for review. A user can then compare the
+extracted values against the original document, correct them, and approve the
+record. Only approved records are stored as verified material data, and
+each correction and approval is logged, which should minimize any and all errors the program could possibly produce.
+
+**Storage and access.** Verified data will be stored in a relational database
+that models materials, mechanical properties, documents, vendors, and lots as
+related records. A relational design suits this data because it is highly
+structured and repetitive, and because users need to filter and compare
+values across many records. Every record keeps a reference to the original
+PDF so that users can always trace a value back to its source and verify if highly sensitive data is included. Authorized
+Edwards users will access the system through an internal web application
+that supports document upload, the review queue, search and filtering by
+material and vendor, and side by side comparison of material properties. A
+web application was chosen because it requires no installation, centralizes
+access control, and gives every user the same source of truth.
+
+**Alternatives considered.** Four alternatives were considered. First,
+general purpose cloud document extraction services [1][2] extract text and
+fields well but provide no materials database, verification workflow, or
+user interface, so most of the system would still need to be built. Second,
+a dedicated materials data platform [3] offers strong storage and analysis
+but no extraction, which leaves manual data entry (P.2) unsolved. Third,
+keeping the current manual process costs nothing but addresses none of the
+stated problems. Fourth, the sponsor's existing cloud data platform (Snowflake), which
+includes AI-based document processing, could handle document ingestion
+directly. This option is attractive because the sponsor already uses and
+supports the platform, the data would stay within the sponsor's environment,
+and the team would only need to build the code that verifies the ingested
+results. However, the team has not yet confirmed how well the platform
+handles scanned documents and varied vendor formats, and the option depends
+on the sponsor's platform access and setup. This option is still under
+evaluation with the sponsor, and a final decision will be made in
+sprint 3. The team therefore proposes an integrated pipeline
+that connects extraction, verification, storage, and analysis and is
+tailored to the fields found in CoCs and test reports. The ingestion step
+will either be built by the team or handled by the sponsor's platform,
+depending on the outcome of that evaluation; the verification, storage, and
+web application components are required in either case.
+
+The implementation stack, hosting environment, and design diagrams are
+detailed in §4.
+
+[#52](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/2?pane=issue&itemId=278577328&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C52)
 
 ## 4. Required Environment, Resources, and Planned Activities
+The development of the Edwards Lifescience Materials Database requires various software technologies, a development environment, and technical skills. The table below outlines the planned resources and their purpose within the project.
 
-> Review the required and available resources and environment to complete
-> your project. For example, server, platform, software tools, operating
-> systems, DBMS, or any required skills.
->
-> Describe the expected activities to achieve the stated goals, e.g.,
-> software development process.
+|Category|Technology/Resource|Purpose|
+|-----|-----|-----|
+|Programming Language|Python| - Backend development <br>- Document extraction <br>- Data processing|
+|Database Management System|PostgreSQL (Amazon RDS)|Store extracted data|
+|File Storage (PDFs)|Amazon S3|Store PDFs|
+|Backend Framework|FastAPI (Python)|- Handles application logic <br>- Communication between components|
+|UI/UX Design|Figma|Design wireframes and mockups of user interface [#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|
+|Frontend Framework|React/Vue|User interface (upload documents, view extracted data)|
+|Document Processing|Textract/Tesseract|Extract data from uploaded documents|
+|Development Environment|Visual Studio Code|Write, debug, test code|
+|Version Control|Git and GitHub|Track sprint progress, tasks, and assignments|
 
-〈Your environment, resources, and planned activities.〉
 
-**Diagrams belong in this section.** Include at minimum a high-level
-architecture diagram and a system (context) diagram; add the ER/EER model and
-a data-flow diagram where they help the reader understand what you are
-building and what it depends on. Draw them with any graphical tool
-(Lucidchart, draw.io, Miro, Mermaid, ERDPlus, Figma), keep the authoritative
-copies in `docs/design/` with both editable source and exported image, and
-reference them here.
+![Use Case Diagram](../docs/design/use-case.png)
 
-〈Number every figure, caption it, and point at it from the prose — "Figure 1
-shows the three deployment tiers and the trust boundary between them." A
-figure the text never mentions is decoration. See `docs/design/DIAGRAMS.md`
-for tools, conventions, and the rule that every box and arrow must be
-verified against reality.〉
+*Figure 1. Use Case Diagram.*
+
+![ER Diagram](../docs/design/er-diagram.png)
+
+*Figure 2. ER Diagram.*
+
+Key: Two bars = exactly one; bar and circle = zero or one; circle and fork = zero or many.
+For the Full Column and keys view: `docs/design/er-diagram.md`.
+
+![System architecture showing the user interface, backend API, extraction and analysis modules, organization SSO, the existing on-site PDF document system, and Snowflake materials database](../docs/design/system-architecture-diagram.png)
+
+*Figure 3. System Architecture Diagram.*
+
+![Data Flow Diagram](../docs/design/data-flow.png)
+
+*Figure 4. Data Flow Diagram.*
+
+Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = process
+
+![UI wireframes showing document upload, review, validation, material records and analysis](../docs/design/ui-wireframe.png)
+
+*Figure 5. UI Wireframes. Screen navigation and interaction notes are included in the overview.*
 
 ### Specification and design documents
-
-**Every specification and design document the team writes is listed here**
-with the objective it serves. This section is the index of the project's
-technical detail: §3 holds the argument, §4 holds the documents that make it
-buildable. CI gate G9 fails if a document exists in `docs/specs/` or
-`docs/design/` that this section does not link.
-
 | Document | Kind | Covers | Issues |
-|---|---|---|---|
-| 〈docs/specs/account-management.md〉 | specification | 〈account management requirements〉 | 〈#n, #n〉 |
-| 〈docs/design/architecture.md〉 | design | 〈system architecture + data model〉 | 〈#n〉 |
-
-〈The scaffold ships `docs/specs/example-spec.md` and
-`docs/design/example-design.md` as worked examples — read them, then delete
-them once you have your own, and list yours here.〉
-
-〈Replace these rows with your own. Each document names its epic and stories
-in its own first lines too (gate G2), so the trail runs both ways.〉
-
+|----------|------|--------|--------|
+|[Use Case Diagram](../docs/design/use-case.md)|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
+|[ER Diagram](../docs/design/er-diagram.md)|Design|This defines the relational data model for the material data the system extracts and it verifies them as well, following the company requirements and to meet reliability. The way it works is it stores each uploaded CoC or test report, the material, lot and vendor it describes, and every mechanical property value with its unit and extraction confidence which then could be used to re-review the document to correct any mistakes. Each material record links to exactly one source document so any value can be traced back to its PDF (#20). To keep everything documented as well, every correction and approval is logged. Specification limits also support the out of spec and comparison use cases in the use case diagram, although the details may change upon receiving a test document from the company. The DBMS and the final list of properties are not decided yet; the full diagram with every column is in docs/design/er-diagram.md.|[[task:#38]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|
+|[System Architecture](../docs/design/system-architecture-diagram.md)|Design|Maps out relationships between core components within the system; exported image: [PNG](../docs/design/system-architecture-diagram.png)|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
+|[Data Flow Diagram](../docs/design/data-flow.md)|Design|Maps how information moves, transforms, and stored within the system. Diagram demonstrates how desired media is scanned, stored, and how data is scraped, reviewed, then stored.|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|
+|[UI Wireframes](../docs/design/ui-wireframe/ui-wireframe.md)|Design|Primary screen layouts and navigation for upload, review, stored records and analysis; [PNG](../docs/design/ui-wireframe.png) and [editable SVG](../docs/design/ui-wireframe/ui-wireframe.svg)|[#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|
+|[Goal 1 Specification Document](../docs/specs/data-extraction-spec.md)|Specification|Specification document for Goal 1: Automated Material Data Extraction and Verification|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|
+|[Goal 2 Specification Document]()|Specification|Specification document for Goal 2: Centralized Material Data Storage and Management|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/58)|
+|[Goal 3 Specification Document]()|Specification|Specification document for Goal 3: Material Data Access and Analysis|[#59](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/59)|
 ### Planned activities — the work items
-
-The goals and objectives live in §2 as epics and user stories. **This section
-links every *other* work item: features, enhancements, bugs, tasks, and
-sub-tasks** — the concrete activities that deliver those objectives. CI gate
-G8 fails if such an issue exists that this section does not link.
 
 | Issue | Type | Activity | Parent | Owner | Sprint |
 |---|---|---|---|---|---|
-| 〈#n〉 | 〈task〉 | 〈stand up the prototype login endpoint〉 | 〈#story〉 | 〈owner〉 | 〈Sprint 1〉 |
-| 〈#n〉 | 〈feature/enhancement/bug/task/sub-task〉 | 〈…〉 | 〈#story〉 | 〈…〉 | 〈…〉 |
+|[#5](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/5)|Task|Draft §1 Introduction Problem Statements|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Kameo101](https://github.com/Kameo101)<br>[@cpham2005](https://github.com/cpham2005)|Sprint 1|
+|[#6](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/6)|Task|Draft §1 Introduction background|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@liamw5265](https://github.com/liamw5265)|Sprint 1|
+|[#7](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/7)|Task|Draft §0 Abstract|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)<br>[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
+|[#37](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/37)|Task|Draft §2 Goals and Objectives|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 1|
+|[#52](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/52)|Task|Complete Section 3: Proposed Approaches|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Kameo101](https://github.com/Kameo101)|Sprint 1|
+|[#53](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/53)|Task|Complete Section 4: Required Environment, Resources, and Planned Activities|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@liamw5265](https://github.com/liamw5265)|Sprint 1|
+|[#29](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/29)|Task|Sync develop with main|[#1](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)|[@Kameo101](https://github.com/Kameo101)|Sprint 1|
+|[#54](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/54)|Task|Synchronize Section 2 Goals and Objectives with GitHub issues|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@cpham2005](https://github.com/cpham2005)|Sprint 1|
+|[#34](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/34)|Task|Add hyperlinks and credits to Proposal.md|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Kameo101](https://github.com/Kameo101)<br>[@cpham2005](https://github.com/cpham2005)<br>[@Bhavesh1024](https://github.com/Bhavesh1024)<br>[@liamw5265](https://github.com/liamw5265)|Sprint 1|
+|[#51](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/51)|Task|Fix typed hyperlink references in proposal.md|[#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4)|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
+|[#57](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/57)|Task|Update README.md with Project Information and Sprint Board||[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 1|
+|[#55](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/55)|Task|Complete Sprint 1 Review||[@cpham2005](https://github.com/cpham2005)|Sprint 1|
+|[#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36)|Task|Task 0.1.1: Create Use Case Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@liamw5265](https://github.com/liamw5265)|Sprint 2|
+|[[task:#38]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|Task|Task 0.1.2: Create ER Diagram|[[story:#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Kameo101](https://github.com/Kameo101)|Sprint 2|
+|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|Task|Task 0.1.3: Create Systems Architecture Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 2|
+|[#77](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/77)|Bug|Architecture.png needs to be fixed|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|[@Kameo101](https://github.com/Kameo101)|Sprint 2|
+|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|Task|Task 0.1.4: Create Data Flow Diagram|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@cpham2005](https://github.com/cpham2005)|Sprint 2|
+|[#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|Task|Task 0.1.5: Create UI Wireframe|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 2|
+|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|Task|Task 0.2.1: Complete Goal 1 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/58)|Task|Task 0.2.2: Complete Goal 2 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#59](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/59)|Task|Task 0.2.3: Complete Goal 3 Spec Document|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@]()|Sprint 2|
+|[#67](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/67) | Task | Port typed issue-link fixes from develop into main and reconcile Section 2 | [#4](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4) | [@GwenNguyen2604](https://github.com/GwenNguyen2604) | Sprint 2 |
+|[#63](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/63)|Bug|Cherry pick develop revision to main branch|[#1](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/1)|[@GwenNguyen2604](https://github.com/GwenNguyen2604)|Sprint 1|
+|[#47](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/47)|Task|Task: Define the tech stack and AWS services|[#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)|[@cpham2005](https://github.com/cpham2005)|Sprint 2|
+|[#43](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/43)|Task|Task: Project Intake Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
+|[#44](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/44)|Task|Task: Solution Architecture Form|[#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)|[@cpham2005](https://github.com/cpham2005)|Sprint 3|
+|[#78](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78)|Task|Reconcile technology stack across proposal, architecture and specifications|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|Unassigned|Sprint 3|
+|[#78](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78)|Feature|Feature: Reconcile technology stack across proposal, architecture and specifications|[#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
 
-〈Replace these rows with your own, and keep the table current as you file new
-issues — with §2 it gives a reader every planned activity in one place, each
-traceable to the objective it serves.〉
 
 ## 5. Project Outcomes
 
@@ -291,7 +300,7 @@ not this semester's proposal work.** Identify the tasks (your objectives from
 be built. State the assumptions it rests on (sponsor availability, data
 access, hardware).〉
 
-| Task (objective) | Milestone | Owner | Est. hours | Spring phase |
+| Task (objective) | Milestone | Owner | Est. hours | Sprint phase |
 |---|---|---|---|---|
 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
@@ -317,14 +326,12 @@ what fraction of each artifact was AI-assisted, and how you verified it.〉
 
 ## 8. References
 
-> [1] Burges, C. J. C. Tutorial on Support Vector Machines for Pattern
-> Recognition. Kluwer Academic Publishers, 1998.
-> [2] Chen, P., Fan, R., and Lin, C. A study on SMO-type decomposition
-> methods for support vector machines. IEEE Transactions on Neural Networks,
-> 2006.
-> [3] For Wikipedia, specify the URL here
-> [4] For a web source, specify the URL here plus date accessed
-
-〈Number references in the order first cited and cite them in the text as
-[1], [2]. Every entry must be a source a team member has actually read and
-can produce on request.〉
+[1] Google Cloud Document AI Documentation.
+    <https://docs.cloud.google.com/document-ai/docs/overview?hl=en>. [Accessed: Oct. 3, 2026].<br><br>
+[2] Microsoft, "General Document Model," Azure AI Document
+    Intelligence Documentation.<https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/prebuilt/general-document?view=doc-intel-4.0.0&utm_source=chatgpt.com>.
+    [Accessed: Oct. 3, 2026].<br><br>
+[3] Ansys, "Granta MI Pro," Ansys Materials.
+    <https://ansys.synopsys.com/products/materials/granta-mi>. [Accessed: Oct. 3, 2026].<br><br>
+[4] Google Cloud "Form Parser" Document AI Documentation.
+  <https://docs.cloud.google.com/document-ai/docs/processors-list?hl=en#processor_form-parser>. [Accessed: Oct. 3, 2026].<br><br>
