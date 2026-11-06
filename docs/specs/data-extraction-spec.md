@@ -7,16 +7,15 @@ Owner: Liam Wilson · Sprint: 2 · Status: draft
 
 **In scope.** PDF ingestion, digital PDF text extraction, scanned PDF OCR, extraction across multiple document layouts, structured data output, validation of extracted information, and flagging uncertain or invalid results for review.
 
-**Out of scope** Non-PDF formats, storing structured data, material data analysis, automated invalid data corrections, store documents after ingestion
+**Out of scope** Non-PDF formats, storing structured data, material data analysis, automated invalid data corrections, store documents after ingestion.
 
 ## Functional requirements
 | ID | Requirement | Story |
 |---|---|---|
 | FR-1| When a user uploads a supported PDF document the system shall accept the document for automated ingestion | [#12](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12) |
-| FR-2 | When a user uploads a PDF document the system shall maintain a reference to the original source PDF document| [#12](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12) |
-| FR-3 | When a user uploads a scanned images the system shall apply OCR to convert and extract data into a structured searchable format| [#14](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14)|
-| FR-4 | When a user uploads an unsupported PDF document the system shall flag the document as an unsupported document and reject the document from the automated pipeline | [#15](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15) |
-| FR-5 | When data extraction job fails the system shall flag the invalid field for additional review | [#16](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16) |
+| FR-2 | When a user uploads a scanned images the system shall apply OCR to convert and extract data into a structured searchable format| [#14](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14)|
+| FR-3 | When a user uploads an unsupported PDF document the system shall flag the document as an unsupported document and reject the document from the automated pipeline | [#15](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15) |
+| FR-4 | When data extraction job fails the system shall flag the invalid field for additional review | [#16](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16) |
 
 
 ## Non-functional requirements
