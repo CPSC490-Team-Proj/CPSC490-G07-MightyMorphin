@@ -47,7 +47,8 @@ This is what the sprint's 5% is assessed on. Be concrete and link things.
 
 | Story | Owner | Why not finished | Decision |
 |---|---|---|---|
-| n/a | n/a | n/a | n/a |
+| [[#49]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49) | @liam5265 | Goal 2 and Goal 3 Spec Document needed completion, only half the objective was met | moved to sprint 3 and as of now is completed |
+| [[#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48) | @liam5265 | UI Wireframe diagram was incomplete (as of now is compeleted), was also moved for editing and revision | moved to sprint 3 for optimization |
 
 ## Loop health (docs/aidlc/loop-engineering.md §8)
 
