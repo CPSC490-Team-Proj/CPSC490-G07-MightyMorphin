@@ -22,13 +22,15 @@ The layouts illustrate desktop screens for authorized Edwards users. All names, 
 ## Interaction rules
 
 - Upload accepts PDFs; the user can override document type for each selected file. Vendor is optional and may be refined during review.
-- Failed documents can be retried or replaced. Pending and flagged records remain separate from approved analysis data.
+- Failed documents can be retried or replaced. Document statuses are Uploaded, Processing, Failed, Unsupported and Done; review statuses are Pending, Flagged and Approved. Extracted values are stored only after approval; until then the document stays in the review queue and the uploader is notified.
 - Review displays extracted values alongside the original document. Saving a draft does not approve it. Required flags must be resolved before approval; corrections and approvals retain the user and timestamp.
 - The example PDF has two attention fields. After correction and approval, its illustrative material record appears in the Materials screen.
 - Viewing a result opens its detail region. Comparing selected records transfers the selection to Analysis. Normal search and analysis use approved records.
-- Role permissions determine available actions. Final permission assignments and the identity provider remain unspecified.
-- The on-site document system provides source PDFs through application access. No cloud database or infrastructure configuration appears in these user screens.
+- Users sign in with Edwards' Microsoft SSO. Any employee may upload (to be confirmed with the sponsor); role permissions determine the other actions, and the role list will be reviewed later. Admin tasks (permissions, job monitoring, audit-log export) are not part of these user screens.
+- The on-site document system provides source PDFs through application access; the application stores only a reference. No cloud database or infrastructure configuration appears in these user screens.
 - The wireframe does not assume that specification limits have been supplied. Out-of-spec conclusions require those limits and compatible units.
+
+- Export of results (PDF, DOC, CSV) is in scope but planned last, so no export button is drawn yet.
 
 ## Editable source and individual screens
 
