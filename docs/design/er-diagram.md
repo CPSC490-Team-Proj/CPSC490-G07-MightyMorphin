@@ -6,8 +6,12 @@ In this document, it defines the relational data model for the verified material
 data described in proposal §3: "materials, mechanical properties, documents,
 vendors, and lots as related records", where "every record keeps a reference
 to the original PDF" and "each correction and approval is logged." It also
-stores what the use cases in the use case diagram ([#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36), in review in PR #68) need;
-§3 maps each use case to the tables that support it.
+stores what the use cases in the use case diagram ([#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36)) need;
+§3 maps each use case to the tables that support it. It follows the team
+decisions recorded for [#78](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78):
+extracted values are stored only once they are approved, the original PDFs stay
+in Edwards' document system (we keep a reference), and every action is logged
+for the administrator.
 
 ## 1. Entity-relationship diagram
 
@@ -23,7 +27,6 @@ erDiagram
   LOT |o--o{ MATERIAL_RECORD : "is described by"
   MATERIAL_RECORD ||--o{ PROPERTY_VALUE : "contains"
   MATERIAL_RECORD ||--o{ PROCESSING_STEP : "lists"
-  MATERIAL_RECORD ||--o{ REVIEW_EVENT : "has history"
   PROPERTY_TYPE ||--o{ PROPERTY_VALUE : "measures"
   PROPERTY_TYPE ||--o{ MATERIAL_SPEC : "is limited by"
   MATERIAL ||--o{ MATERIAL_SPEC : "has limits in"
@@ -33,7 +36,8 @@ erDiagram
   PROCESSING_JOB |o--o{ SOURCE_DOCUMENT : "processes"
   APP_USER ||--o{ SOURCE_DOCUMENT : "uploads"
   APP_USER ||--o{ PROCESSING_JOB : "starts"
-  APP_USER ||--o{ REVIEW_EVENT : "performs"
+  APP_USER ||--o{ MATERIAL_RECORD : "approves"
+  APP_USER ||--o{ AUDIT_EVENT : "performs"
   ROLE ||--o{ APP_USER : "is held by"
 ```
 
@@ -69,8 +73,8 @@ erDiagram
   MATERIAL_RECORD ||--o{ PROPERTY_VALUE : "contains"
   PROPERTY_TYPE ||--o{ PROPERTY_VALUE : "measures"
   MATERIAL_RECORD ||--o{ PROCESSING_STEP : "lists"
-  MATERIAL_RECORD ||--o{ REVIEW_EVENT : "has history"
-  APP_USER ||--o{ REVIEW_EVENT : "performs"
+  APP_USER ||--o{ MATERIAL_RECORD : "approves"
+  APP_USER ||--o{ AUDIT_EVENT : "performs"
 
   ROLE {
     int       role_id      PK
@@ -125,8 +129,10 @@ erDiagram
     int       vendor_id    FK "nullable"
     int       uploaded_by  FK "APP_USER.user_id"
     varchar   doc_type     "COC or TEST_REPORT"
-    varchar   input_type   "DIGITAL or SCANNED"
-    varchar   file_uri     "location of the original PDF"
+    varchar   input_type   "DIGITAL or SCANNED; every document goes through OCR by default"
+    varchar   pdf_reference "reference to the original PDF in Edwards' document system"
+    varchar   status       "UPLOADED, PROCESSING, FAILED, UNSUPPORTED or DONE"
+    varchar   review_status "nullable until DONE: PENDING, FLAGGED or APPROVED"
     date      issued_on    "nullable: date printed on the document"
     timestamp uploaded_at
   }
@@ -135,8 +141,9 @@ erDiagram
     int       document_id  FK "not null: source is always kept"
     int       material_id  FK
     int       lot_id       FK "nullable: lot not always on the document"
-    varchar   status       "PENDING, FLAGGED or APPROVED"
+    int       approved_by  FK "APP_USER.user_id"
     timestamp extracted_at
+    timestamp approved_at  "rows exist only after approval"
   }
   PROPERTY_VALUE {
     int       value_id     PK
@@ -145,7 +152,7 @@ erDiagram
     decimal   value        "in PROPERTY_TYPE.standard_unit"
     varchar   unit_as_printed "unit on the document, before normalizing"
     decimal   confidence   "extraction confidence, 0 to 1"
-    varchar   flag_reason  "nullable: why the check failed"
+    varchar   flag_reason  "nullable: why it was flagged before approval"
   }
   PROCESSING_STEP {
     int       step_id      PK
@@ -153,14 +160,16 @@ erDiagram
     int       step_order
     varchar   description  "e.g. heat treatment, as printed on the document"
   }
-  REVIEW_EVENT {
+  AUDIT_EVENT {
     int       event_id     PK
-    int       record_id    FK
     int       user_id      FK
-    varchar   action       "CORRECT or APPROVE"
-    varchar   field_name   "nullable: set for CORRECT"
+    varchar   action       "UPLOAD, VIEW, CORRECT, APPROVE, UPDATE, DELETE or EXPORT"
+    varchar   entity_type  "e.g. SOURCE_DOCUMENT or MATERIAL_RECORD"
+    int       entity_id    "row the action touched"
+    varchar   field_name   "nullable: set for CORRECT and UPDATE"
     varchar   old_value    "nullable"
     varchar   new_value    "nullable"
+    varchar   note         "nullable: correction note from the review screen"
     timestamp created_at
   }
 ```
@@ -173,18 +182,18 @@ Read it with Figure 1 for the relationships.*
 | Entity | What one row is | Requirement it satisfies |
 |---|---|---|
 | `ROLE` | one of the four actors in the use case diagram | #36: Manage User Permissions |
-| `APP_USER` | an authorized Edwards user | §3: uploads, reviews and approvals are made by a user; #36: Manage User Accounts |
+| `APP_USER` | an authorized Edwards employee, signed in with Edwards' Microsoft SSO | §3: uploads, reviews and approvals are made by a user |
 | `PROCESSING_JOB` | one batch of uploaded documents being processed | #36: Batch Process Documents, Monitor Processing Jobs |
 | `VENDOR` | a supplier named on a CoC or test report | #18: "support vendor information when available" |
 | `MATERIAL` | a material identified by its material ID | #18: "represent materials" |
 | `LOT` | one production lot of a material | #18: "support lot information when available" |
 | `PROPERTY_TYPE` | one kind of mechanical property and its standard unit | #18: "represent mechanical properties"; lets values and limits be compared |
 | `MATERIAL_SPEC` | the allowed range of one property for one material | #36: View Material Specifications, Compare Data to Specifications, Identify Out-of-Spec Materials |
-| `SOURCE_DOCUMENT` | one uploaded PDF | #18: "distinguish CoCs from material test reports" (`doc_type`); #20: source identified as CoC or test report |
-| `MATERIAL_RECORD` | the material data extracted from one document | #20: "each extracted material record shall retain a reference to its source document" (`document_id`, not null) |
+| `SOURCE_DOCUMENT` | one uploaded PDF: a reference to the original in Edwards' document system, its processing `status` and its `review_status` | #18: "distinguish CoCs from material test reports" (`doc_type`); #20: source identified as CoC or test report; Goal 1 spec: unsupported documents are rejected |
+| `MATERIAL_RECORD` | the approved material data extracted from one document | #20: "each extracted material record shall retain a reference to its source document" (`document_id`, not null) |
 | `PROPERTY_VALUE` | one mechanical property value | #18: "represent mechanical properties associated with materials"; §3 verification checks (units, confidence) |
 | `PROCESSING_STEP` | one processing step printed on the document | #36: View Material Processing Info |
-| `REVIEW_EVENT` | one correction or approval | §3: "each correction and approval is logged"; #36: Validate Extracted Data |
+| `AUDIT_EVENT` | one action by a user (upload, view, correction, approval, edit, delete, export) | §3: "each correction and approval is logged"; Goal 2 spec: audit log of record operations; #36: Validate Extracted Data, Export Audit Logs |
 
 ## 3. Use case coverage
 
@@ -194,11 +203,11 @@ queries over tables already listed.
 
 | Use case (#36) | Tables |
 |---|---|
-| Import PDF Documents | `SOURCE_DOCUMENT` |
+| Import PDF Documents | `SOURCE_DOCUMENT` (`pdf_reference`, `status`) |
 | Batch Process Documents | `PROCESSING_JOB`, `SOURCE_DOCUMENT.job_id` |
-| Extract Material Data | `MATERIAL_RECORD`, `PROPERTY_VALUE`, `PROCESSING_STEP` |
-| Validate Extracted Data | `MATERIAL_RECORD.status`, `PROPERTY_VALUE.flag_reason`, `REVIEW_EVENT` |
-| Import Material Records | `MATERIAL_RECORD` with `status = APPROVED` |
+| Extract Material Data | `SOURCE_DOCUMENT.status`; values are written to `MATERIAL_RECORD`, `PROPERTY_VALUE` and `PROCESSING_STEP` once approved |
+| Validate Extracted Data | `SOURCE_DOCUMENT.review_status`, `AUDIT_EVENT` (corrections and approvals) |
+| Import Material Records | new `MATERIAL_RECORD` rows, written when a document is approved |
 | Search / Filter Material Records | `MATERIAL`, `VENDOR`, `LOT`, `SOURCE_DOCUMENT.doc_type` |
 | View Material Specifications | `MATERIAL_SPEC` |
 | View Material Properties | `PROPERTY_VALUE`, `PROPERTY_TYPE` |
@@ -207,13 +216,14 @@ queries over tables already listed.
 | View Historical Material Trends | *derived*: `PROPERTY_VALUE` ordered by `SOURCE_DOCUMENT.issued_on` |
 | Identify Out-of-Spec Materials | *derived*: values outside `MATERIAL_SPEC.min_value` / `max_value` |
 | View Mechanical Property Ranges | *derived*: minimum and maximum of `PROPERTY_VALUE.value` per property type |
-| Manage User Accounts | `APP_USER` |
+| Export Results (PDF, DOC, CSV) | *derived*: the same queries as search and compare, plus an `AUDIT_EVENT` with `action = EXPORT` |
 | Manage User Permissions | `ROLE`, `APP_USER.role_id` |
-| Monitor Processing Jobs | `PROCESSING_JOB` |
+| Monitor Processing Jobs | `PROCESSING_JOB`, `SOURCE_DOCUMENT.status` |
+| Export Audit Logs | `AUDIT_EVENT` (admin only; not shown in the web app) |
 
 ## 4. Relationships
 
-1. A `SOURCE_DOCUMENT` produces one or more `MATERIAL_RECORD`s. Each
+1. An approved `SOURCE_DOCUMENT` produces one or more `MATERIAL_RECORD`s. Each
    `MATERIAL_RECORD` has exactly one source document, so a value can always be
    traced back to its PDF (#20).
 2. A `MATERIAL_RECORD` is for one `MATERIAL` and, when the document gives
@@ -226,10 +236,15 @@ queries over tables already listed.
 5. A `LOT` belongs to one `MATERIAL` and, when known, one `VENDOR`.
 6. A `PROCESSING_JOB` started by one `APP_USER` processes many
    `SOURCE_DOCUMENT`s; a document uploaded on its own has no job.
-7. Every correction or approval of a `MATERIAL_RECORD` is a `REVIEW_EVENT` by
-   one `APP_USER`. Only records with `status = APPROVED` count as verified
-   material data (§3).
+7. A document waits with `review_status` PENDING or FLAGGED until a user with
+   permission corrects and approves it; the uploader is notified, and the
+   document stays in the queue until it is approved. Only then are its values
+   written as `MATERIAL_RECORD` rows, so every row in that table is verified
+   material data (§3). Each `MATERIAL_RECORD` is approved by one `APP_USER`.
 8. Each `APP_USER` has one `ROLE`.
+9. Every action a user takes (upload, view, correction, approval, edit,
+   delete, export) is one `AUDIT_EVENT`. The audit log is not shown in the web
+   app; the administrator exports it.
 
 ## 5. Key decisions
 
@@ -238,15 +253,24 @@ queries over tables already listed.
 | Storing property values | one column per property on the record · one row per property (`PROPERTY_VALUE`) | one row per property | CoCs and test reports from different vendors list different properties; a row per value needs no schema change for a new property |
 | Naming properties | free-text name on each value · shared `PROPERTY_TYPE` table | `PROPERTY_TYPE` | values and spec limits must name the same property in the same unit to be compared |
 | Keeping the source | file path on each property value · `document_id` on each extracted record | `document_id` on `MATERIAL_RECORD` | one reference per extracted record satisfies #20 without repeating it on every value |
-| Review history | overwrite the value and keep a "reviewed" flag · append-only `REVIEW_EVENT` log | append-only log | §3 requires each correction and approval to be logged |
+| Review history | overwrite the value and keep a "reviewed" flag · log only corrections and approvals · append-only log of every action (`AUDIT_EVENT`) | log every action | team decision (#78): Edwards can trace every upload, view, change and export; the Goal 2 spec asks for an audit log of record operations |
+| When extracted values are stored | store every record with a status and hide unapproved ones · store values only once approved | only once approved | team decision (#78): unverified values never enter the materials data; the document itself waits in the review queue with a reference to its PDF |
+| Original PDFs | copy each PDF into our own storage · keep a reference to Edwards' document system | reference only | team decision (#78): Edwards already stores the documents and handles their security |
 | Out-of-spec status | stored flag on each value · computed by comparing to `MATERIAL_SPEC` | computed | a stored flag goes stale whenever a spec limit changes |
 | User permissions | one role per user · many roles per user | one role per user | each actor in the use case diagram is a separate group of users |
 
 ## 6. What is NOT designed yet
 
-- **Database product and exact column types.** As §4 says, the DBMS is currently TBD, and
-  the Snowflake option is still under evaluation with the sponsor (§3). We do not have test documents to see how it all works yet. The
+- **Database product and exact column types.** Snowflake is the provisional
+  choice for storing and analyzing the data, with the app hosted on AWS (#78);
+  the team still has to try Snowflake before confirming. We do not have test documents to see how it all works yet. The
   types above are generic SQL types.
+- **Where extracted values wait during review.** Values are not stored in these
+  tables until approval, so the review screen needs them from somewhere else
+  (held by the extraction step, or re-extracted when the review opens). Not
+  decided yet.
+- **Retention and deletion.** The Goal 2 spec asks for delete or deactivate
+  "according to the defined retention policy"; that policy is not defined yet.
 - **Property names and units.** The team does not yet have real CoCs or test
   reports as mentioned above, so the rows of `PROPERTY_TYPE` are not set in stone and can be changed in the future when documents are acquired.
 - **Where specification limits come from.** For `MATERIAL_SPEC` we are just assuming that Edwards
@@ -254,9 +278,10 @@ queries over tables already listed.
   confirmed with the sponsor with a document to confirm it.
 - **What "processing info" contains.** `PROCESSING_STEP` stores it as ordered
   text until real documents show its structure.
-- **Permissions per role.** `ROLE` records which group a user belongs to; what
-  each role may do is not designed yet.
+- **Permissions per role.** `ROLE` records which group a user belongs to; the
+  team will review the role list later, and what each role may do is not
+  designed yet. Any Edwards employee may upload (to be confirmed with the sponsor).
 - **Field-mapping tables** for vendor document formats (§3, "Handling
   different document formats").
-- **The use case diagram is still in review** (PR #68). If its use cases
-  change, §3 of this document changes with it.
+- **Exporting results** (PDF, DOC, CSV) is in scope but planned as one of the
+  last features; it needs no table of its own.

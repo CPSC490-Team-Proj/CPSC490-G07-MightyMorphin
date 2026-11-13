@@ -31,11 +31,11 @@
 <rect x="64" y="583" width="1032" height="39" fill="#ffffff" stroke="#777777"/>
 <text x="73" y="609" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">vendor-coc-001.pdf</text>
 <text x="623" y="609" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">CoC</text>
-<text x="823" y="609" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">Ready</text>
+<text x="823" y="609" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">Uploaded</text>
 <rect x="64" y="622" width="1032" height="39" fill="#f5f5f5" stroke="#777777"/>
 <text x="73" y="648" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">internal-report-002.pdf</text>
 <text x="623" y="648" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">Test report</text>
-<text x="823" y="648" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">Ready</text>
+<text x="823" y="648" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">Uploaded</text>
 <rect x="64" y="682" width="215" height="38" fill="#dddddd" stroke="#333333"/>
 <text x="76" y="707" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#222222">Upload and process</text>
 <rect x="299" y="682" width="150" height="38" fill="#ffffff" stroke="#333333"/>
@@ -61,7 +61,7 @@
 <text x="1194" y="391" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Filename, material ID or vendor</text>
 <text x="1696" y="359" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#222222">Status</text>
 <rect x="1696" y="368" width="520" height="36" fill="#ffffff" stroke="#777777"/>
-<text x="1706" y="391" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">All / Processing / Flagged / Pending / Approved</text>
+<text x="1706" y="391" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">All / Processing / Failed / Unsupported / Pending / Flagged</text>
 <rect x="1184" y="431" width="1032" height="34" fill="#dddddd" stroke="#777777"/>
 <text x="1193" y="455" font-family="Arial,sans-serif" font-size="15" font-weight="bold" fill="#222222">Document</text>
 <text x="1513" y="455" font-family="Arial,sans-serif" font-size="15" font-weight="bold" fill="#222222">Status</text>
@@ -88,7 +88,7 @@
 <text x="1673" y="608" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">PDF could not be read</text>
 <text x="2018" y="608" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">Retry / replace</text>
 <rect x="1184" y="652" width="1032" height="38" fill="#eeeeee" stroke="#777777"/>
-<text x="1196" y="678" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Flagged records require review. Processing and failed records are unavailable for analysis.</text>
+<text x="1196" y="678" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Only approved values are stored. The uploader is notified if a document is not approved.</text>
 <text x="1184" y="734" font-family="Arial,sans-serif" font-size="18" font-weight="normal" fill="#222222">Open review -&gt; screen 03. Approved records -&gt; Materials (screen 04).</text>
 <text x="40" y="922" font-family="Arial,sans-serif" font-size="27" font-weight="bold" fill="#222222">03  Validate extracted information</text>
 <rect x="40" y="942" width="1080" height="640" fill="#ffffff" stroke="#777777"/>

@@ -4,20 +4,20 @@
 **CPSC 490 Undergraduate Seminar in Computer Science — Proposal for Capstone Project**
 
 **Group 07 — Mighty Morphins** · Sponsor: EL-1
-Authors: Nguyen Nguyen (GwenNguyen2604), Christopher Pham (cpham2005), 
-Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson 
+Authors: Nguyen Nguyen (GwenNguyen2604), Christopher Pham (cpham2005),
+Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 (liamw5265) Date: 〈2026-09-18〉
 
-## 0. Abstract 
+## 0. Abstract
 &emsp;At Edwards Lifesciences, material information is contained in documents such as Certificates of Conformance (CoCs) received from external vendors and material test reports generated internally. Although these documents contain information about materials and their mechanical properties, the data contained within them is not currently maintained in a centralized, structured database. When users need to analyze material data across different samples or requests, they must locate the relevant reports and manually extract the necessary information. This process makes retrieving and comparing historical material information time consuming and prone to user mistakes, particularly when information from many documents is required.<br><br>
-&emsp;The Online Materials Database project proposes a web application that converts information contained in these documents into structured and searchable material records. The proposed system will accept material documentation in PDF format, and extract relevant information such as material identification and mechanical properties. Extracted information will be verified where possible and stored in a relational database hosted using AWS services. The web application will provide authorized users with a centralized interface for accessing this information and searching or filtering records.<br><br>
+&emsp;The Online Materials Database project proposes a web application that converts information contained in these documents into structured and searchable material records. The proposed system will accept material documentation in PDF format, and extract relevant information such as material identification and mechanical properties. Extracted information will be verified where possible and hosted on AWS, but the database is Snowflake (provisional). The web application will provide authorized users with a centralized interface for accessing this information and searching or filtering records.<br><br>
 &emsp;Developing such a system presents challenges beyond simply storing and displaying documents. Test documents and CoCs generated across a long period of time spanning years, with CoCs being from multiple vendors, can have inconsistent document format. This requires the system to accommodate different methods of obtaining and interpreting their contents. The accuracy of extracted information is particularly important because incorrectly interpreted material properties could affect the reliability of the resulting database. Automating this process while supporting heterogeneous documents therefore requires consideration of document processing, information extraction and verification, database design, and usability. A successful system would reduce repeated manual extraction of historical material data and make information more readily available for retrieval and analysis.
 <br><br>
 &emsp;The primary goals of the project are to develop a data extraction workflow for supported CoCs and test reports, establish centralized relational storage for the resulting material information, provide mechanisms for verifying extracted information, and develop an internal web application through which users can access the database. The expected outcome is a functional system that transforms supported material documents into structured records and allows authorized users to search, filter, and view historical material information. The system is intended to provide a foundation that can be expanded as additional document formats, material attributes, and analysis requirements are identified.<br><br>
 &emsp;This proposal describes the problems motivating the Online Materials Database, the project's goals and objectives, and the proposed technical approach for addressing them.<br><br>
 [#7](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=261452481&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C7)
 
-## 1. Introduction 
+## 1. Introduction
 &emsp;Engineering and manufacturing decisions rely heavily on accurate information for verifying material quality compliance, and performance. Important information such as vendor information, material properties and specifications is primarily recorded in the form of test reports and Certificates of Conformance (CoC). Although these documents are archived, the data itself is not stored in a structured format therefore you need to search for individual documents rather than querying a database.<br><br>
 &emsp;The current method of storing documents creates several problems, Engineers need to manually locate individual documents and manually search through them to find specific data points. Comparing information across vendors or material types requires manual reviewing of multiple documents. This process becomes significantly inefficient as the number of records increases.<br><br>
 &emsp;The goal of this project is to design and develop a centralized system for managing materials information contained in these CoC and test reports. The system focuses on extracting data from existing and future documents and stores them in a structured format. This data can be easily queried and analyzed to support better informed engineering decisions. The main problem that this project solves is the significant amount of manual data entry and searching required by the current process.<br><br>
@@ -40,11 +40,11 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 
 [#6](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=261446190&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C6)
 
-### 1.2 Problem Statements 
+### 1.2 Problem Statements
 - <b>P.1 Unstructured Material Data:</b> Data from CoCs and test documents are primarily stored as either scanned documents or PDFs, making information difficult to query, analyze, and reuse.
 - <b>P.2 Manual Data Extraction:</b> Extracting data from documents manually requires significant effort because there is no automated process for consistently extracting data from CoCs and testing documents.
 - <b>P.3 Inconsistent Document Formats:</b> CoCs and test data documents come from many different sources, the data is not all in the same structured format.  This makes repeated extractions of data difficult.
-- <b>P.4 Lack of Centralized Data Access:</b> There is no centralized materials repository that allows users to efficiently query historical records.  This causes overhead if users need to look to multiple sources for this data. 
+- <b>P.4 Lack of Centralized Data Access:</b> There is no centralized materials repository that allows users to efficiently query historical records.  This causes overhead if users need to look to multiple sources for this data.
 - <b>P.5 Limited Material Data Analysis:</b> Data is stored in scanned documents and PDFs rather than in a structured format.  Progress is negatively affected as users cannot efficiently query, analyze, and visualize historical data for engineering decisions.
 
 | Problem | Addressed by |
@@ -59,6 +59,9 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 
 ## 2. Goals and Objectives
 The Online Materials Database project aims to reduce the manual effort required to retrieve and analyze material information from Certificates of Conformance (CoCs) and material test reports. The project will accomplish this by developing an automated document-processing pipeline, establishing centralized structured storage for extracted material information, and providing an internal web application through which authorized users can access and analyze the collected data. The following goals and objectives define the primary capabilities to be developed and provide measurable criteria for evaluating the completed system. <br><br>
+
+- **Goal 0: Design and Specification Documents** [[epic:#42]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)
+  - Objective 0.1: Design and Architecture [[story:#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)
 
 - **Goal 1: Automated Material Data Extraction and Verification** [[epic:#11]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/11)
   The first goal is to automate the process of converting material information contained in PDF documents into structured data suitable for storage and analysis. This goal addresses the current dependence on manual data extraction as well as the challenges created by scanned documents and inconsistent document formats.
@@ -96,7 +99,7 @@ The Online Materials Database project aims to reduce the manual effort required 
   - Objective 3.4: Display material properties and source information [[story:#26]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/26)
 
   - Objective 3.5: Compare material-property data across stored records [[story:#27]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27)
-  
+
 
 ## 3. Proposed Approaches
 
@@ -184,12 +187,14 @@ The development of the Edwards Lifescience Materials Database requires various s
 |Category|Technology/Resource|Purpose|
 |-----|-----|-----|
 |Programming Language|Python| - Backend development <br>- Document extraction <br>- Data processing|
-|Database Management System|PostgreSQL (Amazon RDS)|Store extracted data|
-|File Storage (PDFs)|Amazon S3|Store PDFs|
+|Database Management System|Snowflake (provisional)|Store and analyze approved material data and the audit log|
+|Hosting|AWS|Run the web app, backend API and services|
+|Authentication|Edwards Microsoft SSO|Sign users in with their Edwards account|
+|File Storage (PDFs)|Edwards' existing document system|Keep the original PDFs; the app stores only a reference to each one|
 |Backend Framework|FastAPI (Python)|- Handles application logic <br>- Communication between components|
 |UI/UX Design|Figma|Design wireframes and mockups of user interface [#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|
 |Frontend Framework|React/Vue|User interface (upload documents, view extracted data)|
-|Document Processing|Textract/Tesseract|Extract data from uploaded documents|
+|Document Processing|OCR on every document; tool not chosen (Snowflake document AI, Textract or Tesseract)|Extract data from uploaded documents|
 |Development Environment|Visual Studio Code|Write, debug, test code|
 |Version Control|Git and GitHub|Track sprint progress, tasks, and assignments|
 
@@ -205,7 +210,7 @@ The development of the Edwards Lifescience Materials Database requires various s
 Key: Two bars = exactly one; bar and circle = zero or one; circle and fork = zero or many.
 For the Full Column and keys view: `docs/design/er-diagram.md`.
 
-![System architecture showing the user interface, backend API, extraction and analysis modules, organization SSO, the existing on-site PDF document system, and Snowflake materials database](../docs/design/system-architecture-diagram.png)
+![System architecture showing the web UI, backend API, extraction, data review, analysis and administration modules, Edwards Microsoft SSO, Edwards' existing on-site PDF document system, and the Snowflake (provisional) materials database](../docs/design/system-architecture-diagram.png)
 
 *Figure 3. System Architecture Diagram.*
 
@@ -227,6 +232,7 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |[System Architecture](../docs/design/system-architecture-diagram.md)|Design|Maps out relationships between core components within the system; exported image: [PNG](../docs/design/system-architecture-diagram.png)|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
 |[Data Flow Diagram](../docs/design/data-flow.md)|Design|Maps how information moves, transforms, and stored within the system. Diagram demonstrates how desired media is scanned, stored, and how data is scraped, reviewed, then stored.|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|
 |[UI Wireframes](../docs/design/ui-wireframe/ui-wireframe.md)|Design|Primary screen layouts and navigation for upload, review, stored records and analysis; [PNG](../docs/design/ui-wireframe.png) and [editable SVG](../docs/design/ui-wireframe/ui-wireframe.svg)|[#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|
+|[Technology Stack and System Decisions](../docs/design/technology-stack-decision.md)|Design|Records which technology and system-behavior choices the team selected, left provisional or deferred, with the alternatives and reasons; every design document follows it|[[feature:#78]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78)|
 |[Goal 1 Specification Document](../docs/specs/data-extraction-spec.md)|Specification|Specification document for Goal 1: Automated Material Data Extraction and Verification|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|
 |[Goal 2 Specification Document](../docs/specs/data-storage-spec.md)|Specification|Specification document for Goal 2: Centralized Material Data Storage and Management|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/58)|
 |[Goal 3 Specification Document](../docs/specs/data-analysis-spec.md)|Specification|Specification document for Goal 3: Material Data Access and Analysis|[#59](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/59)|
