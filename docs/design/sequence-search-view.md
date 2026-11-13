@@ -2,7 +2,7 @@
 Task: [#89](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/89) · Stories: [#24](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24)<br>
 Owner: Liam Wilson · Sprint: 3 · Status: draft 
 
-```Mermaid
+```mermaid
 sequenceDiagram
     actor User
     participant GUI
