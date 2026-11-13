@@ -1,0 +1,134 @@
+@startuml
+title Page 2 - Processing and review queue
+skinparam backgroundColor white
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 220
+actor "Authorized user" as User
+boundary "Review queue UI\n(page 2)" as UI
+control "Backend API\nFastAPI (provisional)" as API
+control "Processing / job service" as Job
+database "Document status /\nrecord store" as Store
+boundary "Validation UI\n(page 3)" as Review
+
+note over UI, Store
+  AWS application; frontend framework deferred (#78).
+  Status metadata: Snowflake provisional; the location of
+  unapproved extracted values remains undecided (#78).
+end note
+
+== Open queue and search ==
+User -> UI: Open review queue (from page 1 or navigation)
+UI -> API: Request queue entries (search, status filter)
+API -> Store: Query document metadata and review statuses
+alt Entries found
+  Store --> API: Document names, statuses, feedback, action eligibility
+  API --> UI: Queue entries and available actions
+  UI --> User: Display rows and actions
+else Queue is empty
+  Store --> API: No queue entries exist
+  API --> UI: Empty queue
+  UI --> User: Show empty queue state
+else No matching results
+  Store --> API: Queue exists; no entries match filters
+  API --> UI: No matching results
+  UI --> User: Show no matching results
+else Store or service error
+  Store --> API: Query failed
+  API --> UI: Queue request failed
+  UI --> User: Show error and allow another request
+end
+
+loop User changes search or status filter
+  User -> UI: Search filename, material ID or vendor; select status
+  note over UI, API
+    Filters: All, Processing, Failed, Unsupported,
+    Pending, Flagged; Approved is handled below.
+    Uploaded and Done are document statuses.
+  end note
+  UI -> API: Request entries with search and status filter
+  API -> Store: Query matching queue metadata
+  alt Matches / empty queue / no matches
+    Store --> API: Matching rows or distinct empty result
+    API --> UI: Rows or empty / no-match response
+    UI --> User: Update results and feedback
+  else Query fails
+    Store --> API: Query error
+    API --> UI: Filter request failed
+    UI --> User: Show service error
+  end
+end
+opt User selects Approved
+  User -> UI: Select Approved status
+  UI -> API: Request approved queue entries
+  API --> UI: No approved entries in review queue
+  UI --> User: Show no matches; direct user to Materials (page 4)
+end
+
+== Processing status and details ==
+User -> UI: View status of a Processing document / refresh
+UI -> API: Request processing details and current status
+API -> Job: Get job status and feedback
+alt Status available
+  Job -> Store: Read latest document and review status
+  Store --> Job: Current status and feedback
+  Job --> API: Processing details and status
+  API --> UI: Status and processing details
+  UI --> User: Show progress or result
+else Job or store unavailable
+  Job --> API: Status request failed
+  API --> UI: Processing details unavailable
+  UI --> User: Show error and allow refresh
+end
+opt Job completes asynchronously
+  alt Extraction succeeds
+    Job -> Store: Set document Done; review Pending or Flagged
+    Store --> Job: Status update acknowledged
+  else Extraction fails
+    Job -> Store: Set document Failed with feedback
+    Store --> Job: Status update acknowledged
+  end
+  note over Job, Store
+    Neither outcome approves the record. Approval is a
+    separate authorized action on page 3.
+  end note
+end
+
+== Review a ready document ==
+User -> UI: Open review for Pending or Flagged record
+UI -> API: Request review handoff (document reference)
+alt Authorized and still ready for review
+  API --> UI: Review handoff accepted
+  UI -> Review: Open page 3 with record reference
+  Review --> User: Show validation view
+else No permission, stale status or service error
+  API --> UI: Handoff rejected or unavailable
+  UI --> User: Show feedback; keep queue visible
+end
+
+== Retry or replace a failed document ==
+User -> UI: Select retry or replacement for Failed document
+UI -> API: Request retry / submit replacement PDF
+alt Accepted
+  API -> Job: Request retry / replacement processing
+  alt Job accepted
+    Job -> Store: Record updated document / job status
+    Store --> Job: Update acknowledged
+    Job --> API: Job accepted and current status
+    API --> UI: Retry / replacement acknowledged
+    UI --> User: Show acknowledgment and current status
+  else Job or status update fails
+    Job --> API: Request failed
+    API --> UI: Retry / replacement failed
+    UI --> User: Show failure; do not claim processing started
+  end
+else Invalid PDF, denied, or backend unavailable
+  API --> UI: Request rejected / service error
+  UI --> User: Show reason or service error
+end
+
+note over UI, Review
+  Page 1 upload and page 3 validation contracts (#85, #87)
+  are unresolved; references and messages here are conceptual.
+  Replacement PDF handling and job refresh mechanism are deferred.
+end note
+@enduml
