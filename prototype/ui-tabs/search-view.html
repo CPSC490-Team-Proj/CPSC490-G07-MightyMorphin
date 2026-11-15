@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang = 'en'>
+<head>
+    <meta charset = 'UTF-8'>
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1.0'>
+    <title>Materials Database</title>
+    <style>
+        :root {
+            --red: #C8102E;
+            --red-dark: #a50d26;
+            --bg: #f4f4f9;
+            --border: #e0e0e6;
+            --text: #292929;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            background: var(--red);
+            min-height: 76px;
+            flex-shrink: 0;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 68px;
+            height: 68px;
+            object-fit: contain;
+        }
+
+        .divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .brand {
+            color: white;
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: auto;
+            color: white;
+        }
+
+        .sign-out {
+            border: 0;
+            background: transparent;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .sign-out:hover {
+            color: #eee;
+        }
+
+        main {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 14px 20px 16px;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 14px;
+            flex-shrink: 0;
+            overflow-x: auto;
+        }
+
+        .tab-buttons {
+            min-width: 140px;
+            height: 42px;
+            padding: 0 20px;
+            background: transparent;
+            color: #555;
+            border: 1px solid transparent;
+            border-bottom: 0;
+            border-radius: 7px 7px 0 0;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: -2px;
+        }
+
+        .tab-buttons:hover {
+            color: var(--red);
+            background: #ebebef;
+        }
+
+        .tab-buttons.active {
+            background: white;
+            color: var(--red);
+            border-color: var(--border);
+            border-bottom: 2px solid white;
+        }
+
+        .tab-buttons:focus-visible, button:focus-visible, input:focus-visible {
+            outline: 2px solid var(--red);
+            outline-offset: 2px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        #materials-tab.active {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px 16px;
+            padding: 14px 18px;
+            margin-bottom: 14px;
+            flex-shrink: 0;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 36px;
+            padding: 7px 10px;
+            border: 1px solid #cbd0d8;
+            border-radius: 6px;
+            font: 14px Arial, sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
+        }
+
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .btn {
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-primary {
+            background: var(--red);
+            border-color: var(--red);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--red-dark);
+        }
+
+        .btn-secondary {
+            background: #f4f4f9;
+            color: #555;
+        }
+
+        .btn-secondary:hover {
+            background: #e7e7ec;
+        }
+
+        .btn:disabled {
+            background: #d1d5db;
+            border-color: #d1d5db;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .table-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table-scroll {
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            overscroll-behavior: contain;
+        }
+
+        table {
+            width: 100%;
+            min-width: 680px;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: #f1f2f5;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        th:first-child, td:first-child {
+            width: 75px;
+            text-align: center;
+        }
+
+        tbody tr {
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover {
+            background: #fff4f6;
+        }
+
+        tbody tr.selected {
+            background: #fce8ec;
+        }
+
+        input[type = 'checkbox'] {
+            width: 17px;
+            height: 17px;
+            accent-color: var(--red);
+            cursor: pointer;
+        }
+
+        .view-btn {
+            border: 0;
+            background: transparent;
+            color: var(--red);
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 0;
+        }
+
+        .view-btn:hover {
+            text-decoration: underline;
+        }
+
+        .table-footer {
+            display: flex;
+            flex-shrink: 0;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            border-top: 1px solid var(--border);
+            background: #fafafa;
+        }
+
+        #selected-count {
+            font-size: 14px;
+            color: #666;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <img src = '../logo.jpeg' class = 'logo' alt = 'Logo'>
+        <div class = 'divider'></div>
+        <div class = 'brand'>Materials Database</div>
+        <div class = 'header-right'>
+            <span class = 'user-name'>John Doe</span>
+            <div class = 'divider'></div>
+            <button type = 'button' class = 'sign-out'>Sign Out</button>
+        </div>
+    </header>
+
+    <main>
+        <nav class = 'tab-container' aria-label = 'Main navigation'>
+            <button class = 'tab-buttons' type = 'button' data-target = 'upload-tab'>Upload</button>
+            <button class = 'tab-buttons' type = 'button' data-target = 'review-tab'>Review Queue</button>
+            <button class = 'tab-buttons active' type = 'button' data-target = 'materials-tab'>Materials</button>
+            <button class = 'tab-buttons' type = 'button' data-target = 'analysis-tab'>Analysis</button>
+        </nav>
+
+        <section id = 'upload-tab' class = 'tab-content'></section>
+        <section id = 'review-tab' class = 'tab-content'></section>
+
+        <section id = 'materials-tab' class = 'tab-content active'>
+            <form class = 'form-grid' id = 'materials-form'>
+                <div class = 'form-group'>
+                    <label for = 'material-lot'>Material/Lot</label>
+                    <input type = 'text' id = 'material-lot' name = 'material_lot' placeholder = 'Enter material or lot'>
+                </div>
+
+                <div class = 'form-group'>
+                    <label for = 'vendor'>Vendor</label>
+                    <input type = 'text' id = 'vendor' name = 'vendor' placeholder = 'Enter vendor'>
+                </div>
+
+                <div class = 'form-group'>
+                    <label for = 'source-type'>Source Type</label>
+                    <input type = 'text' id = 'source-type' name = 'source_type' placeholder = 'Enter source type'>
+                </div>
+
+                <div class = 'form-actions'>
+                    <button type = 'reset' class = 'btn btn-secondary'>Reset</button>
+                    <button type = 'submit' class = 'btn btn-primary'>Submit</button>
+                </div>
+            </form>
+
+            <div class = 'table-container'>
+                <div class = 'table-scroll'>
+                    <table class = 'Materials-table'>
+                        <thead>
+                            <tr>
+                                <th><input type = 'checkbox' id = 'select-all' aria-label = 'Select all materials'></th>
+                                <th>Material/Lot</th>
+                                <th>Vendor</th>
+                                <th>Source Type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class = 'table-body'></tbody>
+                    </table>
+                </div>
+
+                <div class = 'table-footer'>
+                    <span id = 'selected-count' aria-live = 'polite'>0 materials selected</span>
+                    <button type = 'button' id = 'compare-btn' class = 'btn btn-primary' disabled>
+                        Compare Selected (0)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id = 'analysis-tab' class = 'tab-content'></section>
+    </main>
+
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-buttons');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        function activateTab(id) {
+            tabButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.target === id);
+            });
+            tabContents.forEach(content => {
+                content.classList.toggle('active', content.id === id);
+            });
+        }
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => activateTab(button.dataset.target));
+        });
+
+        const tableBody = document.querySelector('.table-body');
+        const selectAll = document.getElementById('select-all');
+        const compareBtn = document.getElementById('compare-btn');
+        const selectedCount = document.getElementById('selected-count');
+        const materialsForm = document.getElementById('materials-form');
+        let displayedMaterials = [];
+
+        function updateSelection() {
+            const checkboxes = [...tableBody.querySelectorAll('.row-checkbox')];
+            const checked = checkboxes.filter(checkbox => checkbox.checked);
+
+            checkboxes.forEach(checkbox => {
+                checkbox.closest('tr').classList.toggle('selected', checkbox.checked);
+            });
+
+            selectedCount.textContent = `${checked.length} material${checked.length === 1 ? '' : 's'} selected`;
+            compareBtn.textContent = `Compare Selected (${checked.length})`;
+            compareBtn.disabled = checked.length < 2;
+            selectAll.checked = checkboxes.length > 0 && checked.length === checkboxes.length;
+            selectAll.indeterminate = checked.length > 0 && checked.length < checkboxes.length;
+        }
+
+        function renderMaterials(records) {
+            displayedMaterials = records;
+            tableBody.replaceChildren();
+
+            records.forEach(material => {
+                const row = document.createElement('tr');
+                const checkboxCell = row.insertCell();
+                const checkbox = document.createElement('input');
+
+                checkbox.type = 'checkbox';
+                checkbox.className = 'row-checkbox';
+                checkbox.value = String(material.id);
+                checkbox.setAttribute('aria-label', `Select ${material.name}`);
+                checkboxCell.appendChild(checkbox);
+
+                [material.name, material.vendor, material.source].forEach(value => {
+                    row.insertCell().textContent = value ?? '';
+                });
+
+                const actionCell = row.insertCell();
+                const viewButton = document.createElement('button');
+                viewButton.type = 'button';
+                viewButton.className = 'view-btn';
+                viewButton.textContent = 'View';
+                viewButton.disabled = true;
+                actionCell.appendChild(viewButton);
+                tableBody.appendChild(row);
+            });
+
+            updateSelection();
+        }
+
+        tableBody.addEventListener('change', event => {
+            if (event.target.matches('.row-checkbox')) {
+                updateSelection();
+            }
+        });
+
+        tableBody.addEventListener('click', event => {
+            if (event.target.closest('input, button, a, select, label')) return;
+
+            const checkbox = event.target.closest('tr')?.querySelector('.row-checkbox');
+            if (!checkbox) return;
+
+            checkbox.checked = !checkbox.checked;
+            updateSelection();
+        });
+
+        selectAll.addEventListener('change', () => {
+            tableBody.querySelectorAll('.row-checkbox').forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+            updateSelection();
+        });
+
+        function getSelectedMaterialIds() {
+            return [...tableBody.querySelectorAll('.row-checkbox:checked')]
+                .map(checkbox => checkbox.value);
+        }
+
+        compareBtn.addEventListener('click', () => {
+            const ids = getSelectedMaterialIds();
+            if (ids.length < 2) return;
+
+            handleCompareMaterials(ids);
+        });
+
+        materialsForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const filters = Object.fromEntries(new FormData(materialsForm));
+
+            handleSearchMaterials(filters);
+        });
+
+        let handleCompareMaterials = ids => {};
+        let handleSearchMaterials = filters => {};
+
+    
+        // Demo code --> delete this block when database is connected
+        const demoMaterials = [
+            { id: 1, name: 'Material A / Lot A', vendor: 'Vendor A', source: 'Certificate of Conformance' },
+            { id: 2, name: 'Material B / Lot B', vendor: 'Vendor B', source: 'Material Test Report' },
+            { id: 3, name: 'Material C / Lot C', vendor: 'Vendor C', source: 'Certificate of Analysis' },
+            { id: 4, name: 'Material D / Lot D', vendor: 'Vendor D', source: 'Certificate of Conformance' },
+            { id: 5, name: 'Material A / Lot E', vendor: 'Vendor A', source: 'Material Test Report' },
+            { id: 6, name: 'Material B / Lot F', vendor: 'Vendor B', source: 'Certificate of Analysis' },
+            { id: 7, name: 'Material C / Lot G', vendor: 'Vendor C', source: 'Certificate of Conformance' },
+            { id: 8, name: 'Material D / Lot H', vendor: 'Vendor D', source: 'Material Test Report' },
+            { id: 9, name: 'Material A / Lot I', vendor: 'Vendor A', source: 'Certificate of Analysis' },
+            { id: 10, name: 'Material B / Lot J', vendor: 'Vendor B', source: 'Certificate of Conformance' },
+            { id: 11, name: 'Material C / Lot K', vendor: 'Vendor C', source: 'Material Test Report' },
+            { id: 12, name: 'Material D / Lot L', vendor: 'Vendor D', source: 'Certificate of Analysis' },
+            { id: 13, name: 'Material A / Lot M', vendor: 'Vendor A', source: 'Certificate of Conformance' },
+            { id: 14, name: 'Material B / Lot N', vendor: 'Vendor B', source: 'Material Test Report' },
+            { id: 15, name: 'Material C / Lot O', vendor: 'Vendor C', source: 'Certificate of Analysis' },
+            { id: 16, name: 'Material D / Lot P', vendor: 'Vendor D', source: 'Certificate of Conformance' },
+            { id: 17, name: 'Material A / Lot Q', vendor: 'Vendor A', source: 'Material Test Report' },
+            { id: 18, name: 'Material B / Lot R', vendor: 'Vendor B', source: 'Certificate of Analysis' }
+        ];
+
+        handleCompareMaterials = ids => {
+            console.log('Selected material IDs for comparison:', ids);
+            activateTab('analysis-tab');
+        };
+
+        handleSearchMaterials = filters => {
+            console.log('Search filters:', filters);
+        };
+
+        renderMaterials(demoMaterials);
+        //
+
+    </script>
+</body>
+</html>
