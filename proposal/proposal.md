@@ -214,6 +214,8 @@ For the Full Column and keys view: `docs/design/er-diagram.md`.
 
 *Figure 3. System Architecture Diagram.*
 
+Figure 3 shows the AWS-hosted application, the proposed S3 processing copy for supplied digital or already-scanned PDFs, the validation and review flow, and Snowflake as the confirmed platform for extracted, validated, pending, flagged, and approved structured material data. Each document is checked three times; results below approximately 90% confidence are flagged, and only approved values become material records. The team chose Snowflake over PostgreSQL/RDS for structured material data and proposed AWS/S3 staging rather than making Snowflake the PDF file store. Physical scanning is outside the application. The extraction product, S3 lifecycle and retention, exact confidence calibration, Snowflake schema, and detailed Manager permissions are not designed yet. [[task:#118]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/118) · [[feature:#78]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78)
+
 ![Data Flow Diagram](../docs/design/data-flow.png)
 
 *Figure 4. Data Flow Diagram.*
