@@ -58,47 +58,33 @@ Bhavesh Malhi (Bhavesh1024), Fidelis Okorie (Kameo101), Liam Wilson
 [#5](https://github.com/orgs/CPSC490-Team-Proj/projects/1/views/1?pane=issue&itemId=261443686&issue=CPSC490-Team-Proj%7CCPSC490-G07-MightyMorphin%7C5)
 
 ## 2. Goals and Objectives
-The Online Materials Database project aims to reduce the manual effort required to retrieve and analyze material information from Certificates of Conformance (CoCs) and material test reports. The project will accomplish this by developing an automated document-processing pipeline, establishing centralized structured storage for extracted material information, and providing an internal web application through which authorized users can access and analyze the collected data. The following goals and objectives define the primary capabilities to be developed and provide measurable criteria for evaluating the completed system. <br><br>
+The Online Materials Database project aims to reduce the manual effort required to retrieve and analyze material information from Certificates of Conformance (CoCs) and material test reports. The project will establish a Snowflake environment, process and validate submitted documents, preserve the source documents and workflow history, and provide authorized users with tools to search, review, compare, and visualize approved data. The following goals and objectives define the primary capabilities to be developed and provide measurable criteria for evaluating the completed system. <br><br>
 
-- **Goal 0: Design and Specification Documents** [[epic:#42]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)
-  - Objective 0.1: Design and Architecture [[story:#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)
+- **Goal 1: Snowflake Setup and Document Ingestion/Validation** [epic:#11](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/11)
+  The first goal establishes Snowflake for approved material-data storage and provides the intake, extraction, normalization, failure-handling, validation, and review workflow for supported CoCs and material test reports.
 
-- **Goal 1: Automated Material Data Extraction and Verification** [[epic:#11]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/11)
-  The first goal is to automate the process of converting material information contained in PDF documents into structured data suitable for storage and analysis. This goal addresses the current dependence on manual data extraction as well as the challenges created by scanned documents and inconsistent document formats.
+  - Objective 1.1: Configure Snowflake for material-data ingestion [story:#12](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12)
+  - Objective 1.2: Accept and initiate processing for supported material documents [story:#13](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/13)
+  - Objective 1.3: Extract and normalize candidate material data [story:#14](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14)
+  - Objective 1.4: Handle unsupported documents and processing failures [story:#15](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15)
+  - Objective 1.5: Validate and approve candidate material data [story:#16](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)
 
-  - Objective 1.1: Implement PDF document ingestion for supported CoCs and material test reports [[story:#12]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12)
+- **Goal 2: Material and Source-Document Storage** [epic:#17](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/17)
+  The second goal preserves original source documents and document metadata, stores candidate records and review history in the operational database, ingests only approved material data into Snowflake, and maintains reliable end-to-end traceability.
 
-  - Objective 1.2: Extract material and mechanical-property data from digital PDFs [[story:#13]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/13)
+  - Objective 2.1: Store original source documents and document metadata [story:#18](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18)
+  - Objective 2.2: Store candidate records, workflow status, and review history [story:#19](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)
+  - Objective 2.3: Store approved material data in Snowflake [story:#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20)
+  - Objective 2.4: Maintain storage reliability and source-to-record traceability [story:#21](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21)
 
-  - Objective 1.3: Extract material data from scanned PDF documents using OCR [[story:#14]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14)
+- **Goal 3: Material Search, Viewing, and Analysis** [epic:#22](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/22)
+  The third goal provides authorized users with a secure internal application to search, view, compare, and visualize approved material data while preserving the source and review context for each record.
 
-  - Objective 1.4: Support extraction from multiple CoC and test-report layouts [[story:#15]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15)
-
-  - Objective 1.5: Verify and flag uncertain extraction results [[story:#16]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)
-
-- **Goal 2: Centralized Material Data Storage and Management** [[epic:#17]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/17)
-  The second goal is to provide centralized, structured storage for material information extracted from CoCs and test reports. Rather than requiring users to repeatedly retrieve individual PDF documents, extracted information will be converted into relational records that can be efficiently retrieved and reused by other components of the system.
-
-  - Objective 2.1: Design and implement the relational materials data model [[story:#18]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18)
-
-  - Objective 2.2: Store material information in an AWS-hosted relational database [[story:#19]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)
-
-  - Objective 2.3: Maintain traceability between material records and source documents [[story:#20]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20)
-
-  - Objective 2.4: Implement application-level material record operations [[story:#21]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21)
-
-- **Goal 3: Material Data Access and Analysis** [[epic:#22]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/22)
-  The third goal is to provide authorized Edwards Lifesciences users with an internal web application for accessing material information stored by the system. The application will reduce the need to manually locate and review individual reports when searching for historical material information and will provide a foundation for comparing information across multiple records.
-
-  - Objective 3.1: Develop an internal web application for authorized users [[story:#23]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/23)
-
-  - Objective 3.2: Implement material and vendor search and filtering [[story:#24]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24)
-
-  - Objective 3.3: Distinguish CoC data from internal test-report data [[story:#25]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/25)
-
-  - Objective 3.4: Display material properties and source information [[story:#26]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/26)
-
-  - Objective 3.5: Compare material-property data across stored records [[story:#27]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27)
+  - Objective 3.1: Authenticate and authorize application users [story:#23](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/23)
+  - Objective 3.2: Search and filter approved material records [story:#24](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24)
+  - Objective 3.3: View approved material-record details and source context [story:#25](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/25)
+  - Objective 3.4: Compare approved material records [story:#26](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/26)
+  - Objective 3.5: Visualize compatible material-property data [story:#27](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27)
 
 
 ## 3. Proposed Approaches
