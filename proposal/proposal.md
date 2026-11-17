@@ -224,6 +224,148 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 
 *Figure 5. UI Wireframes. Screen navigation and interaction notes are included in the overview.*
 
+
+# Specification — Goal 1: Snowflake Setup and Document Ingestion/Validation
+
+Epic: [#11](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/11) · Stories: [#12](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12), [#13](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/13), [#14](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14), [#15](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15), [#16](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)<br>
+Owner: Liam Wilson · Sprint: 3 · Status: draft
+
+## Scope
+
+**In scope.** A Snowflake account hosted on AWS; an AWS EC2-hosted application or processing component that connects to Snowflake; Snowflake development-environment setup; supported PDF intake; processing handoff; digital-PDF extraction; scanned-PDF Snowflake OCR; candidate-record normalization; unsupported-document and processing-failure handling; validation; and authorized review/approval.
+
+**Out of scope.** Permanent storage of original PDFs, document metadata, candidate records, review history, and approved material data. Goal 2 stores those records and performs Snowflake insertion after approval.
+
+## Functional requirements
+
+| ID | Requirement | Story |
+|---|---|---|
+| FR-1 | The system shall provide a Snowflake account hosted on AWS with a development database, schema, warehouse, roles, least-privilege grants, and secure connection configuration for later approved-material storage. | [#12](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12) |
+| FR-1a | The application or document-processing component shall run on a sponsor-approved AWS EC2 instance and connect to Snowflake using the approved secure configuration. | [#12](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/12) |
+| FR-2 | When an authorized user uploads a supported CoC or material test-report PDF, the system shall validate the upload, generate an intake reference and checksum, and submit the document for automated processing. | [#13](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/13) |
+| FR-3 | When an uploaded PDF contains embedded text, the system shall route it to digital extraction; when it is scanned, the system shall route it to the OCR extraction path. | [#13](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/13) |
+| FR-4 | When a supported document is processed, the system shall extract material identifiers, vendor information, lot information, material-property values, and units into a normalized candidate record. | [#14](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14) |
+| FR-5 | When a scanned PDF is processed, the system shall run Snowflake OCR three times and retain the confidence result from each run. If the document does not meet the 90% confidence threshold after the third run, the system shall flag the document for reviewer attention. | [#14](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/14) |
+| FR-6 | When a document is corrupt, encrypted, unreadable, unsupported, or unsuccessfully processed, the system shall return an actionable failure result and shall not represent the document as successfully processed. | [#15](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/15) |
+| FR-7 | When a candidate record contains missing, malformed, incompatible-unit, out-of-range, or unresolved low-confidence values, the system shall flag the record for reviewer attention. | [#16](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16) |
+| FR-8 | When an authorized reviewer approves, rejects, or corrects a candidate record, the system shall pass the approved candidate data or review outcome to Goal 2 for permanent storage. | [#16](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16) |
+
+## Non-functional requirements
+
+| ID | Requirement | Why it matters here |
+|---|---|---|
+| NFR-1 | Snowflake credentials shall be supplied through secure environment-based configuration and shall not be committed to the repository. | Protects Snowflake access credentials. |
+| NFR-2 | OCR confidence results from all three runs and the resulting document-review flag shall be available to the reviewer and downstream storage workflow. | Makes the 90% confidence decision auditable. |
+| NFR-3 | The system shall provide a clear intake, processing, unsupported-document, extraction-failure, low-confidence, or review-required result for every submitted document. | Users need actionable processing feedback. |
+| NFR-4 | Upload, processing, and review actions shall be restricted to authorized users or services. | Material documents and their extracted data may be sensitive. |
+
+## Acceptance criteria (epic level)
+
+- [ ] The Snowflake account is hosted on AWS, and the application or processing component runs on the approved AWS EC2 instance.
+- [ ] The Snowflake development environment and material-data schema are configured without committing credentials.
+- [ ] An authorized user can upload a supported PDF and receive a processing handoff result.
+- [ ] Digital PDFs follow the text-extraction path and scanned PDFs follow the OCR path.
+- [ ] Snowflake OCR runs three times for a scanned PDF; documents below 90% confidence after the third run are flagged for review.
+- [ ] A supported document produces a normalized candidate material record.
+- [ ] Unsupported, unusable, and failed documents return a recorded actionable result.
+- [ ] Reviewers can correct, approve, or reject candidate records.
+- [ ] No document, candidate, review, or approved material business record is permanently stored by this goal.
+- [ ] Tests cover FR-1 through FR-8 and the applicable non-functional requirements.
+- [ ] `python .github/scripts/check_repo.py` is green and the prototype's tests pass.
+
+
+# Specification — Goal 2: Material and Source-Document Storage
+
+Epic: [#17](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/17) · Stories: [#18](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18), [#19](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19), [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20), [#21](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21)<br>
+Owner: Liam Wilson · Sprint: 3 · Status: draft
+
+## Scope
+
+**In scope.** Permanent storage of original CoCs and material test reports in an AWS S3 bucket; operational storage of document metadata, workflow status, candidate records, OCR confidence, validation results, review history, and source-document references; Snowflake insertion of approved material data; ingestion events; duplicate prevention; retry handling; and source-to-record traceability.
+
+**Out of scope.** Document intake, extraction/OCR, validation implementation, and reviewer-interface implementation, which are covered by Goal 1; and user search, viewing, comparison, and analysis, which are covered by Goal 3.
+
+## Functional requirements
+
+| ID | Requirement | Story |
+|---|---|---|
+| FR-1 | When Goal 1 accepts a document, the system shall permanently store the original PDF without modification in the approved AWS S3 bucket and retain its document ID, checksum, filename, uploader, upload time, document type, S3 object key, and storage reference. | [#18](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18) |
+| FR-2 | When a source-document storage operation fails, the system shall record the failure and shall not represent the document as successfully stored. | [#18](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18) |
+| FR-3 | When Goal 1 returns a document-processing or review outcome, the operational database shall store its status, processing attempts, errors, retry count, timestamps, OCR confidence results, and responsible user where applicable. | [#19](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19) |
+| FR-4 | When Goal 1 returns a candidate record, the system shall store material identifiers, vendor, lot, source type, property values, units, normalized values, original extracted values where applicable, and validation results. | [#19](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19) |
+| FR-5 | When Goal 1 returns a reviewer decision, the system shall store the approval or rejection decision, reviewer, timestamp, and corrections. | [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) |
+| FR-6 | When a candidate record is approved, the system shall insert its material information, property values, units, and source-document reference into Snowflake and retain the resulting Snowflake record ID. | [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) |
+| FR-7 | When a candidate record is pending review, invalid, rejected, or has unresolved low-confidence fields, the system shall prevent it from being stored in Snowflake as approved material data. | [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) |
+| FR-8 | When Snowflake ingestion is attempted, the system shall record the outcome and link the document, candidate record, reviewer decision, ingestion event, and Snowflake record ID. | [#21](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21) |
+| FR-9 | When an identical approved record revision is submitted more than once, the system shall prevent duplicate Snowflake records; when a retryable ingestion failure occurs, the system shall retry within the configured limit and record each attempt. | [#21](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21) |
+
+## Non-functional requirements
+
+| ID | Requirement | Why it matters here |
+|---|---|---|
+| NFR-1 | The operational database shall enforce keys, relationships, and integrity constraints that prevent orphaned documents, records, review events, and ingestion events. | Maintains complete source-to-record traceability. |
+| NFR-2 | The AWS S3 bucket and source-document retrieval service shall require authorization based on assigned user role. | Protects source documents and review information. |
+| NFR-3 | A failed multi-record operational-database or Snowflake write shall not leave a partial approved material record or broken traceability link. | Prevents inconsistent storage state. |
+| NFR-4 | The system shall retain the original S3 object, its object key, and checksum so authorized users can verify that it has not been silently replaced. | Protects the evidence supporting material records. |
+
+## Acceptance criteria (epic level)
+
+- [ ] Accepted source documents are permanently stored in the approved AWS S3 bucket with unique identifiers, checksums, metadata, object keys, and retrievable storage references.
+- [ ] Candidate records, OCR confidence, validation results, workflow status, and reviewer decisions are stored in the operational database.
+- [ ] Only approved records are inserted into Snowflake.
+- [ ] Approved Snowflake records contain material data, property values, units, and source-document references.
+- [ ] Snowflake record IDs and ingestion outcomes are retained with their related operational records.
+- [ ] Duplicate ingestion is prevented and retryable failures are retried and recorded.
+- [ ] Authorized users can trace an approved Snowflake record to its candidate record and original source document.
+- [ ] Tests cover FR-1 through FR-9 and the applicable non-functional requirements.
+- [ ] `python .github/scripts/check_repo.py` is green and the prototype's tests pass.
+
+
+# Specification — Goal 3: Material Search, Viewing, and Analysis
+
+Epic: [#22](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/22) · Stories: [#23](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/23), [#24](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24), [#25](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/25), [#26](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/26), [#27](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27) <br>
+Owner: Liam Wilson · Sprint: 3 · Status: draft
+
+## Scope
+
+**In scope.** Authorized access to the internal application; search and filtering of approved Snowflake material records; viewing material properties, units, source-document references, and available review context; comparing selected approved records; and displaying compatible property trends and ranges.
+
+**Out of scope.** Document upload, extraction/OCR, candidate validation, reviewer correction, source-document storage, operational workflow storage, and Snowflake ingestion. These are covered by Goals 1 and 2.
+
+## Functional requirements
+
+| ID | Requirement | Story |
+|---|---|---|
+| FR-1 | When an authorized user authenticates through the approved internal identity flow, the system shall provide access to the material-data application. | [#23](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/23) |
+| FR-2 | When a user lacks the role required for a protected action, record, source-document reference, or review-history item, the system shall deny the request and provide appropriate feedback. | [#23](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/23) |
+| FR-3 | When an authorized user searches by a supported material identifier, vendor, lot, or source type, the system shall display matching approved Snowflake records. | [#24](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24) |
+| FR-4 | When an authorized user applies supported material-property, vendor, document-type, or date filters, the system shall display only approved records matching all selected criteria. | [#24](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24) |
+| FR-5 | When no approved records match a search or filter request, the system shall display a no-results message. | [#24](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/24) |
+| FR-6 | When a user selects an approved material record, the system shall display material identity, vendor, lot, source type, property values, units, source-document reference, and available review and ingestion context. | [#25](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/25) |
+| FR-7 | When a user selects multiple approved records for comparison, the system shall display corresponding property values and units side by side and identify missing or incompatible values. | [#26](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/26) |
+| FR-8 | When selected records contain compatible values for a supported property, the system shall display the selected trend or range visualization; otherwise, it shall explain why visualization is unavailable. | [#27](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27) |
+
+## Non-functional requirements
+
+| ID | Requirement | Why it matters here |
+|---|---|---|
+| NFR-1 | The system shall display stored numeric property values without unintended rounding or loss of precision and shall show the unit for each value. | Engineering decisions depend on correctly interpreted values. |
+| NFR-2 | The application shall apply assigned permissions before displaying protected material data, source-document references, or review context. | Protects material and document information. |
+| NFR-3 | The system shall provide clear loading, no-results, missing-data, incompatible-unit, and retrieval-failure feedback. | Users need to distinguish lack of data from an application failure. |
+| NFR-4 | The system shall measure search, comparison, and visualization response time against a sponsor-approved target and representative approved dataset. | Performance claims must be measurable. |
+
+## Acceptance criteria (epic level)
+
+- [ ] Authorized users can access the internal material-data application; unauthorized users cannot access protected actions or records.
+- [ ] Users can search and filter approved material records using supported criteria.
+- [ ] Users can view material identity, property values, units, source-document reference, and available review context.
+- [ ] Users can select multiple approved records and compare compatible values side by side.
+- [ ] Users can view supported trend or range visualizations for compatible selected values.
+- [ ] The application explains empty results, missing data, incompatible units, and retrieval failures.
+- [ ] Tests cover FR-1 through FR-8 and the applicable non-functional requirements.
+- [ ] `python .github/scripts/check_repo.py` is green and the prototype's tests pass.
+
+
 ### Specification and design documents
 | Document | Kind | Covers | Issues |
 |----------|------|--------|--------|
