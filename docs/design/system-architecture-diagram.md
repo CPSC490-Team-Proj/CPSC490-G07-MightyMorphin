@@ -3,13 +3,12 @@
 
 # System Architecture Diagram
 
-This architecture shows the planned application components and their communication. The application is hosted in AWS, Snowflake is the provisional materials data platform (the team is still trying it out, #78), and original PDFs remain in Edwards' existing on-site document system; the application keeps only a reference to each PDF. Users sign in with Edwards' Microsoft SSO. Extracted values reach Snowflake only after a user approves them, and every user action is written to an audit log that only the administrator can export.
+This architecture shows the application components and their communication after the November 15 team-call decisions. Snowflake is the confirmed platform for ingesting, storing, and analyzing structured material data. Digital or already-scanned PDFs are staged in AWS storage (an S3 bucket is proposed) for OCR; physical scanning is outside the system. Extracted, validated, pending, and flagged data are tracked in Snowflake, while only approved values become approved material records. Each document is checked three times; results below approximately 90% confidence are flagged. The extraction product and S3 lifecycle details remain undecided. A Manager can inspect audit logs to investigate failures.
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"background": "#ffffff", "primaryColor": "#eef1ff", "primaryTextColor": "#263238", "primaryBorderColor": "#5268b3", "lineColor": "#59645e", "secondaryColor": "#f0efe9", "tertiaryColor": "#e3f3ed"}}}%%
 flowchart LR
     user["Authorized Edwards employee<br/>R&amp;D · manufacturing · modeling"]
-    admin["System administrator"]
+    manager["Manager"]
 
     subgraph aws["AWS application environment"]
         direction LR
@@ -17,33 +16,34 @@ flowchart LR
         api["Backend API<br/>Request routing · service coordination"]
         subgraph services["Application services"]
             direction LR
-            extraction["Extraction<br/>Parse · OCR · normalize · validate"]
+            extraction["Extraction<br/>Parse · OCR · normalize"]
+            validation["Validation<br/>3 checks · ~90% confidence threshold"]
             review["Data review<br/>Pending queue · correct · approve"]
             analysis["Analysis<br/>Search · filter · compare · trends · export"]
-            adminsvc["Administration<br/>Permissions · job monitor · audit-log export"]
+            managersvc["Manager tools<br/>Permissions · job monitor · audit-log review"]
         end
         ui -->|Application requests| api
         api -->|Document reference| extraction
         api -->|Review and correction requests| review
         api -->|Analysis request| analysis
-        api -->|Admin request| adminsvc
-        extraction -->|Extracted values for review| review
+        api -->|Manager request| managersvc
+        extraction -->|Parsed values| validation
+        validation -->|Extracted values · validation results · status| snowflake
     end
 
     sso["Edwards Microsoft SSO"]
-    onsite["Existing on-site document system<br/>Original PDF storage"]
-    snowflake[("Snowflake (provisional)<br/>Approved materials data · audit log")]
+    s3["AWS document storage<br/>S3 proposed · PDF processing copy"]
+    snowflake[("Snowflake<br/>Extracted · validated · pending data<br/>Approved material records · audit log")]
 
     user -->|Uses| ui
-    admin -->|Uses| ui
+    manager -->|Uses| ui
     ui -->|Sign-in · access decision| sso
-    api -->|Store PDF · return reference| onsite
-    onsite -->|Read source PDF| extraction
-    extraction -->|Document status| snowflake
+    api -->|Save PDF for processing| s3
+    s3 -->|PDF processing copy| extraction
     snowflake -->|Pending and flagged documents| review
-    review -->|Approved records · audit events| snowflake
+    review -->|Corrections · review state · approved records| snowflake
     analysis -->|Search · comparison · historical trends| snowflake
-    adminsvc -->|Roles · job status · audit log| snowflake
+    managersvc -->|Roles · job status · audit log| snowflake
 ```
 
 ## Component Responsibilities
@@ -52,12 +52,13 @@ flowchart LR
 |---|---|
 | Web UI | Lets authorized users upload documents, review and correct extracted records, search and filter materials, compare records, view historical trends, and export results. |
 | Backend API | Routes UI requests and coordinates authentication, document references, extraction, and data access. |
-| Extraction module | Reads source PDFs from the on-site document system, runs OCR on every document by default, normalizes and validates fields, records each document's status (Uploaded, Processing, Failed, Unsupported, Done), and passes the extracted values to review. |
-| Data review module | Presents pending and flagged documents for human review, lets a user with permission correct values, notifies the uploader when a document is not approved, and writes the values to Snowflake only on approval. |
-| Analysis module | Queries approved material data for search, filtering, comparisons, historical trends, and export (PDF, DOC, CSV; planned last). |
-| Administration module | Lets the system administrator manage permissions, monitor processing jobs, and export the audit log, which is not shown anywhere else in the web app. |
-| Snowflake (provisional) | Stores approved material records, document status, and the audit log of every user action; supports application queries and analysis. Final choice pending the team's Snowflake trial (#78). |
-| Existing on-site document system | Stores original PDFs and serves them to the application by document reference; Edwards keeps responsibility for storing and securing them. |
+| Extraction module | Reads the PDF processing copy from AWS storage, runs the selected OCR/extraction tool, normalizes fields, and passes structured values to validation. Physical scanning is outside the application workflow. |
+| Validation module | Checks each document three times against the configured rules. Results below approximately 90% confidence are marked Flagged; the exact scoring method and threshold calibration remain to be designed. |
+| Data review module | Reads pending and flagged records from Snowflake, lets an authorized user correct values, and writes review status and corrections back to Snowflake. Only approved values become approved material records. |
+| Analysis module | Queries approved Snowflake material data for search, filtering, comparisons, historical trends, and export (PDF, DOC, CSV; planned last). |
+| Manager tools | Allow a Manager to manage permissions, monitor processing jobs, and inspect audit logs to investigate failures. |
+| Snowflake | Stores extracted, validated, pending, and flagged data; approved material records; document references; and audit events. It is the confirmed platform for structured material-data ingestion, storage, and analysis. |
+| AWS document storage | Holds the PDF processing copy used by OCR; an S3 bucket is proposed. Original-file retention, lifecycle, and integration details remain to be decided. |
 | Edwards Microsoft SSO | Signs users in with their Edwards Microsoft account and provides access decisions. |
 
-*High-level system architecture. Original PDF files stay in the existing on-site document system; extracted values wait in the review queue and reach Snowflake only after approval, and historical trends are queried from Snowflake.*
+*High-level system architecture. PDFs are staged in proposed AWS/S3 storage for extraction; Snowflake tracks extracted and review-state data, while only approved values become material records. Three validation checks and an approximately 90% confidence threshold determine whether a document is flagged. Extraction tooling, PDF lifecycle, and role permissions beyond the Manager workflow remain to be designed.*
