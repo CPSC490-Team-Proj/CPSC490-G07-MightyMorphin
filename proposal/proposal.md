@@ -310,6 +310,12 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |[[task:#128]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/128)|Task|Explain §4 environment choices and update them for the call|Standalone Documentation Task|[@cpham2005](https://github.com/cpham2005)|Sprint 3|
 |[[task:#129]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/129)|Task|Update the data flow diagram and explain Figure 4|Standalone Documentation Task|[@cpham2005](https://github.com/cpham2005)|Sprint 3|
 |[[task:#130]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/130)|Task|Update proposal goals and objectives to mention Snowflake|Standalone Documentation Task|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 3|
+|[[task:#134]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/134)|Task|Align the Goal 1 extraction specification with the Snowflake team decisions|[[story:#16]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)|[@liamw5265](https://github.com/liamw5265)|Sprint 4|
+|[[task:#135]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/135)|Task|Align the Goal 3 access and analysis specification with the Snowflake decisions|[[story:#27]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/27)|[@liamw5265](https://github.com/liamw5265)|Sprint 4|
+|[[task:#136]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/136)|Task|Add Goal 1 and Goal 3 specification summaries to proposal §4|Standalone Documentation Task|[@liamw5265](https://github.com/liamw5265)|Sprint 4|
+|[[task:#137]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/137)|Task|Link the readiness fix tasks in proposal §4|Standalone Documentation Task|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
+|[[task:#138]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/138)|Task|Correct the stale §3 approach and the #52 link|Standalone Documentation Task|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
+|[[task:#139]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/139)|Task|Fix the #78 issue type in the proposal|Standalone Documentation Task|[@Kameo101](https://github.com/Kameo101)|Sprint 3|
 
 
 
