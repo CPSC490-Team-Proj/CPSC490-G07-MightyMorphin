@@ -1,17 +1,19 @@
 ## Design -- ER Diagram
-Epic: [#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42) · Stories: [#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48), [#18](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18), [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) · Task: [#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)<br>
+Epic: [#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42) · Stories: [#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48), [#18](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18), [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) · Tasks: [#38](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38), [#172](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/172)<br>
 Owner: Fidelis Okorie · Sprint: 2 · Status: draft
 
 In this document, it defines the relational data model for the verified material
 data described in proposal §3: "materials, mechanical properties, documents,
 vendors, and lots as related records", where "every record keeps a reference
-to the original PDF" and "each correction and approval is logged." It also
+to the copy of the original PDF saved in the sponsor's AWS storage" and "each correction and approval is logged." It also
 stores what the use cases in the use case diagram ([#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36)) need;
 §3 maps each use case to the tables that support it. It follows the team
-decisions recorded for [#78](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78):
-extracted values are stored only once they are approved, the original PDFs stay
-in Edwards' document system (we keep a reference), and every action is logged
-for the administrator.
+decisions recorded for [#78](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/78) and the team call of
+2026-11-15: Snowflake is the confirmed platform for all structured data
+(extracted, pending, flagged and approved records, plus the audit log); the
+PDF itself is saved to AWS S3 when processing starts, and the database keeps
+only its S3 object key and checksum; only approved records count as verified
+material data; and every action is logged for the Manager.
 
 ## 1. Entity-relationship diagram
 
@@ -36,7 +38,7 @@ erDiagram
   PROCESSING_JOB |o--o{ SOURCE_DOCUMENT : "processes"
   APP_USER ||--o{ SOURCE_DOCUMENT : "uploads"
   APP_USER ||--o{ PROCESSING_JOB : "starts"
-  APP_USER ||--o{ MATERIAL_RECORD : "approves"
+  APP_USER |o--o{ MATERIAL_RECORD : "approves"
   APP_USER ||--o{ AUDIT_EVENT : "performs"
   ROLE ||--o{ APP_USER : "is held by"
 ```
@@ -73,19 +75,19 @@ erDiagram
   MATERIAL_RECORD ||--o{ PROPERTY_VALUE : "contains"
   PROPERTY_TYPE ||--o{ PROPERTY_VALUE : "measures"
   MATERIAL_RECORD ||--o{ PROCESSING_STEP : "lists"
-  APP_USER ||--o{ MATERIAL_RECORD : "approves"
+  APP_USER |o--o{ MATERIAL_RECORD : "approves"
   APP_USER ||--o{ AUDIT_EVENT : "performs"
 
   ROLE {
     int       role_id      PK
-    varchar   name         "unique: R_AND_D, MANUFACTURING, MODELING, SYSTEM_ADMIN"
+    varchar   name         "unique: R_AND_D, MANUFACTURING, MODELING, MANAGER"
   }
   APP_USER {
     int       user_id      PK
     int       role_id      FK
     varchar   email        "unique"
     varchar   display_name
-    boolean   is_active    "an admin deactivates rather than deletes"
+    boolean   is_active    "users are deactivated rather than deleted"
   }
   PROCESSING_JOB {
     int       job_id       PK
@@ -130,9 +132,9 @@ erDiagram
     int       uploaded_by  FK "APP_USER.user_id"
     varchar   doc_type     "COC or TEST_REPORT"
     varchar   input_type   "DIGITAL or SCANNED; every document goes through OCR by default"
-    varchar   pdf_reference "reference to the original PDF in Edwards' document system"
+    varchar   s3_object_key "S3 key of the PDF copy saved when processing starts"
+    varchar   checksum     "checksum of the PDF; shows the copy was not replaced"
     varchar   status       "UPLOADED, PROCESSING, FAILED, UNSUPPORTED or DONE"
-    varchar   review_status "nullable until DONE: PENDING, FLAGGED or APPROVED"
     date      issued_on    "nullable: date printed on the document"
     timestamp uploaded_at
   }
@@ -141,9 +143,10 @@ erDiagram
     int       document_id  FK "not null: source is always kept"
     int       material_id  FK
     int       lot_id       FK "nullable: lot not always on the document"
-    int       approved_by  FK "APP_USER.user_id"
+    int       approved_by  FK "nullable until APPROVED; APP_USER.user_id"
+    varchar   review_status "PENDING, FLAGGED, APPROVED or REJECTED"
     timestamp extracted_at
-    timestamp approved_at  "rows exist only after approval"
+    timestamp approved_at  "nullable until APPROVED"
   }
   PROPERTY_VALUE {
     int       value_id     PK
@@ -189,8 +192,8 @@ Read it with Figure 1 for the relationships.*
 | `LOT` | one production lot of a material | #18: "support lot information when available" |
 | `PROPERTY_TYPE` | one kind of mechanical property and its standard unit | #18: "represent mechanical properties"; lets values and limits be compared |
 | `MATERIAL_SPEC` | the allowed range of one property for one material | #36: View Material Specifications, Compare Data to Specifications, Identify Out-of-Spec Materials |
-| `SOURCE_DOCUMENT` | one uploaded PDF: a reference to the original in Edwards' document system, its processing `status` and its `review_status` | #18: "distinguish CoCs from material test reports" (`doc_type`); #20: source identified as CoC or test report; Goal 1 spec: unsupported documents are rejected |
-| `MATERIAL_RECORD` | the approved material data extracted from one document | #20: "each extracted material record shall retain a reference to its source document" (`document_id`, not null) |
+| `SOURCE_DOCUMENT` | one uploaded PDF: the S3 object key and checksum of its copy, and its processing `status` | #18: "distinguish CoCs from material test reports" (`doc_type`); #20: source identified as CoC or test report; Goal 1 spec: unsupported documents are rejected |
+| `MATERIAL_RECORD` | the material data extracted from one document, with its `review_status`; only `APPROVED` rows are verified material data | #20: "each extracted material record shall retain a reference to its source document" (`document_id`, not null); #19: candidate records and review status |
 | `PROPERTY_VALUE` | one mechanical property value | #18: "represent mechanical properties associated with materials"; §3 verification checks (units, confidence) |
 | `PROCESSING_STEP` | one processing step printed on the document | #36: View Material Processing Info |
 | `AUDIT_EVENT` | one action by a user (upload, view, correction, approval, edit, delete, export) | §3: "each correction and approval is logged"; Goal 2 spec: audit log of record operations; #36: Validate Extracted Data, Export Audit Logs |
@@ -203,12 +206,12 @@ queries over tables already listed.
 
 | Use case (#36) | Tables |
 |---|---|
-| Import PDF Documents | `SOURCE_DOCUMENT` (`pdf_reference`, `status`) |
+| Import PDF Documents | `SOURCE_DOCUMENT` (`s3_object_key`, `checksum`, `status`) |
 | Batch Process Documents | `PROCESSING_JOB`, `SOURCE_DOCUMENT.job_id` |
-| Extract Material Data | `SOURCE_DOCUMENT.status`; values are written to `MATERIAL_RECORD`, `PROPERTY_VALUE` and `PROCESSING_STEP` once approved |
-| Validate Extracted Data | `SOURCE_DOCUMENT.review_status`, `AUDIT_EVENT` (corrections and approvals) |
-| Import Material Records | new `MATERIAL_RECORD` rows, written when a document is approved |
-| Search / Filter Material Records | `MATERIAL`, `VENDOR`, `LOT`, `SOURCE_DOCUMENT.doc_type` |
+| Extract Material Data | `SOURCE_DOCUMENT.status`; values are written to `MATERIAL_RECORD` (`review_status` PENDING or FLAGGED), `PROPERTY_VALUE` and `PROCESSING_STEP` |
+| Validate Extracted Data | `MATERIAL_RECORD.review_status`, `PROPERTY_VALUE.confidence`, `AUDIT_EVENT` (corrections and approvals) |
+| Import Material Records | `MATERIAL_RECORD.review_status` set to APPROVED, with `approved_by` and `approved_at` |
+| Search / Filter Material Records | `MATERIAL`, `VENDOR`, `LOT`, `SOURCE_DOCUMENT.doc_type`; only APPROVED records |
 | View Material Specifications | `MATERIAL_SPEC` |
 | View Material Properties | `PROPERTY_VALUE`, `PROPERTY_TYPE` |
 | View Material Processing Info | `PROCESSING_STEP` |
@@ -219,13 +222,14 @@ queries over tables already listed.
 | Export Results (PDF, DOC, CSV) | *derived*: the same queries as search and compare, plus an `AUDIT_EVENT` with `action = EXPORT` |
 | Manage User Permissions | `ROLE`, `APP_USER.role_id` |
 | Monitor Processing Jobs | `PROCESSING_JOB`, `SOURCE_DOCUMENT.status` |
-| Export Audit Logs | `AUDIT_EVENT` (admin only; not shown in the web app) |
+| Export Audit Logs | `AUDIT_EVENT` (Manager only; not shown in the web app) |
 
 ## 4. Relationships
 
-1. An approved `SOURCE_DOCUMENT` produces one or more `MATERIAL_RECORD`s. Each
-   `MATERIAL_RECORD` has exactly one source document, so a value can always be
-   traced back to its PDF (#20).
+1. A processed `SOURCE_DOCUMENT` produces one or more `MATERIAL_RECORD`s. Each
+   `MATERIAL_RECORD` has exactly one source document, and the document holds
+   the S3 object key and checksum of its PDF, so a value can always be traced
+   back to the file it came from (#20, #21).
 2. A `MATERIAL_RECORD` is for one `MATERIAL` and, when the document gives
    one, one `LOT`.
 3. A `MATERIAL_RECORD` holds many `PROPERTY_VALUE`s and `PROCESSING_STEP`s.
@@ -236,15 +240,17 @@ queries over tables already listed.
 5. A `LOT` belongs to one `MATERIAL` and, when known, one `VENDOR`.
 6. A `PROCESSING_JOB` started by one `APP_USER` processes many
    `SOURCE_DOCUMENT`s; a document uploaded on its own has no job.
-7. A document waits with `review_status` PENDING or FLAGGED until a user with
-   permission corrects and approves it; the uploader is notified, and the
-   document stays in the queue until it is approved. Only then are its values
-   written as `MATERIAL_RECORD` rows, so every row in that table is verified
-   material data (§3). Each `MATERIAL_RECORD` is approved by one `APP_USER`.
+7. Extracted values are written to Snowflake right away as a `MATERIAL_RECORD`
+   with `review_status` PENDING, or FLAGGED when a check fails or confidence is
+   below about 90% (§3). The record waits in the review queue until a user with
+   permission corrects and approves it; the uploader is notified. Only APPROVED
+   records are shown in search and analysis, so they are the verified material
+   data. An approved record has exactly one approving `APP_USER`; a pending one
+   has none yet.
 8. Each `APP_USER` has one `ROLE`.
 9. Every action a user takes (upload, view, correction, approval, edit,
    delete, export) is one `AUDIT_EVENT`. The audit log is not shown in the web
-   app; the administrator exports it.
+   app; the Manager exports it.
 
 ## 5. Key decisions
 
@@ -254,23 +260,30 @@ queries over tables already listed.
 | Naming properties | free-text name on each value · shared `PROPERTY_TYPE` table | `PROPERTY_TYPE` | values and spec limits must name the same property in the same unit to be compared |
 | Keeping the source | file path on each property value · `document_id` on each extracted record | `document_id` on `MATERIAL_RECORD` | one reference per extracted record satisfies #20 without repeating it on every value |
 | Review history | overwrite the value and keep a "reviewed" flag · log only corrections and approvals · append-only log of every action (`AUDIT_EVENT`) | log every action | team decision (#78): Edwards can trace every upload, view, change and export; the Goal 2 spec asks for an audit log of record operations |
-| When extracted values are stored | store every record with a status and hide unapproved ones · store values only once approved | only once approved | team decision (#78): unverified values never enter the materials data; the document itself waits in the review queue with a reference to its PDF |
-| Original PDFs | copy each PDF into our own storage · keep a reference to Edwards' document system | reference only | team decision (#78): Edwards already stores the documents and handles their security |
+| Database product | PostgreSQL on Amazon RDS · Snowflake | Snowflake | the sponsor already uses Snowflake (proposal §3); confirmed at the team call of 2026-11-15, after #78 had listed it as provisional |
+| When extracted values are stored | store every record with a `review_status` and show only approved ones · store values only once approved | store every record with a status | team call 2026-11-15: pending and flagged values stay in Snowflake until reviewed (proposal §3); storing only approved values left the review screen with nowhere to read pending values from |
+| Original PDFs | keep only a reference to Edwards' document system · store the PDF inside Snowflake · save a copy to AWS S3 | S3 copy, referenced by object key and checksum | team call 2026-11-15: the document is saved to S3 at the OCR step, and Snowflake holds only structured data; the checksum lets a reviewer prove the copy was not replaced (Goal 2 spec NFR-4) |
 | Out-of-spec status | stored flag on each value · computed by comparing to `MATERIAL_SPEC` | computed | a stored flag goes stale whenever a spec limit changes |
 | User permissions | one role per user · many roles per user | one role per user | each actor in the use case diagram is a separate group of users |
 
 ## 6. What is NOT designed yet
 
-- **Database product and exact column types.** Snowflake is the provisional
-  choice for storing and analyzing the data, with the app hosted on AWS (#78);
-  the team still has to try Snowflake before confirming. We do not have test documents to see how it all works yet. The
-  types above are generic SQL types.
-- **Where extracted values wait during review.** Values are not stored in these
-  tables until approval, so the review screen needs them from somewhere else
-  (held by the extraction step, or re-extracted when the review opens). Not
-  decided yet.
-- **Retention and deletion.** The Goal 2 spec asks for delete or deactivate
-  "according to the defined retention policy"; that policy is not defined yet.
+- **Final Snowflake schema and column types.** The types above are generic SQL
+  types; the Snowflake tables are built in #152 and #107. Standard Snowflake
+  tables record primary and foreign keys but do not enforce them (only
+  `NOT NULL` is enforced), so the application must check them itself to meet
+  Goal 2 spec NFR-1, which asks that keys and relationships prevent orphaned
+  documents and records. How it does that is not
+  designed yet.
+- **Optional fields and constraints.** Which columns are required, and which
+  values must be unique, depend on what real CoCs and test reports contain.
+- **One database or two.** Proposal §2 and the Goal 2 spec still mention a
+  separate "operational database" for candidate records. This design follows
+  the team call and keeps them in Snowflake. [CONFIRM] with the team.
+- **Retention, deletion and S3 lifecycle.** The Goal 2 spec asks for delete or
+  deactivate "according to the defined retention policy"; that policy, how long
+  the S3 copy is kept, and which bucket is used depend on the sponsor and are
+  not defined yet.
 - **Property names and units.** The team does not yet have real CoCs or test
   reports as mentioned above, so the rows of `PROPERTY_TYPE` are not set in stone and can be changed in the future when documents are acquired.
 - **Where specification limits come from.** For `MATERIAL_SPEC` we are just assuming that Edwards
