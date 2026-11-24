@@ -62,8 +62,8 @@ The Online Materials Database project aims to reduce the manual effort required 
 
 - **Goal 0: Design and Specification Documents** [epic:#42](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/42)
   
-  - Objective 0.1: Design and Architecture [story#48](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)
-  - Objective 0.2: Epic Specification Documents [story#49](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)
+  - Objective 0.1: Design and Architecture [[story:#48]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/48)
+  - Objective 0.2: Epic Specification Documents [[story:#49]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49)
 
 - **Goal 1: Snowflake Setup and Document Ingestion/Validation** [epic:#11](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/11)
   The first goal establishes Snowflake for approved material-data storage and provides the intake, extraction, normalization, failure-handling, validation, and review workflow for supported CoCs and material test reports.
@@ -75,7 +75,7 @@ The Online Materials Database project aims to reduce the manual effort required 
   - Objective 1.5: Validate and approve candidate material data [story:#16](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/16)
 
 - **Goal 2: Material and Source-Document Storage** [epic:#17](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/17)
-  The second goal preserves original source documents and document metadata, stores candidate records and review history in the operational database, ingests only approved material data into Snowflake, and maintains reliable end-to-end traceability.
+  The second goal preserves original PDFs in AWS S3 and stores source metadata, candidate values, pending workflow state, validation results and review history in Snowflake. Only approved material data is published to the approved-record dataset for search and analysis; candidate persistence is distinct from approval. Source references and ingestion outcomes maintain end-to-end traceability.
 
   - Objective 2.1: Store original source documents and document metadata [story:#18](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18)
   - Objective 2.2: Store candidate records, workflow status, and review history [story:#19](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)
@@ -220,6 +220,23 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 
 *Figure 5. UI Wireframes. Screen navigation and interaction notes are included in the overview.*
 
+The five user screens separate PDF upload, processing/review queue, validation,
+material search, and analysis. Existing PDFs are accepted without physical
+scanning; at OCR processing they are saved to AWS, while candidate values,
+pending items, validation results and approved records live in Snowflake with
+distinct review statuses. Validation makes three checks with an approximately
+90% confidence target; aggregation and exact thresholds remain unspecified.
+Review places editable values beside the source PDF, preserving human approval
+instead of treating every extracted value as verified. A separate queue was
+chosen over putting processing and correction into a single upload screen.
+Regular user history panels were removed because audit-log investigation and
+export belong to the Manager. Search retains source-document links and passes
+selected approved records to comparison. Exact permissions, the Manager UI,
+confidence aggregation and later export behavior are not designed here.
+[[task:#122]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/122)
+[[task:#41]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)
+
+
 ![Sequence Diagram - Search and View](../docs/design/sequence-search-view.png)
 
 *Figure 6.4. Search, View, and Record Selection Sequence Diagram. The figure shows how a user searches for records by entering filter criteria in the GUI. The request is sent through the Query Service and Database Driver to retrieve matching database records, which are returned and displayed in a results table. Users can select a record to view its details or select two records, enabling the Compare button and passing the selected records to the Compare tab.*
@@ -238,8 +255,17 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |[Specification — Goal 1: Snowflake Setup and Document Ingestion/Validation](../docs/specs/goal-1-snowflake-ingestion-validation.md)|Specification|Specification document for Goal 1: Automated Material Data Extraction and Verification|[#46](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/46)|
 |[Specification — Goal 2: Material and Source-Document Storage](../docs/specs/goal-2-storage-management.md)|Specification|Specification document for Goal 2: Centralized Material Data Storage and Management|[#58](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/58)|
 |[Specification — Goal 3: Material Search, Viewing, and Analysis](../docs/specs/goal-3-material-search-viewing-analysis.md)|Specification|Specification document for Goal 3: Material Data Access and Analysis|[#59](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/59)|
+|[Page 5 Analysis Sequence](../docs/design/sequence-analysis/analysis-sequence.md)|Design|Shows approved-record comparison, trend/range requests, and empty/error responses.|[[task:#94]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/94)|
 
 ### Planned activities — the work items
+
+Proposal preparation is tracked under [[epic:#4]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/4),
+including abstract work [[task:#28]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/28).
+Sponsor intake and architecture forms are tracked under
+[[epic:#45]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/45); confidential form contents are
+not included in this repository. Specification documents are coordinated through
+[[story:#49]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/49).
+
 
 | Issue | Type | Activity | Parent | Owner | Sprint |
 |---|---|---|---|---|---|

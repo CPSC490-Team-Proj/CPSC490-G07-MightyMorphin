@@ -1,0 +1,55 @@
+{
+  "issue": 120,
+  "observed": "2026-11-24",
+  "publication": "Local draft only; configured origin is public.",
+  "board_status": {
+    "project": 1,
+    "issues": [
+      1,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ],
+    "observed": "No Status on any of these cards",
+    "proposed": "Backlog unless owner confirms active work; do not regress In Progress or In Review automatically."
+  },
+  "single_assignee": {
+    "5": [
+      "Kameo101",
+      "cpham2005"
+    ],
+    "7": [
+      "GwenNguyen2604",
+      "Bhavesh1024"
+    ],
+    "34": [
+      "Kameo101",
+      "Bhavesh1024",
+      "cpham2005",
+      "liamw5265"
+    ],
+    "action": "Team must identify primary contributor before removing other assignees; preserve historical credit in body."
+  },
+  "standalone_notes": {
+    "7": "Standalone documentation/writing task for the proposal abstract. Carries its own sp: 2 label and Sprint 1 milestone.",
+    "84": "Standalone documentation/writing task for the Sprint 2 report. Carries its own sp: 3 label and Sprint 3 milestone."
+  },
+  "pr81": {
+    "observed": "Unfilled template, multiple merged contributions in its diff; title is Instructor: Goal and Objective Fix.",
+    "action": "Author must confirm which issue this PR was intended to resolve before adding a Closes line; do not infer it from the broad merged diff."
+  }
+}
