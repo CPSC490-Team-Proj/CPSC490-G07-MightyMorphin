@@ -332,6 +332,7 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |[[feature:#165]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/165)|Feature|Secure source-document retrieval|[[story:#18]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18)|[@](https://github.com/)|Sprint 4|
 |[[feature:#166]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/166)|Feature|Persist workflow status|[[story:#19]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)|[@](https://github.com/)|Sprint 4|
 |[[feature:#167]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/167)|Feature|Persist candidate material records|[[story:#19]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)|[@](https://github.com/)|Sprint 4|
+|[[task:#172]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/172)|Task|Explain the ER diagram in proposal Figure 2|Standalone Documentation Task|[@Kameo101](https://github.com/Kameo101)|Sprint 4|
 
 
 
