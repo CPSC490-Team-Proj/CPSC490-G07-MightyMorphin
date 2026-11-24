@@ -332,6 +332,12 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 |[[feature:#165]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/165)|Feature|Secure source-document retrieval|[[story:#18]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/18)|[@](https://github.com/)|Sprint 4|
 |[[feature:#166]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/166)|Feature|Persist workflow status|[[story:#19]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)|[@](https://github.com/)|Sprint 4|
 |[[feature:#167]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/167)|Feature|Persist candidate material records|[[story:#19]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19)|[@](https://github.com/)|Sprint 4|
+|[[task:#170]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/170)|Task|Audit and normalize typed issue links throughout the proposal|Standalone Documentation Task|[@cpham2005](https://github.com/cpham2005)|Sprint 4|
+|[[task:#171]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/171)|Task|Document the page 4 search and view prototype in proposal §4|[[feature:#90]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/90)|[@liamw5265](https://github.com/liamw5265)|Sprint 4|
+|[[task:#172]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/172)|Task|Explain the ER diagram in proposal Figure 2|Standalone Documentation Task|[@Kameo101](https://github.com/Kameo101)|Sprint 4|
+|[[task:#173]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/173)|Task|Explain the System Architecture diagram in proposal Figure 3|Standalone Documentation Task|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 4|
+|[[task:#177]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/177)|Task|Fix readiness-flagged issue references in the header, Figure 3 text and §4 rows|Standalone Documentation Task|[@Bhavesh1024](https://github.com/Bhavesh1024)|Sprint 4|
+|[[task:#178]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/178)|Task|Link Sprint 4 documentation tasks in proposal §4|Standalone Documentation Task|[@Kameo101](https://github.com/Kameo101)|Sprint 4|
 
 
 
