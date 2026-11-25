@@ -29,7 +29,7 @@ sequenceDiagram
 
     Note over Reviewer,API: Signed in (Edwards SSO, mocked in prototype), record opened from the page 2 queue
 
-    rect rgb(240, 244, 250)
+    rect rgba(70, 130, 220, 0.12)
     Note over Reviewer,S3: Load a pending or flagged record
     Reviewer->>UI: Open record for review
     UI->>API: GET /records/{id}
@@ -52,7 +52,7 @@ sequenceDiagram
     end
     end
 
-    rect rgb(244, 250, 240)
+    rect rgba(80, 170, 80, 0.12)
     Note over Reviewer,S3: Save corrections as a draft (does not approve)
     Reviewer->>UI: Edit values, add correction note, click Save draft
     UI->>API: PUT /records/{id}/draft (values, note)
@@ -76,7 +76,7 @@ sequenceDiagram
     end
     end
 
-    rect rgb(250, 244, 240)
+    rect rgba(220, 120, 60, 0.12)
     Note over Reviewer,S3: Human approval (separate from the automatic checks)
     Reviewer->>UI: Click Approve record
     UI->>API: POST /records/{id}/approve
@@ -145,6 +145,4 @@ sequenceDiagram
 - **Confidence aggregation.** How the three OCR passes combine into one
   confidence value, and the exact threshold (about 90%), remain open.
 
-The PNG is rendered from the Mermaid block above (Mermaid 10.9.1); regenerate
-both together after any edit. AI-assisted draft; a teammate must review the
-diagram against the wireframe and requirements before #87 is complete.
+The PNG is rendered from the Mermaid block above (Mermaid 10.9.1);
