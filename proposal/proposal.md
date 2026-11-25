@@ -373,6 +373,12 @@ not included in this repository. Specification documents are coordinated through
 
 
 
+### Prototype page 2 — Processing and review queue
+
+[[feature:#93]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/93) implements the [processing and review queue prototype](../prototype/ui-tabs/review-queue.html) from the page 2 wireframe. The screen presents each illustrative document's filename, material ID, vendor, processing or review status, feedback, and context-appropriate action. Users can search by filename, material ID, vendor, or document ID and filter Processing, Failed, Unsupported, Pending, Flagged, or Approved. Loading, empty-queue, no-match, and service-error states are included. Approved records are not retained in the queue; selecting Approved returns an explanatory no-match state and directs users to Materials.
+
+Processing details show the current step and progress and let the user simulate a successful transition to Pending or a failed extraction. Pending and Flagged entries open an in-page page 3 validation handoff with the document reference; it does not approve or persist candidate data, because the page 3 workflow is a separate prototype. Failed entries support retry and PDF replacement, including file-type checks, duplicate-request protection, and simulated success and service-failure feedback. All records and service behavior are local fixtures; Snowflake, backend APIs, authentication, durable storage, and source-document upload are not connected. Run it from the repository root with `python3 -m http.server 8000 --directory prototype` and open `http://localhost:8000/ui-tabs/review-queue.html`. The behavior checks are in `prototype/ui-tabs/review-queue.test.js` and run with Node.js 18+ using `node --test prototype/ui-tabs/review-queue.test.js`.
+
 ## 5. Project Outcomes
 
 > Describe the outcomes or deliverables, e.g., final project report, user
