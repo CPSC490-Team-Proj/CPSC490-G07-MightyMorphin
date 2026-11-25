@@ -277,9 +277,11 @@ queries over tables already listed.
   designed yet.
 - **Optional fields and constraints.** Which columns are required, and which
   values must be unique, depend on what real CoCs and test reports contain.
-- **One database or two.** Proposal §2 and the Goal 2 spec still mention a
-  separate "operational database" for candidate records. This design follows
-  the team call and keeps them in Snowflake. [CONFIRM] with the team.
+- **Schema separation inside Snowflake.** Snowflake holds both candidate and
+  approved records; the Goal 2 spec's "operational database" means that logical
+  storage in Snowflake, not a second database product. Whether candidate and
+  approved data sit in separate schemas or tables is "not finalized" (Goal 2
+  spec, Scope).
 - **Retention, deletion and S3 lifecycle.** The Goal 2 spec asks for delete or
   deactivate "according to the defined retention policy"; that policy, how long
   the S3 copy is kept, and which bucket is used depend on the sponsor and are
