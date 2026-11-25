@@ -419,7 +419,7 @@
         }
 
         tabButtons.forEach(button => {
-            button.addEventListener('click', () => activateTab(button.dataset.target));
+            button.addEventListener('click', () => { if (button.dataset.target === 'analysis-tab') window.location.href = 'analysis.html?ids=' + encodeURIComponent(getSelectedMaterialIds().join(',')); else activateTab(button.dataset.target); });
         });
 
         const tableBody = document.querySelector('.table-body');
@@ -546,7 +546,7 @@
 
         handleCompareMaterials = ids => {
             console.log('Selected material IDs for comparison:', ids);
-            activateTab('analysis-tab');
+            window.location.href = 'analysis.html?ids=' + encodeURIComponent(ids.join(','));
         };
 
         handleSearchMaterials = filters => {

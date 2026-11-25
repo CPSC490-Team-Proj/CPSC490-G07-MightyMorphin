@@ -57,8 +57,8 @@ text(x,y,'Document processing and review queue',24,True)
 field(x,y+47,480,'Find document','Filename, material ID or vendor')
 field(x+512,y+47,520,'Status','All / Processing / Failed / Unsupported / Pending / Flagged')
 table(x,y+135,1032,['Document','Status','Feedback','Action'],[['vendor-coc-001.pdf','Flagged','2 fields need review','Open review'],['internal-report-002.pdf','Pending','Awaiting approval','Open review'],['vendor-coc-003.pdf','Processing','Extracting fields','View status'],['vendor-coc-004.pdf','Failed','PDF could not be read','Retry / replace']], [320,160,345,207])
-note(x,y+356,1032,'Only approved values are stored. The uploader is notified if a document is not approved.')
-text(x,y+420,'Open review -> screen 03. Approved records -> Materials (screen 04).',18)
+note(x,y+356,1032,'Candidate values stay in Snowflake. Only approved records appear in normal analysis.')
+text(x,y+420,'Open review -> 03. Pending/candidate data in Snowflake; source PDFs in AWS.',17)
 
 x,y=panel(40,895,3,'Validate extracted information','Review queue')
 text(x,y,'Review: vendor-coc-001.pdf',24,True)
@@ -72,7 +72,7 @@ table(x+404,y+73,628,['Field','Editable value','Review flag'],[['Material ID','M
 text(x+404,y+281,'Select a value to inspect its source. Brackets = editable field.',15)
 field(x+404,y+314,628,'Correction note','Explain correction when applicable')
 button(x+404,y+400,160,'Save draft');button(x+580,y+400,225,'Re-extract / replace');button(x+822,y+400,210,'Approve record',True)
-note(x,y+459,1032,'Approval feedback: resolve required flags first. Corrections and approvals record user and time.')
+note(x,y+459,1032,'Approval feedback: resolve required flags first. Audit events retained; Manager access only.')
 
 x,y=panel(1160,895,4,'Search and view material records','Materials')
 text(x,y,'Materials',24,True)
@@ -84,7 +84,7 @@ text(x,y+121,'Approved records  |  2 matching records  |  [ ] Select records to 
 table(x,y+155,1032,['Select','Material / lot','Vendor','Source type','Action'],[['[x]','M-001 / L-021','Vendor A','CoC','View details'],['[x]','M-001 / L-022','Vendor B','Test report','View details']], [80,300,220,210,222])
 box(x,y+281,1032,130,'#f5f5f5');text(x+14,y+293,'Record details: M-001 / L-021  |  Approved',19,True)
 text(x+14,y+328,'Properties: tensile strength 850 MPa; elongation 12%  |  Processing: view steps',16)
-text(x+14,y+359,'Source: vendor-coc-001.pdf [Open PDF]  |  Review history [View]',16)
+text(x+14,y+359,'Source: vendor-coc-001.pdf [Open PDF]',16)
 button(x,y+430,245,'Compare selected (2)',True)
 text(x+270,y+442,'-> Analysis, screen 05',17)
 text(x,y+490,'Empty state: No matching records. Change filters or reset your search.',16)
@@ -110,7 +110,7 @@ for i,(a,b) in enumerate([
 ('04 Materials -> 05 Analysis','Select at least two compatible records, then Compare selected.'),
 ('Persistent navigation','Upload, Review queue, Materials and Analysis remain accessible.'),
 ('Feedback and access','Show loading, success, empty and error states; restrict actions by role.'),
-('Design boundary','This wireframe specifies layout and behavior, not a final visual theme.')]):
+('Validation and Manager access','3 checks; about 90% confidence. Manager audit UI is not designed yet.')]):
     yy=1730+i*80;text(1184,yy,a,20,True);text(1184,yy+31,b,17)
 text(40,2370,'Source: task #41, proposal sections 2–3, and existing use-case / ER design. All displayed records and values are examples.',18)
 im.save(OUT.parent/'ui-wireframe.png')
