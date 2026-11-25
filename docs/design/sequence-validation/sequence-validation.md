@@ -9,6 +9,9 @@ record from the review queue, compares the extracted values with the original
 PDF, saves corrections as a draft, and approves the record once every required
 flag is resolved. It follows the [system architecture](../system-architecture-diagram.md),
 the [ER diagram](../er-diagram.md) and the [technology and system decisions](../technology-stack-decision.md) (#78).
+Field and status names (`MATERIAL_RECORD.review_status`, `REJECTED`,
+`SOURCE_DOCUMENT.s3_object_key` and `checksum`) follow the ER diagram as updated
+for [#172](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/172) (PR #176), so this diagram should merge after that PR.
 
 ![Sequence diagram for loading a pending or flagged record with its source PDF, saving a correction draft, and approving the record, with validation, conflict and storage-failure paths](sequence-validation.png)
 
@@ -31,14 +34,14 @@ sequenceDiagram
     Reviewer->>UI: Open record for review
     UI->>API: GET /records/{id}
     API->>SF: Read record, property values, flags, review status
-    SF-->>API: Record (review status PENDING or FLAGGED)
+    SF-->>API: Record with its review status
     alt Record is already APPROVED or REJECTED
         API-->>UI: 409 Not reviewable
         UI-->>Reviewer: Show read-only status, no edit or approve actions
     else Record is PENDING or FLAGGED
         API->>S3: Get PDF by s3_object_key
         alt PDF missing or checksum does not match
-            S3-->>API: Not found / mismatch
+            S3-->>API: Not found, or PDF whose checksum the API finds does not match
             API-->>UI: Fields plus "source unavailable"
             UI-->>Reviewer: Show fields, disable Approve (source cannot be checked)
         else PDF available
@@ -128,12 +131,13 @@ sequenceDiagram
 ## Not designed yet
 
 - **Authentication and permissions.** Edwards Microsoft SSO and which roles may
-  approve are not designed; the prototype ([#88](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/88)) uses a fixed demo reviewer.
-- **Re-extract / replace.** The wireframe's Re-extract / replace button hands
-  the document back to processing (page 2, [#92](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/92)); that hand-off is not shown here.
+  approve are not designed; the prototype ([#88](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/88)) will use a fixed demo reviewer.
+- **Re-extract / replace.** What happens after the wireframe's Re-extract /
+  replace button is not designed here. The page 2 diagram ([#92](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/92)) covers
+  retrying or replacing *Failed* documents only, and defers replacement handling.
 - **Reject.** The ER diagram allows a REJECTED status, but page 3 has no reject
   action yet and who may reject is undecided.
-- **Exact API shapes.** Paths and status codes are the prototype's; request and
+- **Exact API shapes.** Paths and status codes are proposed for the prototype; request and
   response schemas are not final. FastAPI is still provisional under #78, and
   the front-end framework (React or Vue) is deferred.
 - **PDF delivery.** Whether the API streams the PDF or hands out a short-lived
