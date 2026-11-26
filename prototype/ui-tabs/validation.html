@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materials Database - Validate</title>
+    <link rel="icon" href="data:,">
+    <style>
+        :root {
+            --red: #C8102E;
+            --red-deep: #80001f;
+            --bg: #f4f4f9;
+            --panel: #ffffff;
+            --border: #d7d7de;
+            --text: #292929;
+            --muted: #5d5d66;
+            --ok-bg: #e9f5ec;
+            --ok: #1f6b35;
+            --warn-bg: #fff4e0;
+            --warn: #8a5300;
+            --err-bg: #fdecee;
+            --err: #a0001c;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        header {
+            background: var(--red);
+            min-height: 76px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: white;
+        }
+        .logo { width: 68px; height: 68px; object-fit: contain; }
+        .divider { width: 1px; height: 24px; background: rgba(255, 255, 255, 0.5); }
+        .brand { font-size: 28px; font-weight: 600; }
+        .header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 15px; }
+        .header-right button {
+            border: 0; background: transparent; color: white; font-size: 15px; padding: 8px; cursor: not-allowed;
+        }
+        main { padding: 14px 20px 24px; max-width: 1240px; margin: 0 auto; }
+
+        /* Navigation: deep red accents, as in the wireframe */
+        nav.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+        nav.tabs a, nav.tabs span {
+            min-width: 140px;
+            padding: 10px 16px;
+            border: 1px solid var(--red-deep);
+            background: #fff5f7;
+            color: var(--red-deep);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        nav.tabs a[aria-current="page"] { background: var(--red-deep); color: white; }
+        nav.tabs span[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
+        nav.tabs a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+        textarea:focus-visible { outline: 2px solid var(--red-deep); outline-offset: 2px; }
+
+        .demo {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+            padding: 8px 12px; margin-bottom: 14px;
+            border: 1px dashed #9a9aa5; background: #fbfbfd; font-size: 14px; color: var(--muted);
+        }
+        .demo strong { color: var(--text); }
+        .demo .armed { color: var(--err); font-weight: 600; }
+
+        h1 { font-size: 26px; margin: 4px 0 4px; overflow-wrap: anywhere; }
+        .subline { margin: 0 0 14px; color: var(--muted); }
+        .badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+        .badge.FLAGGED { background: var(--warn-bg); color: var(--warn); }
+        .badge.PENDING { background: #e8eefb; color: #24448a; }
+        .badge.APPROVED { background: var(--ok-bg); color: var(--ok); }
+        .badge.REJECTED { background: var(--err-bg); color: var(--err); }
+
+        .layout { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; }
+        @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+        .panel { background: var(--panel); border: 1px solid var(--border); padding: 14px; }
+        .panel h2 { font-size: 18px; margin: 0 0 10px; }
+        .pdf-frame { width: 100%; height: 520px; border: 1px solid var(--border); background: #eee; }
+        .source-missing {
+            padding: 24px 14px; background: var(--err-bg); color: var(--err); border: 1px solid #f0b8c1;
+        }
+        .readonly-note { padding: 14px; background: #f0f0f4; color: var(--muted); }
+
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        th { background: #ececf1; font-size: 14px; }
+        td input[type="text"] { width: 100%; max-width: 220px; padding: 6px; font-size: 15px; border: 1px solid #9a9aa5; }
+        td .unit { margin-left: 6px; color: var(--muted); }
+        tr.has-error input[type="text"] { border-color: var(--err); background: var(--err-bg); }
+        .field-error { color: var(--err); font-size: 13px; margin-top: 4px; }
+        .flag { color: var(--warn); font-weight: 600; }
+        .flag.none { color: var(--muted); font-weight: normal; }
+        .confirm { display: block; font-size: 13px; margin-top: 4px; color: var(--muted); }
+        .hint { font-size: 13px; color: var(--muted); margin: 8px 0 12px; }
+
+        label.note-label { display: block; font-weight: 700; margin: 10px 0 4px; }
+        textarea { width: 100%; min-height: 54px; padding: 8px; font: inherit; border: 1px solid #9a9aa5; }
+
+        .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .actions button, .open-pdf {
+            padding: 10px 16px; font-size: 15px; border: 1px solid #77777f; background: white;
+            color: var(--text); cursor: pointer; text-decoration: none; display: inline-block;
+        }
+        .actions button.primary { background: var(--red-deep); border-color: var(--red-deep); color: white; font-weight: 700; }
+        .actions button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .open-pdf { margin-top: 10px; }
+        .open-pdf[aria-disabled="true"] { opacity: 0.5; pointer-events: none; }
+
+        #feedback { margin-top: 18px; padding: 12px 14px; border: 1px solid var(--border); background: #ececf1; min-height: 46px; }
+        #feedback.ok { background: var(--ok-bg); color: var(--ok); border-color: #b5dcc0; }
+        #feedback.warn { background: var(--warn-bg); color: var(--warn); border-color: #f0d29a; }
+        #feedback.err { background: var(--err-bg); color: var(--err); border-color: #f0b8c1; }
+        #feedback ul { margin: 6px 0 0; padding-left: 20px; }
+        .hidden { display: none !important; }
+        @media (max-width: 600px) {
+            header { flex-wrap: wrap; gap: 10px; padding: 8px 16px; }
+            .logo { width: 44px; height: 44px; }
+            .brand { font-size: 22px; }
+            .header-right { margin-left: 0; width: 100%; font-size: 14px; }
+            main { padding: 12px 16px 20px; }
+            nav.tabs a, nav.tabs span { min-width: 0; flex: 1 1 40%; }
+            .pdf-frame { height: 420px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img class="logo" src="/logo.jpeg" alt="Logo">
+    <div class="divider"></div>
+    <div class="brand">Materials Database</div>
+    <div class="header-right">
+        <span id="reviewer">Demo Reviewer (SSO mocked)</span>
+        <div class="divider"></div>
+        <button type="button" disabled title="Sign-in is mocked in this prototype">Sign out</button>
+    </div>
+</header>
+
+<main>
+    <nav class="tabs" aria-label="Main navigation">
+        <span aria-disabled="true" title="The page 1 upload prototype is separate (#86)">Upload</span>
+        <a href="validation.html" aria-current="page">Review queue</a>
+        <a href="search-view.html">Materials</a>
+        <a href="analysis.html">Analysis</a>
+    </nav>
+
+    <section class="demo" aria-label="Demo controls">
+        <strong>Prototype demo controls</strong>
+        <label>Record
+            <select id="record-picker" aria-label="Choose a demo record"></select>
+        </label>
+        <button type="button" id="fail-next">Simulate storage failure on next write</button>
+        <span id="fail-armed" class="armed hidden">Next save or approval will fail</span>
+        <button type="button" id="reset-demo">Reset demo data</button>
+        <span>Synthetic data only. Page 2 normally opens this screen.</span>
+    </section>
+
+    <div id="loading" class="readonly-note">Loading record...</div>
+
+    <div id="screen" class="hidden">
+        <h1 id="title">Review:</h1>
+        <p class="subline" id="subline"></p>
+
+        <div class="layout">
+            <section class="panel" aria-labelledby="pdf-heading">
+                <h2 id="pdf-heading">Original PDF preview</h2>
+                <iframe id="pdf-frame" class="pdf-frame hidden" title="Original PDF preview"></iframe>
+                <div id="pdf-missing" class="source-missing hidden" role="note"></div>
+                <div id="pdf-readonly" class="readonly-note hidden">This record is already decided, so its source is not loaded for review.</div>
+                <a id="open-pdf" class="open-pdf" target="_blank" rel="noopener">Open source PDF</a>
+            </section>
+
+            <section class="panel" aria-labelledby="fields-heading">
+                <h2 id="fields-heading">Extracted fields</h2>
+                <form id="review-form" novalidate>
+                    <table>
+                        <thead>
+                        <tr><th scope="col">Field</th><th scope="col">Editable value</th><th scope="col">Review flag</th></tr>
+                        </thead>
+                        <tbody id="field-rows"></tbody>
+                    </table>
+                    <p class="hint">Compare each value with the PDF. Tick "Checked against PDF" to resolve a flag
+                        without changing the value; saving a corrected value also resolves it.</p>
+
+                    <label class="note-label" for="note">Correction note</label>
+                    <textarea id="note" maxlength="500" placeholder="Explain the correction when applicable"></textarea>
+
+                    <div class="actions">
+                        <button type="submit" id="save-draft">Save draft</button>
+                        <button type="button" id="re-extract" disabled
+                                title="Not designed yet; see the page 3 sequence diagram (#87)">Re-extract / replace</button>
+                        <button type="button" id="approve" class="primary">Approve record</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <div id="feedback" role="status" aria-live="polite">Approval feedback: resolve required flags first. Audit events are retained for the Manager.</div>
+</main>
+
+<script src="validation.js"></script>
+</body>
+</html>
