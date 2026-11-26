@@ -22,12 +22,16 @@ python login.py                 # smoke run: prints a truncated session token
 
 ```bash
 cd prototype
-python3 -m venv .venv && source .venv/bin/activate   # Windows: py -m venv .venv, then .venv\Scripts\activate
+python3 -m venv ~/.venvs/materials-db && source ~/.venvs/materials-db/bin/activate
+# Windows: py -m venv %USERPROFILE%\.venvs\materials-db, then %USERPROFILE%\.venvs\materials-db\Scripts\activate
 pip install -r requirements.txt
 uvicorn validation.app:create_app --factory
 ```
 
-Then open http://127.0.0.1:8000/ and stop the server with Ctrl+C. The demo
+Then open http://127.0.0.1:8000/ and stop the server with Ctrl+C. Keep the
+virtual environment **outside the repository** (as above): the harness's secret
+scan (G5) reads every file in the repo folder, including a `.venv` inside it, and
+reports false alarms in the installed packages. The demo
 script and the list of mocked services are in
 [Page 3 validation prototype (#88)](#page-3-validation-prototype-88) below.
 
@@ -102,8 +106,8 @@ Needs Python 3.12 or newer (CI uses 3.12). From the repository root:
 
 ```bash
 cd prototype
-python3 -m venv .venv                # Windows: py -m venv .venv
-source .venv/bin/activate            # Windows: .venv\Scripts\activate
+python3 -m venv ~/.venvs/materials-db             # Windows: py -m venv %USERPROFILE%\.venvs\materials-db
+source ~/.venvs/materials-db/bin/activate         # Windows: %USERPROFILE%\.venvs\materials-db\Scripts\activate
 pip install -r requirements.txt
 uvicorn validation.app:create_app --factory
 ```
