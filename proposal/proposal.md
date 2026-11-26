@@ -180,7 +180,7 @@ The development of the Edwards Lifescience Materials Database requires various s
 |Database Management System|Snowflake|Store and analyze approved material data and the audit log|
 |Hosting|AWS|Run the web app, backend API and services|
 |Authentication|Edwards Microsoft SSO|Sign users in with their Edwards account|
-|File Storage (PDFs)|AWS|Keep the original PDFs; the app stores only a reference to each one|
+|File Storage (PDFs)|AWS|Original PDFs are saved to the sponsor's AWS storage and records point to that copy|
 |Backend Framework|FastAPI (Python)|- Handles application logic <br>- Communication between components|
 |UI/UX Design|Figma|Design wireframes and mockups of user interface [#41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41)|
 |Frontend Framework|React/Vue|User interface (upload documents, view extracted data)|
@@ -189,7 +189,7 @@ The development of the Edwards Lifescience Materials Database requires various s
 |Version Control|Git and GitHub|Track sprint progress, tasks, and assignments|
 
 **Alternatives confirmed**
-Database Management System is now officially run on Snowflake. This decision was made with reasoning that Edwards already uses and support Snowflake. Alternatives (ProstgreSQL) was rejected due to the substantial benefits that come from using Snowflake. File Storage (PDFs) is now officially utilizes AWS to store the original documents. There were no alternatives, it has just been confirmed by sponsor.
+Python was chosen as the primary programming language because it is widely known by the entire group and is easily reveiwable. Database Management System is now officially run on Snowflake. This decision was made with reasoning that Edwards already uses and support Snowflake. Alternatives (ProstgreSQL) was rejected due to the substantial benefits that come from using Snowflake. AWS was chosen for hosting because it is a software that is recognized by Edwards. Authentication utilizes Edwards Microsoft SSO because the software can be used by any authrozied employee. Additionally this can help with logging viewership and changes made by each account. File Storage (PDFs) is now officially utilizes AWS to store the original documents. There were no alternatives, it has just been confirmed by sponsor. The Development environment utilized is Visual Studio Code. Version Control is maintained by Git and Github.
 **Undecided Technology/Resource(s)**
 Technology for extraction tool will be decided after snowflake trial. Alternatives for extraction tool include Snowflake, Textract, and Tesseract. Frontend area tool has not been decided as of November 16, 2026. Options for frontend include React and Vue.
 
