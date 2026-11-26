@@ -1,0 +1,27 @@
+[
+  {
+    "number": 17,
+    "title": "Goal 2: Material and Source-Document Storage",
+    "body": "## Goal\n\nSecurely store original material documents, document metadata, candidate records, review history, and approved material data while maintaining traceability between source PDFs and Snowflake records.\n\n## Problems Addressed\n\nP1: Source Documents Are Difficult to Locate  \nP2: Material Data Cannot Be Verified Against Its Source  \nP3: Document and Review Status Are Not Centrally Tracked  \nP4: Approved Material Data Needs Durable, Queryable Storage  \n\n## Scope\n\nThis epic covers permanent source-document storage, operational storage in Snowflake storage, document metadata, workflow status, candidate-record storage, review history, Snowflake ingestion, audit events, duplicate prevention, retries, and source-to-record traceability.\n\n## User stories (objectives)\n- [ ] #18\n- [ ] #19\n- [ ] #20\n- [ ] #21\n\n## Success measure\nOriginal PDFs and metadata can be retrieved through authorized AWS S3 access. Snowflake persists candidate records, pending workflow state, validation results and review events; only approved material data is exposed for normal analysis. Approved records retain source references and ingestion outcomes, and failed or duplicate writes preserve traceability.\n"
+  },
+  {
+    "number": 18,
+    "title": "Objective 2.1: Store original source documents and document metadata",
+    "body": "## Objective\n\nStore original CoCs and material test reports securely with document identifiers, checksums, metadata, and retrievable storage references.\n\n## Epic\n\n#17\n\n## Deliverable\n\nA source-document storage service and operational storage in Snowflake records for original PDFs, filenames, checksums, upload information, and storage references.\n\n## Acceptance criteria\n\n- Store each accepted original PDF without modification.\n- Store the document ID, checksum, filename, uploader, upload time, document type, and storage reference in Snowflake.\n- Store source documents inside a AWS S3 Bucket.\n- Record source-document storage failures.\n- Prevent accidental document overwrites.\n- Require authorization before protected document retrieval.\n- Allow authorized users to retrieve an available source-document reference."
+  },
+  {
+    "number": 19,
+    "title": "Objective 2.2: Store candidate records, workflow status, and review history",
+    "body": "## Objective\n\nStore candidate material records, document-processing status, validation results, reviewer corrections, and review decisions in the operational storage in Snowflake.\n\n## Epic\n\n#17\n\n## Deliverable\n\nOperational storage in Snowflake tables and services for document processing, candidate records, validation results, reviewer actions, and workflow history.\n\n## Acceptance criteria\n\n- Store candidate material identifiers, vendor information, lot information, property values, units, and source type.\n- Associate every candidate record with its source-document ID.\n- Track uploaded, processing, failed, pending review, approved, and rejected statuses.\n- Store validation errors and warnings.\n- Store reviewer identity, decision timestamp, corrections, and approval or rejection decision.\n- Enforce keys, relationships, and integrity constraints."
+  },
+  {
+    "number": 20,
+    "title": "Objective 2.3: Store approved material data in Snowflake",
+    "body": "## Objective\n\nIngest approved material records, property values, units, and source-document references into Snowflake.\n\n## Epic\n\n#17\n\n## Deliverable\n\nApproved structured material data stored in Snowflake, with the resulting Snowflake record ID linked to the related operational candidate record and source document.\n\n## Acceptance criteria\n\n- Publish only approved candidate records to the approved-material dataset in Snowflake; pending/candidate records remain in Snowflake operational storage and are excluded from approved views.\n- Insert approved material records into Snowflake.\n- Insert related property values and units.\n- Insert source-document references without storing original PDF files in Snowflake.\n- Return and store the resulting Snowflake record ID.\n- Prevent pending, invalid, and rejected records from being stored as approved data."
+  },
+  {
+    "number": 21,
+    "title": "Objective 2.4: Maintain storage reliability and source-to-record traceability",
+    "body": "## Objective\n\nRecord storage and ingestion outcomes, prevent duplicate records, retry recoverable failures, and preserve traceability from Snowflake records to original source documents.\n\n## Epic\n\n#17\n\n## Deliverable\n\nStorage and ingestion audit records that link documents, candidate records, reviewer decisions, Snowflake record IDs, errors, retries, and duplicate-detection results.\n\n## Acceptance criteria\n\n- Record every Snowflake ingestion attempt, status, timestamp, and error detail.\n- Link each Snowflake record to its candidate record and source document.\n- Use a document checksum and record revision to prevent duplicate ingestion.\n- Retry recoverable Snowflake failures within a configured retry limit.\n- Record every retry attempt and final failure outcome.\n- Allow authorized users to trace an approved Snowflake record back to its original source document."
+  }
+]
