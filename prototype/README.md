@@ -193,3 +193,32 @@ The files follow the participants in the sequence diagram.
 - The **Materials** and **Analysis** tabs open the existing page 4 and page 5
   prototypes. Those pages have no link back to page 3; use the browser's Back
   button. The Analysis page's "Upload shell" link does not work under this server.
+
+### Source-document traceability (#109)
+
+Every material record keeps a permanent link to the PDF it was extracted from:
+
+- `SOURCE_DOCUMENT` stores the S3 object key (unique), the checksum and whether
+  the document is a CoC or a test report.
+- The extraction hand-off, `Store.add_extracted_record`, always links the new
+  record to an existing source document. The fixtures use it in place of real OCR.
+- Database triggers stop the link from breaking, even for a connection that
+  leaves foreign keys off. A record cannot be moved to another document,
+  replaced (`REPLACE INTO`) or deleted. A document's id, key, checksum and type
+  cannot be edited, and a document cannot be replaced or deleted while records
+  point at it. Other document columns, such as the file name, can still change.
+  Replacing a PDF is meant to create a new document row, but replacement is not
+  built yet. An extracted record must have at least one property value.
+- `GET /records/{id}/source` returns a record's source: file name, CoC or test
+  report, vendor, S3 key, checksum, and `copy_check` (`ok`, `missing` or
+  `checksum mismatch`). `GET /materials` includes each approved record's
+  source (without `copy_check`). For a record still under review, page 3 shows
+  the stored copy's key under the PDF preview.
+
+`tests/test_source_references.py` checks the four "Definition of done" items
+of #109. Each test name starts with `test_dodN_`. The tests show that the
+reference is unchanged after rejected edits, corrections, a failed approval
+and approval, and that it is still there when the database file is reopened.
+It is still SQLite, not Snowflake. Standard Snowflake tables do not enforce
+unique or foreign keys and have no triggers, so production needs these rules
+in the backend, the extraction service and table privileges (see proposal §4).
