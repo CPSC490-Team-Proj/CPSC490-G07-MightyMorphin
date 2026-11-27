@@ -183,6 +183,7 @@ def create_app(data_dir: Path | str | None = None) -> FastAPI:
             "problem": source_problem,
             "pdf_url": None if source_problem else f"/records/{record_id}/pdf",
         }
+        body["stored_copy"] = {"s3_object_key": record["s3_object_key"], "doc_type": record["doc_type"]}
         return body
 
     @app.get("/records/{record_id}/pdf")
@@ -290,6 +291,18 @@ def create_app(data_dir: Path | str | None = None) -> FastAPI:
             "approved_by": store().user_name(reviewer_id),
             "approved_at": approved_at,
         }
+
+    # ------------------------------------- source traceability (#109)
+    @app.get("/records/{record_id}/source")
+    def record_source(record_id: int):
+        """The source document a record came from: CoC or test report, its S3
+        object key and checksum, and whether the stored copy still matches."""
+        if find(record_id) is None:
+            return problem(404, "not_found", f"Record {record_id} does not exist")
+        source = store().source_reference(record_id)
+        _, source_problem = documents().verified_get(source["s3_object_key"], source["checksum"])
+        source["copy_check"] = source_problem or "ok"
+        return source
 
     # ------------------------------------------------- approved data only
     @app.get("/materials")

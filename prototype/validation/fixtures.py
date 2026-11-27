@@ -19,6 +19,7 @@ from .store import Store
 SYNTHETIC_MARK = "SYNTHETIC SAMPLE - NOT A REAL CERTIFICATE"
 DEMO_REVIEWER_ID = 1
 EXTRACTED_AT = "2026-11-20T16:00:00Z"
+APPROVED_AT = "2026-11-21T17:30:00Z"
 
 PROPERTY_TYPES = [
     ("Tensile strength", "MPa"),
@@ -97,17 +98,10 @@ def load(store: Store, documents: DocumentStore) -> None:
         "INSERT INTO APP_USER (user_id, role_id, email, display_name) VALUES (?, ?, ?, ?)",
         (DEMO_REVIEWER_ID, role, "demo.reviewer@example.com", "Demo Reviewer"),
     )
-    type_ids = {
-        name: store.execute(
-            "INSERT INTO PROPERTY_TYPE (name, standard_unit) VALUES (?, ?)", (name, unit)
-        )
-        for name, unit in PROPERTY_TYPES
-    }
-    vendors: dict[str, int] = {}
+    for name, unit in PROPERTY_TYPES:
+        store.execute("INSERT INTO PROPERTY_TYPE (name, standard_unit) VALUES (?, ?)", (name, unit))
     for (record_id, filename, doc_type, input_type, vendor, material, lot, status,
          values, printed, keep_pdf) in RECORDS:
-        if vendor not in vendors:
-            vendors[vendor] = store.execute("INSERT INTO VENDOR (name) VALUES (?)", (vendor,))
         pdf = make_pdf(
             f"{'Certificate of Conformance' if doc_type == 'COC' else 'Test report'} - {filename}",
             [f"Vendor: {vendor}", f"Material ID: {material}", f"Lot number: {lot}", "",
@@ -120,34 +114,16 @@ def load(store: Store, documents: DocumentStore) -> None:
         # out of storage to demonstrate a missing source.
         if keep_pdf:
             documents.put(object_key, pdf)
-        document_id = store.execute(
-            """INSERT INTO SOURCE_DOCUMENT (vendor_id, uploaded_by, filename, doc_type,
-                   input_type, s3_object_key, checksum, status, uploaded_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, 'DONE', ?)""",
-            (vendors[vendor], DEMO_REVIEWER_ID, filename, doc_type, input_type,
-             object_key, checksum(pdf), EXTRACTED_AT),
+        document_id = store.add_source_document(
+            filename=filename, doc_type=doc_type, input_type=input_type,
+            s3_object_key=object_key, checksum=checksum(pdf),
+            uploaded_by=DEMO_REVIEWER_ID, vendor=vendor, uploaded_at=EXTRACTED_AT,
         )
-        material_id = store.execute(
-            "INSERT INTO MATERIAL (material_code, name) VALUES (?, ?)", (material, material)
-        )
-        lot_id = store.execute(
-            "INSERT INTO LOT (material_id, vendor_id, lot_number) VALUES (?, ?, ?)",
-            (material_id, vendors[vendor], lot),
-        )
-        approved = status == "APPROVED"
-        store.execute(
-            """INSERT INTO MATERIAL_RECORD (record_id, document_id, material_id, lot_id,
-                   approved_by, review_status, extracted_at, approved_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-            (record_id, document_id, material_id, lot_id,
-             DEMO_REVIEWER_ID if approved else None, status, EXTRACTED_AT,
-             "2026-11-21T17:30:00Z" if approved else None),
-        )
-        for name, value, confidence, flag in values:
-            unit = dict(PROPERTY_TYPES)[name]
-            store.execute(
-                """INSERT INTO PROPERTY_VALUE (record_id, property_type_id, value,
-                       unit_as_printed, confidence, flag_reason)
-                   VALUES (?, ?, ?, ?, ?, ?)""",
-                (record_id, type_ids[name], value, unit, confidence, flag),
-            )
+        # Mocked extraction: the fixture values stand in for the OCR passes.
+        created = store.add_extracted_record(document_id, material, lot, values, EXTRACTED_AT)
+        if created != record_id:
+            raise RuntimeError("fixture record ids must stay 1-4")
+        if status == "APPROVED":
+            store.approve(record_id, DEMO_REVIEWER_ID, APPROVED_AT)
+        elif store.get_record(record_id)["review_status"] != status:
+            raise RuntimeError(f"fixture record {record_id}: flags do not give status {status}")
