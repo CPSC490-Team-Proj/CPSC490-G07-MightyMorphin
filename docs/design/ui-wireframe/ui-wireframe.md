@@ -11,8 +11,8 @@ The layouts illustrate desktop screens for authorized Edwards users. All names, 
 | [Task #41](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/41) criterion | Coverage |
 |---|---|
 | Document upload | Screen 01: digital/scanned PDFs, batch selection, document type per file, vendor, processing action and feedback |
-| Review and validation | Screens 02–03: processing status, flagged/pending queue, source preview, editable extracted fields, correction note, approval and review history |
-| Search and stored records | Screen 04: material/lot, vendor and source-type filters, results, property details, source PDF and history |
+| Review and validation | Screens 02–03: processing status, flagged/pending queue, source preview, editable extracted fields, correction note and approval |
+| Search and stored records | Screen 04: material/lot, vendor and source-type filters, results, property details and source PDF |
 | Analysis results | Screen 05: selected-record comparison, values and units, chart placeholder, trend/range view selection and missing-data feedback |
 | Navigation | Persistent navigation on every screen; overview panel 06 describes transitions |
 | Inputs, buttons, tables and feedback | Included across all primary screens, with invalid-file, failed-processing, unresolved-review and empty-search examples |
@@ -22,12 +22,13 @@ The layouts illustrate desktop screens for authorized Edwards users. All names, 
 ## Interaction rules
 
 - Upload accepts PDFs; the user can override document type for each selected file. Vendor is optional and may be refined during review.
-- Failed documents can be retried or replaced. Document statuses are Uploaded, Processing, Failed, Unsupported and Done; review statuses are Pending, Flagged and Approved. Extracted values are stored only after approval; until then the document stays in the review queue and the uploader is notified.
+- Users upload existing digital/scanned PDFs; the app performs no physical scanning. At OCR processing the PDF is saved to AWS (S3 proposed). Candidate data, pending review items, validation results and approved material data are held in Snowflake, with status separating them. Documents: Uploaded, Processing, Failed, Unsupported, Done; review: Pending, Flagged, Approved.
 - Review displays extracted values alongside the original document. Saving a draft does not approve it. Required flags must be resolved before approval; corrections and approvals retain the user and timestamp.
 - The example PDF has two attention fields. After correction and approval, its illustrative material record appears in the Materials screen.
 - Viewing a result opens its detail region. Comparing selected records transfers the selection to Analysis. Normal search and analysis use approved records.
-- Users sign in with Edwards' Microsoft SSO. Any employee may upload (to be confirmed with the sponsor); role permissions determine the other actions, and the role list will be reviewed later. Admin tasks (permissions, job monitoring, audit-log export) are not part of these user screens.
-- The on-site document system provides source PDFs through application access; the application stores only a reference. No cloud database or infrastructure configuration appears in these user screens.
+- Users sign in with Edwards' Microsoft SSO. Any employee may upload (to be confirmed with the sponsor); role permissions determine the other actions, and the role list will be reviewed later. Manager tasks (permissions, job monitoring, audit-log access/export) are not part of these user screens.
+- Source PDFs are retrieved through authorized application access to AWS storage. Regular user screens do not display the audit log; the Manager can access it for investigation.
+- Validation checks each document three times, using approximately 90% confidence as the working team threshold. Below-threshold results are flagged; the aggregation rule and exact threshold remain to be specified.
 - The wireframe does not assume that specification limits have been supplied. Out-of-spec conclusions require those limits and compatible units.
 
 - Export of results (PDF, DOC, CSV) is in scope but planned last, so no export button is drawn yet.
@@ -54,3 +55,7 @@ or extract them from [the SVG package](ui-wireframe-figma.zip). No plugin is nee
 SVG import creates vector layers; font/text conversion depends on Figma.
 Auto Layout and prototype links are not included. Run `prepare_figma.py`
 after regenerating the main SVG to refresh the separate screens and ZIP.
+
+## Alignment with #122
+
+Removed the ordinary user history panel; correction/approval events are still retained but are not a user-visible audit log. The Manager workflow is outside these five screens. Storage and validation wording reflects the November 15 call recorded in #122. Exact confidence aggregation, permissions and Manager UI remain undesigned.

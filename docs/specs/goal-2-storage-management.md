@@ -9,6 +9,8 @@ Owner: Liam Wilson · Sprint: 3 · Status: draft
 
 **Out of scope.** Document intake, extraction/OCR, validation implementation, and reviewer-interface implementation, which are covered by Goal 1; and user search, viewing, comparison, and analysis, which are covered by Goal 3.
 
+Snowflake is the official database, including operational storage for candidate records, pending items, validation results and review events. References below to an operational database mean that logical storage in Snowflake, not an additional database product. Approval promotes material data to the approved dataset; it does not imply that pending candidates have never been persisted. Physical table/schema separation is not finalized. Original PDFs are stored in AWS S3.
+
 ## Functional requirements
 
 | ID | Requirement | Story |
@@ -18,7 +20,7 @@ Owner: Liam Wilson · Sprint: 3 · Status: draft
 | FR-3 | When Goal 1 returns a document-processing or review outcome, the operational database shall store its status, processing attempts, errors, retry count, timestamps, OCR confidence results, and responsible user where applicable. | [#19](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19) |
 | FR-4 | When Goal 1 returns a candidate record, the system shall store material identifiers, vendor, lot, source type, property values, units, normalized values, original extracted values where applicable, and validation results. | [#19](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/19) |
 | FR-5 | When Goal 1 returns a reviewer decision, the system shall store the approval or rejection decision, reviewer, timestamp, and corrections. | [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) |
-| FR-6 | When a candidate record is approved, the system shall insert its material information, property values, units, and source-document reference into Snowflake and retain the resulting Snowflake record ID. | [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) |
+| FR-6 | When a candidate record is approved, the system shall publish its material information, property values, units, and source-document reference to the approved-material dataset in Snowflake and retain the resulting Snowflake record ID. | [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) |
 | FR-7 | When a candidate record is pending review, invalid, rejected, or has unresolved low-confidence fields, the system shall prevent it from being stored in Snowflake as approved material data. | [#20](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/20) |
 | FR-8 | When Snowflake ingestion is attempted, the system shall record the outcome and link the document, candidate record, reviewer decision, ingestion event, and Snowflake record ID. | [#21](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21) |
 | FR-9 | When an identical approved record revision is submitted more than once, the system shall prevent duplicate Snowflake records; when a retryable ingestion failure occurs, the system shall retry within the configured limit and record each attempt. | [#21](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/21) |
@@ -36,7 +38,7 @@ Owner: Liam Wilson · Sprint: 3 · Status: draft
 
 - [ ] Accepted source documents are permanently stored in the approved AWS S3 bucket with unique identifiers, checksums, metadata, object keys, and retrievable storage references.
 - [ ] Candidate records, OCR confidence, validation results, workflow status, and reviewer decisions are stored in the operational database.
-- [ ] Only approved records are inserted into Snowflake.
+- [ ] Only approved records are published as approved material data in Snowflake; pending candidates remain persisted in its operational storage.
 - [ ] Approved Snowflake records contain material data, property values, units, and source-document references.
 - [ ] Snowflake record IDs and ingestion outcomes are retained with their related operational records.
 - [ ] Duplicate ingestion is prevented and retryable failures are retried and recorded.
