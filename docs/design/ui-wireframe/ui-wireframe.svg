@@ -88,8 +88,8 @@
 <text x="1673" y="608" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">PDF could not be read</text>
 <text x="2018" y="608" font-family="Arial,sans-serif" font-size="15" font-weight="normal" fill="#222222">Retry / replace</text>
 <rect x="1184" y="652" width="1032" height="38" fill="#eeeeee" stroke="#777777"/>
-<text x="1196" y="678" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Only approved values are stored. The uploader is notified if a document is not approved.</text>
-<text x="1184" y="734" font-family="Arial,sans-serif" font-size="18" font-weight="normal" fill="#222222">Open review -&gt; screen 03. Approved records -&gt; Materials (screen 04).</text>
+<text x="1196" y="678" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Candidate values stay in Snowflake. Only approved records appear in normal analysis.</text>
+<text x="1184" y="733" font-family="Arial,sans-serif" font-size="17" font-weight="normal" fill="#222222">Open review -&gt; 03. Pending/candidate data in Snowflake; source PDFs in AWS.</text>
 <text x="40" y="922" font-family="Arial,sans-serif" font-size="27" font-weight="bold" fill="#222222">03  Validate extracted information</text>
 <rect x="40" y="942" width="1080" height="640" fill="#ffffff" stroke="#777777"/>
 <rect x="40" y="942" width="1080" height="52" fill="#dddddd" stroke="#777777"/>
@@ -144,7 +144,7 @@
 <rect x="886" y="1461" width="210" height="38" fill="#dddddd" stroke="#333333"/>
 <text x="898" y="1486" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#222222">Approve record</text>
 <rect x="64" y="1520" width="1032" height="38" fill="#eeeeee" stroke="#777777"/>
-<text x="76" y="1546" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Approval feedback: resolve required flags first. Corrections and approvals record user and time.</text>
+<text x="76" y="1546" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Approval feedback: resolve required flags first. Audit events retained; Manager access only.</text>
 <text x="1160" y="922" font-family="Arial,sans-serif" font-size="27" font-weight="bold" fill="#222222">04  Search and view material records</text>
 <rect x="1160" y="942" width="1080" height="640" fill="#ffffff" stroke="#777777"/>
 <rect x="1160" y="942" width="1080" height="52" fill="#dddddd" stroke="#777777"/>
@@ -194,7 +194,7 @@
 <rect x="1184" y="1342" width="1032" height="130" fill="#f5f5f5" stroke="#777777"/>
 <text x="1198" y="1373" font-family="Arial,sans-serif" font-size="19" font-weight="bold" fill="#222222">Record details: M-001 / L-021  |  Approved</text>
 <text x="1198" y="1405" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Properties: tensile strength 850 MPa; elongation 12%  |  Processing: view steps</text>
-<text x="1198" y="1436" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Source: vendor-coc-001.pdf [Open PDF]  |  Review history [View]</text>
+<text x="1198" y="1436" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#222222">Source: vendor-coc-001.pdf [Open PDF]</text>
 <rect x="1184" y="1491" width="245" height="38" fill="#dddddd" stroke="#333333"/>
 <text x="1196" y="1516" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#222222">Compare selected (2)</text>
 <text x="1454" y="1520" font-family="Arial,sans-serif" font-size="17" font-weight="normal" fill="#222222">-&gt; Analysis, screen 05</text>
@@ -260,7 +260,7 @@
 <text x="1184" y="2098" font-family="Arial,sans-serif" font-size="17" font-weight="normal" fill="#222222">Upload, Review queue, Materials and Analysis remain accessible.</text>
 <text x="1184" y="2150" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#222222">Feedback and access</text>
 <text x="1184" y="2178" font-family="Arial,sans-serif" font-size="17" font-weight="normal" fill="#222222">Show loading, success, empty and error states; restrict actions by role.</text>
-<text x="1184" y="2230" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#222222">Design boundary</text>
-<text x="1184" y="2258" font-family="Arial,sans-serif" font-size="17" font-weight="normal" fill="#222222">This wireframe specifies layout and behavior, not a final visual theme.</text>
+<text x="1184" y="2230" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#222222">Validation and Manager access</text>
+<text x="1184" y="2258" font-family="Arial,sans-serif" font-size="17" font-weight="normal" fill="#222222">3 checks; about 90% confidence. Manager audit UI is not designed yet.</text>
 <text x="40" y="2388" font-family="Arial,sans-serif" font-size="18" font-weight="normal" fill="#222222">Source: task #41, proposal sections 2–3, and existing use-case / ER design. All displayed records and values are examples.</text>
 </svg>
