@@ -91,6 +91,28 @@ with the Materials owner is still required. Trend uses source dates; table rows
 identify the record for each point. Backend permission enforcement, production
 validation, persistent data, manager-only auditing and export require follow-up.
 
+## Page 2 processing and review queue prototype (#93)
+
+From the repository root, run `python3 -m http.server 8000 --directory prototype`
+and open `http://localhost:8000/ui-tabs/review-queue.html`. The page uses the
+wireframe's document, status, feedback and action columns, with search by
+filename/material ID/vendor and filters for Processing, Failed, Unsupported,
+Pending, Flagged and Approved. Approved is an explicit no-match queue state and
+links to Materials; an approved record is never shown as waiting for review.
+
+The queue contains synthetic records only. Refreshing a processing row can
+finish as Pending or simulate extraction failure; failed rows offer retry and
+PDF replacement with request locking, validation and success/error feedback.
+Pending and Flagged open an in-page page-3 handoff carrying the document ID and
+context. The page-3 workflow is not implemented here, and the handoff does not
+approve data. The service-error toggle, loading state, empty queue, no-match
+state and processing details are all local demonstrations. No API, database,
+authentication or file storage is connected.
+
+Node.js 18+ runs the dependency-free behavioral checks with
+`node --test prototype/ui-tabs/review-queue.test.js`. The existing Python login
+prototype and its tests are unchanged.
+
 ## Page 3 validation prototype (#88)
 
 Wireframe page 3, "Validate extracted information", with a working backend. It

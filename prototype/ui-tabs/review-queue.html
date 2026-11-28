@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Illustrative document processing and review queue prototype">
+    <title>Processing and review queue | Materials Database</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --red: #800020;
+            --red-dark: #650019;
+            --ink: #292929;
+            --muted: #60656d;
+            --line: #d7d9de;
+            --surface: #fff;
+            --canvas: #f3f4f6;
+            --green: #176b48;
+            --amber: #825000;
+            --blue: #14577e;
+            --danger: #a1202d;
+        }
+
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; background: var(--canvas); color: var(--ink); font: 15px/1.45 Arial, sans-serif; }
+        button, input, select { font: inherit; }
+        a { color: inherit; }
+        .masthead { display: flex; align-items: center; gap: 16px; min-height: 76px; padding: 8px clamp(16px, 3vw, 36px); background: var(--red); color: white; }
+        .masthead img { width: 54px; height: 54px; object-fit: contain; }
+        .brand { margin: 0; font-size: 21px; font-weight: 700; }
+        .masthead-meta { margin-left: auto; display: flex; align-items: center; gap: 14px; color: #fff; }
+        .masthead-meta button { border: 0; padding: 8px 0; background: transparent; color: inherit; cursor: not-allowed; }
+        main { width: min(1240px, 100%); margin: 0 auto; padding: 18px clamp(14px, 3vw, 32px) 36px; }
+        .primary-nav { display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--line); margin-bottom: 22px; white-space: nowrap; }
+        .primary-nav a { display: inline-flex; align-items: center; min-height: 42px; padding: 0 16px; border: 1px solid transparent; border-bottom: 0; color: var(--red); text-decoration: none; }
+        .primary-nav a:hover { background: #f8e9ed; }
+        .primary-nav a[aria-current="page"] { border-color: var(--red); background: var(--red); color: white; font-weight: 700; }
+        .eyebrow { margin: 0 0 4px; color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        h1 { margin: 0; font-size: 30px; line-height: 1.15; }
+        .page-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 20px; }
+        .page-heading p:last-child { margin: 8px 0 0; color: var(--muted); }
+        .heading-actions { display: flex; align-items: center; gap: 10px; }
+        .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 8px 14px; border: 1px solid var(--red); background: var(--red); color: white; font-weight: 700; cursor: pointer; }
+        .button:hover:not(:disabled) { background: var(--red-dark); }
+        .button.secondary { background: var(--surface); color: var(--red); }
+        .button.secondary:hover:not(:disabled) { background: #f8e9ed; }
+        .button:disabled { border-color: #aeb2b8; background: #e2e4e7; color: #5a5e64; cursor: wait; }
+        :focus-visible { outline: 3px solid #176a9b; outline-offset: 2px; }
+        .notice { margin: 0 0 18px; padding: 11px 14px; border-left: 4px solid #9a5c00; background: #fff6e5; color: #4a3511; }
+        .toolbar { display: grid; grid-template-columns: minmax(220px, 1.5fr) minmax(180px, 1fr) auto; align-items: end; gap: 14px; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .field { display: grid; gap: 5px; min-width: 0; }
+        .field label { font-size: 13px; font-weight: 700; }
+        .field input, .field select { width: 100%; min-height: 42px; padding: 8px 10px; border: 1px solid #aeb2b8; border-radius: 2px; background: white; color: var(--ink); }
+        .toolbar-note { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; color: var(--muted); font-size: 13px; }
+        .toggle { display: inline-flex; align-items: center; gap: 8px; }
+        .toggle input { width: 17px; height: 17px; accent-color: var(--red); }
+        .summary { display: flex; flex-wrap: wrap; gap: 22px; padding: 14px 0; color: var(--muted); }
+        .summary strong { color: var(--ink); }
+        .result-message { min-height: 24px; margin: 0; color: var(--muted); }
+        .result-message[data-kind="error"] { color: var(--danger); font-weight: 700; }
+        .result-message[data-kind="success"] { color: var(--green); font-weight: 700; }
+        .table-wrap { overflow: auto; border: 1px solid var(--line); background: var(--surface); }
+        table { width: 100%; min-width: 760px; border-collapse: collapse; }
+        caption { padding: 0; height: 1px; overflow: hidden; clip: rect(0,0,0,0); position: absolute; white-space: nowrap; }
+        th, td { padding: 13px 15px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+        thead th { position: sticky; top: 0; background: #e7e8eb; font-size: 13px; }
+        tbody tr:last-child td { border-bottom: 0; }
+        tbody tr:hover { background: #fcf7f8; }
+        .document-name { display: block; font-weight: 700; overflow-wrap: anywhere; }
+        .document-meta { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+        .status { display: inline-flex; align-items: center; gap: 7px; min-height: 28px; padding: 3px 9px; border: 1px solid currentColor; border-radius: 2px; font-size: 13px; font-weight: 700; white-space: nowrap; }
+        .status::before { width: 7px; height: 7px; border-radius: 50%; background: currentColor; content: ''; }
+        .status-pending { color: var(--blue); }
+        .status-flagged { color: var(--amber); }
+        .status-processing { color: #45596c; }
+        .status-failed, .status-unsupported { color: var(--danger); }
+        .row-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+        .text-button { padding: 6px 9px; border: 1px solid var(--red); background: white; color: var(--red); font-size: 13px; font-weight: 700; cursor: pointer; }
+        .text-button:hover:not(:disabled) { background: #f8e9ed; }
+        .text-button:disabled { opacity: .65; cursor: wait; }
+        .empty-state { padding: 38px 18px; text-align: center; }
+        .empty-state h2 { margin: 0 0 6px; font-size: 19px; }
+        .empty-state p { margin: 0; color: var(--muted); }
+        .empty-state a { color: var(--red); font-weight: 700; }
+        .progress-track { height: 9px; margin: 13px 0 7px; background: #e5e7eb; }
+        .progress-track span { display: block; height: 100%; background: #267753; transition: width .25s ease; }
+        .modal-backdrop { position: fixed; inset: 0; z-index: 3; display: grid; place-items: center; padding: 18px; background: rgb(25 28 32 / 55%); }
+        .modal-backdrop[hidden] { display: none; }
+        .dialog { width: min(620px, 100%); max-height: min(90vh, 760px); overflow: auto; padding: 22px; border-top: 5px solid var(--red); background: white; box-shadow: 0 12px 40px rgb(0 0 0 / 22%); }
+        .dialog-header { display: flex; align-items: start; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+        .dialog-header h2 { margin: 0; font-size: 22px; }
+        .close-button { width: 36px; height: 36px; border: 1px solid var(--line); background: white; color: var(--ink); font-size: 21px; cursor: pointer; }
+        .detail-list { display: grid; grid-template-columns: minmax(120px, .7fr) 1.3fr; gap: 8px 14px; margin: 0; }
+        .detail-list dt { color: var(--muted); }
+        .detail-list dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+        .dialog-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
+        .dialog-feedback { min-height: 24px; margin: 14px 0 0; color: var(--muted); }
+        .dialog-feedback[data-kind="error"] { color: var(--danger); font-weight: 700; }
+        .dialog-feedback[data-kind="success"] { color: var(--green); font-weight: 700; }
+        .replace-input { display: none; }
+        footer { padding: 20px; color: var(--muted); text-align: center; font-size: 12px; }
+        @media (max-width: 700px) {
+            .masthead { min-height: 64px; gap: 10px; }
+            .masthead img { width: 42px; height: 42px; }
+            .brand { font-size: 17px; }
+            .masthead-meta { gap: 8px; font-size: 13px; }
+            h1 { font-size: 24px; }
+            .page-heading { align-items: start; flex-direction: column; }
+            .heading-actions { width: 100%; }
+            .heading-actions .button { flex: 1; }
+            .toolbar { grid-template-columns: 1fr; }
+            .toolbar-note { grid-column: auto; }
+            .summary { gap: 8px 16px; }
+            table { min-width: 680px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <header class="masthead">
+        <img src="../logo.jpeg" alt="">
+        <p class="brand">EDWARDS&nbsp; | &nbsp;Materials Database</p>
+        <div class="masthead-meta"><span>Prototype user</span><span aria-hidden="true">|</span><button type="button" disabled aria-label="Sign out is unavailable in this prototype">Sign out</button></div>
+    </header>
+    <main>
+        <nav class="primary-nav" aria-label="Main navigation">
+            <a href="../index.html">Upload</a>
+            <a href="review-queue.html" aria-current="page">Review queue</a>
+            <a href="search-view.html">Materials</a>
+            <a href="analysis.html">Analysis</a>
+        </nav>
+
+        <section aria-labelledby="page-title">
+            <div class="page-heading">
+                <div>
+                    <p class="eyebrow">Page 2 · Document workflow</p>
+                    <h1 id="page-title">Document processing and review queue</h1>
+                    <p>Track extraction progress and route candidate records for review.</p>
+                </div>
+                <div class="heading-actions">
+                    <button class="button secondary" id="refresh-queue" type="button" aria-label="Refresh queue">Refresh queue</button>
+                </div>
+            </div>
+
+            <p class="notice"><strong>Illustrative prototype.</strong> Records and service responses are synthetic. Processing, storage, authentication and document replacement are mocked; do not enter sponsor data.</p>
+
+            <div class="toolbar" role="search">
+                <div class="field">
+                    <label for="document-search">Find document</label>
+                    <input id="document-search" type="search" placeholder="Filename, material ID or vendor" autocomplete="off">
+                </div>
+                <div class="field">
+                    <label for="status-filter">Status</label>
+                    <select id="status-filter">
+                        <option value="all">All statuses</option>
+                        <option value="processing">Processing</option>
+                        <option value="failed">Failed</option>
+                        <option value="unsupported">Unsupported</option>
+                        <option value="pending">Pending</option>
+                        <option value="flagged">Flagged</option>
+                        <option value="approved">Approved</option>
+                    </select>
+                </div>
+                <div class="toolbar-note">
+                    <label class="toggle"><input id="simulate-error" type="checkbox"> Simulate service error</label>
+                    <label class="toggle"><input id="simulate-empty" type="checkbox"> Show empty queue</label>
+                    <span>Approved records leave this queue after page 3 approval.</span>
+                </div>
+            </div>
+
+            <div class="summary" aria-label="Queue summary">
+                <span><strong id="visible-count">0</strong> visible</span>
+                <span><strong id="review-count">0</strong> ready for review</span>
+                <span><strong id="processing-count">0</strong> processing</span>
+                <span><strong id="failed-count">0</strong> failed</span>
+            </div>
+
+            <p id="queue-message" class="result-message" role="status" aria-live="polite">Loading queue…</p>
+            <div class="table-wrap" id="queue-region" aria-busy="true">
+                <table>
+                    <caption>Documents awaiting or undergoing processing and review</caption>
+                    <thead><tr><th scope="col">Document</th><th scope="col">Status</th><th scope="col">Feedback</th><th scope="col">Action</th></tr></thead>
+                    <tbody id="queue-rows"></tbody>
+                </table>
+                <div id="empty-state" class="empty-state" hidden></div>
+            </div>
+        </section>
+    </main>
+    <footer>Page 2 prototype · Issue #93 · Synthetic records only</footer>
+
+    <div id="dialog-backdrop" class="modal-backdrop" hidden>
+        <section id="details-dialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+            <div class="dialog-header">
+                <div><p class="eyebrow" id="dialog-kicker">Document details</p><h2 id="dialog-title"></h2></div>
+                <button id="close-dialog" class="close-button" type="button" aria-label="Close dialog">×</button>
+            </div>
+            <div id="dialog-content"></div>
+            <p id="dialog-feedback" class="dialog-feedback" role="status" aria-live="polite"></p>
+            <div id="dialog-actions" class="dialog-actions"></div>
+            <input id="replacement-file" class="replace-input" type="file" accept="application/pdf,.pdf" aria-label="Select a replacement PDF">
+        </section>
+    </div>
+
+    <script src="review-queue.js"></script>
+    <script>
+        'use strict';
+        const queue = ReviewQueue.createQueueStore();
+        const byId = id => document.getElementById(id);
+        const state = {query:'', status:'all', loading:false, dialogDocument:null, lastFocus:null};
+        const labels = {processing:'Processing', failed:'Failed', unsupported:'Unsupported', pending:'Pending', flagged:'Flagged'};
+
+        function setMessage(message, kind = '') {
+            const node = byId('queue-message');
+            node.textContent = message;
+            node.dataset.kind = kind;
+        }
+
+        function updateSummary() {
+            const records = queue.list();
+            byId('visible-count').textContent = String(records.length);
+            byId('review-count').textContent = String(records.filter(record => ['pending', 'flagged'].includes(record.status)).length);
+            byId('processing-count').textContent = String(records.filter(record => record.status === 'processing').length);
+            byId('failed-count').textContent = String(records.filter(record => record.status === 'failed').length);
+        }
+
+        function openDialog(documentRecord, kicker) {
+            state.dialogDocument = documentRecord.id;
+            state.lastFocus = document.activeElement;
+            byId('dialog-kicker').textContent = kicker;
+            byId('dialog-title').textContent = documentRecord.filename;
+            byId('dialog-feedback').textContent = '';
+            byId('dialog-feedback').dataset.kind = '';
+            byId('dialog-content').replaceChildren();
+            byId('dialog-actions').replaceChildren();
+            byId('replacement-file').value = '';
+            byId('dialog-backdrop').hidden = false;
+            byId('close-dialog').focus();
+        }
+
+        function closeDialog() {
+            byId('dialog-backdrop').hidden = true;
+            if (state.lastFocus?.isConnected) state.lastFocus.focus();
+            state.dialogDocument = null;
+        }
+
+        function addAction(label, action, secondary = false) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = `button${secondary ? ' secondary' : ''}`;
+            button.textContent = label;
+            button.dataset.label = label;
+            button.addEventListener('click', () => action(button));
+            byId('dialog-actions').append(button);
+            return button;
+        }
+
+        function openReview(documentRecord) {
+            openDialog(documentRecord, 'Page 3 · Validation handoff');
+            const note = document.createElement('p');
+            note.className = 'notice';
+            note.textContent = 'Review handoff is simulated. The page 3 prototype is tracked separately under issue #88; this screen does not approve or persist candidate data.';
+            const details = document.createElement('dl');
+            details.className = 'detail-list';
+            for (const [label, value] of [['Document ID', documentRecord.id], ['Material ID', documentRecord.materialId], ['Vendor', documentRecord.vendor], ['Review status', labels[documentRecord.status]], ['Feedback', documentRecord.feedback]]) {
+                const term = document.createElement('dt');
+                const description = document.createElement('dd');
+                term.textContent = label;
+                description.textContent = value;
+                details.append(term, description);
+            }
+            byId('dialog-content').append(note, details);
+            addAction('Return to queue', closeDialog, true);
+        }
+
+        function openProcessing(documentRecord) {
+            openDialog(documentRecord, 'Processing details');
+            const details = document.createElement('dl');
+            details.className = 'detail-list';
+            for (const [label, value] of [['Document ID', documentRecord.id], ['Material ID', documentRecord.materialId], ['Vendor', documentRecord.vendor], ['Current step', documentRecord.detail], ['Status', labels[documentRecord.status]]]) {
+                const term = document.createElement('dt');
+                const description = document.createElement('dd');
+                term.textContent = label;
+                description.textContent = value;
+                details.append(term, description);
+            }
+            const progress = document.createElement('div');
+            progress.className = 'progress-track';
+            progress.setAttribute('role', 'progressbar');
+            progress.setAttribute('aria-label', 'Illustrative processing progress');
+            progress.setAttribute('aria-valuemin', '0');
+            progress.setAttribute('aria-valuemax', '100');
+            progress.setAttribute('aria-valuenow', String(documentRecord.progress));
+            const bar = document.createElement('span');
+            bar.style.width = `${documentRecord.progress}%`;
+            progress.append(bar);
+            const caption = document.createElement('p');
+            caption.textContent = `${documentRecord.progress}% · ${documentRecord.feedback}`;
+            const failureLabel = document.createElement('label');
+            failureLabel.className = 'toggle';
+            const failureToggle = document.createElement('input');
+            failureToggle.id = 'simulate-processing-failure';
+            failureToggle.type = 'checkbox';
+            failureLabel.append(failureToggle, document.createTextNode(' Simulate extraction failure'));
+            byId('dialog-content').append(details, progress, caption, failureLabel);
+            addAction('Refresh status', async button => {
+                const failProcessing = byId('simulate-processing-failure').checked;
+                await runDialogAction(button, () => queue.refreshProcessing(documentRecord.id, {serviceError:byId('simulate-error').checked, failProcessing, delay:350}), result => {
+                    renderQueue();
+                    openProcessing(result.document);
+                    byId('dialog-feedback').textContent = result.document.status === 'failed' ? 'Extraction failed. The document is now available for retry or replacement.' : 'Processing finished. The record is pending review and is not approved.';
+                    byId('dialog-feedback').dataset.kind = result.document.status === 'failed' ? 'error' : 'success';
+                });
+            });
+            addAction('Close', closeDialog, true);
+        }
+
+        async function runDialogAction(button, request, onSuccess) {
+            button.disabled = true;
+            button.textContent = 'Working…';
+            try {
+                const result = await request();
+                if (!result.accepted) throw new Error(result.duplicate ? 'A request for this document is already in progress.' : 'The request was not accepted.');
+                onSuccess(result);
+            } catch (error) {
+                byId('dialog-feedback').textContent = error.message;
+                byId('dialog-feedback').dataset.kind = 'error';
+                button.disabled = false;
+                button.textContent = button.dataset.label || 'Retry';
+            }
+        }
+
+        function openFailure(documentRecord) {
+            openDialog(documentRecord, 'Failed document');
+            const details = document.createElement('dl');
+            details.className = 'detail-list';
+            for (const [label, value] of [['Document ID', documentRecord.id], ['Material ID', documentRecord.materialId], ['Vendor', documentRecord.vendor], ['Reason', documentRecord.feedback]]) {
+                const term = document.createElement('dt');
+                const description = document.createElement('dd');
+                term.textContent = label;
+                description.textContent = value;
+                details.append(term, description);
+            }
+            byId('dialog-content').append(details);
+            const retry = addAction('Retry processing', async button => {
+                await runDialogAction(button, () => queue.retryFailed(documentRecord.id, {serviceError:byId('simulate-error').checked, delay:350}), result => {
+                    renderQueue();
+                    openProcessing(result.document);
+                    byId('dialog-feedback').textContent = 'Retry accepted. Processing has started (simulated).';
+                    byId('dialog-feedback').dataset.kind = 'success';
+                });
+            });
+            retry.dataset.label = 'Retry processing';
+            const replace = addAction('Choose replacement PDF', () => byId('replacement-file').click(), true);
+            replace.dataset.label = 'Choose replacement PDF';
+        }
+
+        async function replaceSelectedFile(file) {
+            if (!state.dialogDocument) return;
+            const actionButton = [...byId('dialog-actions').querySelectorAll('button')].find(button => button.textContent === 'Choose replacement PDF');
+            if (!actionButton) return;
+            await runDialogAction(actionButton, () => queue.replaceFailed(state.dialogDocument, file, {serviceError:byId('simulate-error').checked, delay:350}), result => {
+                renderQueue();
+                openProcessing(result.document);
+                byId('dialog-feedback').textContent = `Replacement accepted (${file.name}). Processing has started (simulated).`;
+                byId('dialog-feedback').dataset.kind = 'success';
+            });
+        }
+
+        function makeRow(documentRecord) {
+            const row = document.createElement('tr');
+            const documentCell = row.insertCell();
+            const name = document.createElement('span');
+            name.className = 'document-name';
+            name.textContent = documentRecord.filename;
+            const meta = document.createElement('span');
+            meta.className = 'document-meta';
+            meta.textContent = `${documentRecord.materialId} · ${documentRecord.vendor}`;
+            documentCell.append(name, meta);
+
+            const statusCell = row.insertCell();
+            const badge = document.createElement('span');
+            badge.className = `status status-${documentRecord.status}`;
+            badge.textContent = labels[documentRecord.status] || documentRecord.status;
+            statusCell.append(badge);
+            row.insertCell().textContent = documentRecord.feedback;
+
+            const actions = document.createElement('div');
+            actions.className = 'row-actions';
+            const action = (label, handler) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'text-button';
+                button.textContent = label;
+                button.addEventListener('click', handler);
+                actions.append(button);
+            };
+            if (['pending', 'flagged'].includes(documentRecord.status)) action('Open review', () => openReview(documentRecord));
+            if (documentRecord.status === 'processing') action('View status', () => openProcessing(documentRecord));
+            if (documentRecord.status === 'failed') action('Retry / replace', () => openFailure(documentRecord));
+            if (documentRecord.status === 'unsupported') action('View details', () => {
+                openDialog(documentRecord, 'Unsupported document');
+                const details = document.createElement('p');
+                details.textContent = documentRecord.detail;
+                byId('dialog-content').append(details);
+                addAction('Close', closeDialog, true);
+            });
+            row.insertCell().append(actions);
+            return row;
+        }
+
+        function showEmptyState(message, showMaterialsLink = false) {
+            const empty = byId('empty-state');
+            empty.replaceChildren();
+            const heading = document.createElement('h2');
+            const description = document.createElement('p');
+            heading.textContent = 'No documents to display';
+            description.textContent = message;
+            empty.append(heading, description);
+            if (showMaterialsLink) {
+                const link = document.createElement('a');
+                link.href = 'search-view.html';
+                link.textContent = 'Open Materials';
+                description.append(document.createTextNode(' '), link, document.createTextNode(' to view approved records.'));
+            }
+            empty.hidden = false;
+            document.querySelector('table').hidden = true;
+        }
+
+        function renderQueue() {
+            updateSummary();
+            const rows = byId('queue-rows');
+            rows.replaceChildren();
+            byId('empty-state').hidden = true;
+            document.querySelector('table').hidden = false;
+            if (byId('simulate-error').checked) {
+                setMessage('Queue service unavailable (simulated). Your search and filters are preserved.', 'error');
+                showEmptyState('Clear Simulate service error and refresh the queue to try again.');
+                return;
+            }
+            if (byId('simulate-empty').checked) {
+                setMessage('The queue is empty.');
+                showEmptyState('New documents will appear here after upload.');
+                return;
+            }
+            const filtered = queue.list(state.query, state.status);
+            filtered.forEach(documentRecord => rows.append(makeRow(documentRecord)));
+            if (!filtered.length) {
+                const approvedFilter = state.status === 'approved';
+                showEmptyState(approvedFilter ? 'Approved records are not held in the review queue.' : (state.query ? 'No documents match the current search and status.' : 'The queue is empty. New documents will appear here after upload.'), approvedFilter);
+                setMessage(approvedFilter ? 'Approved records are managed in Materials.' : (state.query ? 'No matching documents.' : 'No queue entries.'));
+                return;
+            }
+            setMessage(`${filtered.length} document${filtered.length === 1 ? '' : 's'} shown.`);
+        }
+
+        async function loadQueue() {
+            state.loading = true;
+            byId('queue-region').setAttribute('aria-busy', 'true');
+            byId('refresh-queue').disabled = true;
+            setMessage('Loading queue…');
+            await new Promise(resolve => setTimeout(resolve, 220));
+            state.loading = false;
+            byId('queue-region').setAttribute('aria-busy', 'false');
+            byId('refresh-queue').disabled = false;
+            updateSummary();
+            renderQueue();
+        }
+
+        byId('document-search').addEventListener('input', event => { state.query = event.target.value; renderQueue(); });
+        byId('status-filter').addEventListener('change', event => { state.status = event.target.value; renderQueue(); });
+        byId('simulate-error').addEventListener('change', renderQueue);
+        byId('simulate-empty').addEventListener('change', renderQueue);
+        byId('refresh-queue').addEventListener('click', loadQueue);
+        byId('close-dialog').addEventListener('click', closeDialog);
+        byId('dialog-backdrop').addEventListener('click', event => { if (event.target === byId('dialog-backdrop')) closeDialog(); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && !byId('dialog-backdrop').hidden) closeDialog(); });
+        byId('replacement-file').addEventListener('change', event => {
+            const file = event.target.files?.[0];
+            if (file) replaceSelectedFile(file);
+        });
+
+        updateSummary();
+        loadQueue();
+    </script>
+</body>
+</html>
