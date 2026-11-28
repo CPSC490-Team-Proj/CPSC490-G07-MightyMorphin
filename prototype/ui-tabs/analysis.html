@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Materials Database — Analysis prototype</title>
+<style>
+:root{--red:#800020;--line:#ddd;--bg:#f4f4f9}*{box-sizing:border-box}body{margin:0;font:16px Arial,sans-serif;background:var(--bg);color:#292929}header{background:var(--red);color:white;padding:20px;display:flex;align-items:center;gap:18px}header img{width:64px;height:64px;object-fit:contain}header h1{font-size:26px}header span{margin-left:auto}main{max-width:1250px;margin:auto;padding:24px}nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}nav a,nav span{padding:12px 20px;border:1px solid var(--red);color:var(--red);text-decoration:none;border-radius:5px}nav [aria-current]{background:var(--red);color:white}section,.notice{background:white;border:1px solid var(--line);padding:20px;margin:16px 0;border-radius:8px}.notice{background:#fff5df}fieldset{border:0;padding:0;display:flex;flex-wrap:wrap;gap:15px}fieldset label{display:block;padding:6px 0}select,button{font:inherit;padding:10px;border:1px solid #aaa;border-radius:4px}button{cursor:pointer;background:var(--red);color:white}button.secondary{background:white;color:var(--red)}label{line-height:1.5}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #125a9c;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:14px;align-items:end}.actions>label{display:grid;gap:5px}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}th{background:#eee}.scroll{overflow:auto}svg{width:100%;height:auto;max-height:340px}#feedback{font-weight:bold}#warnings{color:#7b2600}small{display:block;margin-top:12px}footer{padding:20px;color:#555}
+</style>
+</head>
+<body>
+<header><img src="../logo.jpeg" alt=""><h1>Materials Database</h1><span>Prototype user · no live sign-in</span></header>
+<main>
+<nav aria-label="Main navigation"><a href="../index.html">Upload shell</a><span>Review queue (not integrated)</span><a href="search-view.html">Materials</a><a href="analysis.html" aria-current="page">Analysis</a></nav>
+<h2>Compare material properties</h2>
+<p class="notice">Synthetic-data prototype. Snowflake, SSO, source PDFs, audit logging and export are not connected. Never upload sponsor data here.</p>
+<section><h3>Selected records</h3><p id="handoff"></p><fieldset id="records"><legend>Choose illustrative records</legend></fieldset><button class="secondary" id="clear" type="button">Clear selection</button></section>
+<section><div class="actions">
+<label for="property">Property<select id="property"><option value="strength">Tensile strength</option><option value="elongation">Elongation</option></select></label>
+<label for="view">Analysis view<select id="view"><option value="compare">Compare</option><option value="trend">Historical trend</option><option value="range">Property range</option></select></label>
+<button type="button" id="run">Run analysis</button><button type="button" id="retry" hidden>Retry</button>
+<label><input type="checkbox" id="fail"> Simulate service failure</label>
+</div><p id="feedback" role="status" aria-live="polite"></p><ul id="warnings"></ul>
+<div class="scroll"><table><caption id="caption">Property values</caption><thead><tr><th scope="col">Material / lot</th><th scope="col">Date</th><th scope="col">Value</th><th scope="col">Unit</th></tr></thead><tbody id="values"></tbody></table></div>
+<h3>Visualization</h3><div id="chart"></div><p id="range"></p>
+<small>Values are displayed without intentional rounding. Units must match the selected property's unit. No specification limits are supplied, so no compliance conclusion is made.</small>
+</section></main><footer>Page 5 · Issue #95 · Illustrative records only</footer>
+<script src="analysis.js"></script>
+<script>
+'use strict';
+const {analyze,demoRecords,properties}=MaterialAnalysis;
+const $=id=>document.getElementById(id), params=new URLSearchParams(location.search);
+const incoming=(params.get('ids')||'1,2').split(',').filter(Boolean);
+const unknown=incoming.filter(id=>!demoRecords.some(r=>r.id===id));
+$('handoff').textContent=params.has('ids')?'Selection received from Materials. IDs resolve to synthetic fixtures only.':'Showing two synthetic approved records. You may change the selection below.';
+for(const r of demoRecords){const label=document.createElement('label'),c=document.createElement('input');c.type='checkbox';c.value=r.id;c.checked=incoming.includes(r.id);label.append(c,document.createTextNode(` ${r.name} — ${r.status}`));$('records').append(label);c.addEventListener('change',run);}
+function cell(row,s){row.insertCell().textContent=String(s??'—');}
+function element(tag,attrs){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,v);return e;}
+function draw(result,view){
+ const svg=element('svg',{viewBox:'0 0 1000 320',role:'img','aria-label':`${view} of ${properties[$('property').value].label} in ${result.unit}`});
+ const vals=view==='range'?[{name:'Minimum',value:result.min},{name:'Maximum',value:result.max}]:result.values;
+ const max=Math.max(...vals.map(v=>Math.abs(v.value)),1),n=vals.length;
+ const top=25,base=240,height=200;
+ if(view==='trend'){
+  const dates=vals.map(v=>Date.parse(v.date)),lo=Math.min(...dates),hi=Math.max(...dates);
+  const points=vals.map((v,i)=>[hi===lo?500:90+(dates[i]-lo)/(hi-lo)*820,base-v.value/max*height]);
+  svg.append(element('polyline',{points:points.map(p=>p.join(',')).join(' '),fill:'none',stroke:'#800020','stroke-width':3}));
+  points.forEach(([x,y],i)=>{svg.append(element('circle',{cx:x,cy:y,r:5,fill:'#800020'}));const t=element('text',{x,y:base+25,'text-anchor':'middle','font-size':16});t.textContent=vals[i].date;svg.append(t);});
+ }else vals.forEach((v,i)=>{const x=60+i*900/n;svg.append(element('rect',{x,y:base-v.value/max*height,width:Math.max(10,650/n),height:Math.max(0,v.value/max*height),fill:'#800020'}));const t=element('text',{x,y:base+25,'font-size':14});t.textContent=view==='range'?v.name:`Record ${v.id}`;svg.append(t);});
+ const label=element('text',{x:25,y:top,'font-size':16});label.textContent=`${result.unit} · largest plotted value ${max}`;svg.append(label);
+ $('chart').append(svg);
+}
+function run(){
+ $('values').replaceChildren();$('chart').replaceChildren();$('warnings').replaceChildren();$('range').textContent='';$('retry').hidden=true;
+ if($('fail').checked){$('feedback').textContent='Analysis service unavailable (simulated). Clear the failure checkbox and retry; your selection is preserved.';$('retry').hidden=false;return;}
+ const ids=[...$('records').querySelectorAll('input:checked')].map(c=>c.value);
+ const r=analyze(demoRecords,ids,$('property').value,$('view').value);
+ for(const warning of [...r.warnings,...unknown.map(id=>`Incoming record ${id} is not available in the synthetic fixture.`)]){const li=document.createElement('li');li.textContent=warning;$('warnings').append(li);}
+ $('caption').textContent=`${properties[$('property').value].label} (${r.unit})`;
+ for(const v of r.values){const row=$('values').insertRow();[v.name,v.date,v.value,v.unit].forEach(x=>cell(row,x));}
+ $('feedback').textContent=r.empty?`No analysis results: select at least ${r.minimum} approved record${r.minimum===1?'':'s'} with compatible values${$('view').value==='trend'?' and valid dates':''}.`:`${r.values.length} compatible approved records. ${r.warnings.length?'Some records were excluded; see explanations.':''}`;
+ if(!r.empty){draw(r,$('view').value);if($('view').value==='range')$('range').textContent=`Minimum: ${r.min} ${r.unit}; maximum: ${r.max} ${r.unit}.`;}
+}
+$('clear').onclick=()=>{$('records').querySelectorAll('input').forEach(c=>c.checked=false);run();};
+for(const id of ['property','view','fail'])$(id).addEventListener('change',run);
+$('run').onclick=run;$('retry').onclick=run;run();
+</script></body></html>
