@@ -187,9 +187,93 @@ The development of the Edwards Lifescience Materials Database requires various s
 |Document Processing|OCR on every document; tool not chosen (Snowflake document AI, Textract or Tesseract)|Extract data from uploaded documents|
 |Development Environment|Visual Studio Code|Write, debug, test code|
 |Version Control|Git and GitHub|Track sprint progress, tasks, and assignments|
+<h3>Use Case Diagram</h3>
+The Material Data Management System is an internal web application designed to centralize material information currently contained in Certificates of Conformance (CoCs), material test reports, and other supported material documents. The system will reduce the manual effort required to locate, extract, verify, compare, and analyze material information by converting approved document data into structured material records.
 
+The system has two primary actor types: Employees and Managers. The Employee actor represents all regular system users, including employees from R&D, Manufacturing, Modeling, and other authorized Edwards Lifesciences groups. These users are intentionally treated as one actor because the proposed system does not restrict normal material-data functions based on departmental affiliation. Any authorized Employee may use the same document-processing, record-viewing, and analysis capabilities. The Manager actor represents users responsible for administrative oversight, including permission management, processing-job monitoring, and audit-log export.
+
+All Employees will access the application through Edwards’ approved internal authentication process. After authentication, Employees can import supported PDFs individually or in batches. These documents may include CoCs and material test reports containing material identifiers, vendor information, lot information, mechanical-property values, units, and processing details. The system will validate uploaded files, create an intake reference, and begin automated processing.
+
+The system will support both digital PDFs with embedded text and scanned PDFs requiring optical character recognition (OCR). Digital documents will follow a text-extraction process, while scanned documents will follow an OCR process. Extracted information will be normalized into a common candidate-record format so that documents from different vendors and layouts can be represented consistently. The candidate record may include material identifiers, vendor and lot information, document type, material-property values, normalized units, source-document references, extraction-confidence information, and available processing details.
+
+Because automated extraction may produce incomplete or inaccurate results, the system will validate candidate records before treating them as approved material data. The system will identify missing values, malformed values, incompatible units, out-of-range values, unsupported files, unreadable documents, extraction failures, and low-confidence OCR results. Any authorized Employee may review the candidate record, correct extracted values when necessary, approve the record, or reject it. Only approved records will be imported into the approved material dataset. Records that remain pending, contain unresolved validation issues, or are rejected will not be treated as approved material information.
+
+The system will preserve traceability between approved material records and their original source documents. For each processed document, the system will retain relevant document metadata, processing status, extraction outcome, validation findings, review decisions, corrections, and ingestion results. This traceability will allow Employees to verify where a value originated and support later investigation of material records.
+
+Employees will be able to search the approved material dataset using supported fields such as material identifier, lot number, vendor, source-document type, date, and material-property criteria. They will also be able to filter results to identify records relevant to a specific engineering, manufacturing, or modeling task. When an Employee selects a material record, the system will display available material identity information, vendor and lot information, source-document references, property values, units, processing information, and applicable specifications.
+
+The system will also provide analysis capabilities to all Employees. Users will be able to select multiple approved records and compare compatible material-property values side by side. When material specifications are available, the system will compare measured values with the applicable specification limits and identify values that may be outside the approved range. Employees will also be able to view historical material trends and mechanical-property ranges for compatible data. These capabilities are intended to support historical investigation, supplier comparison, material selection, quality review, and data-driven engineering decisions.
+
+Employees will be able to export authorized search, record, comparison, and analysis results in supported formats such as PDF, DOC, and CSV. Export actions will be recorded as part of the system’s audit history.
+
+Managers will use the administrative functions of the system. They will manage user permissions by determining whether a user is authorized as an Employee or has Manager-level administrative access. The system does not distinguish between R&D, Manufacturing, and Modeling permissions for normal material-data functions; all authorized Employees have the same operational access. Managers will also monitor document-processing jobs to identify queued, completed, failed, unsupported, low-confidence, pending-review, or retry-required documents. Finally, Managers will be able to export audit logs containing significant system activity, including uploads, validations, corrections, approvals, exports, and administrative changes.
+
+This use-case model ensures that the system provides broad and consistent access to material-management functions for authorized Employees while maintaining separate administrative controls for user access, operational oversight, and audit-log management.
+
+<h4>Document Processing</h4>
+
+**UC1 — Import PDF Documents**<br>
+An Employee uploads an individual supported PDF, such as a Certificate of Conformance (CoC) or material test report. The system verifies that the file is usable and supported, creates an intake reference, records the uploader and upload time, and begins the processing workflow. If the PDF is corrupt, encrypted, unreadable, or unsupported, the system provides an actionable error rather than treating the upload as successful.
+
+**UC2 — Batch Process Documents**<br>
+An Employee submits multiple supported PDFs for processing as one batch. This use case supports the import of historical document collections or large groups of newly received material documents. The system creates a processing job and tracks the status of the batch and its individual documents. A document may fail independently without incorrectly marking every document in the batch as failed.
+
+**UC3 — Extract Material Data**<br>
+The system extracts relevant information from a supported document after upload. This includes material identifiers, vendor information, lot numbers, document type, mechanical-property values, units, and available processing information. Digital PDFs with embedded text follow a text-extraction process, while scanned PDFs use OCR. The extracted information is normalized into a candidate material record, but it is not considered approved material data until it has been reviewed.
+
+**UC4 — Validate Extracted Data**<br>
+An Employee reviews a candidate material record produced through extraction. The employee can inspect extracted values, units, confidence information, validation flags, and source-document context. The employee may correct inaccurate values, resolve unit issues, approve the record, or reject it. The system flags missing, malformed, incompatible, implausible, or low-confidence values for attention. Validation ensures that unverified extraction output is not used as approved engineering data.
+
+**UC5 — Import Material Records**<br>
+After a candidate record is approved, an Employee imports the approved material information into the structured material-data store. The system stores approved material identity, vendor, lot, property values, normalized units, source-document reference, and approval context. The system prevents pending, invalid, rejected, or unresolved records from being imported as approved material data. It also records the ingestion outcome and prevents duplicate approved record revisions from being inserted.
+
+<h4>Material Information Records</h4>
+
+**UC6 — Search Material Records**<br>
+An Employee searches the approved material dataset using supported criteria, such as material identifier, lot number, vendor, or source-document type. The system returns matching approved material records. If no approved record matches the search, the system clearly displays a no-results message. Search results do not include unreviewed or unapproved candidate records.
+
+**UC7 — Filter Material Records**<br>
+An Employee narrows a material-record result set using supported filters. Filters may include material-property criteria, vendor, source-document type, and date. When several filters are applied, the system displays only approved records that meet all selected criteria. This allows Employees to focus on the material records relevant to a specific investigation, supplier, lot, time period, or engineering question.
+
+**UC8 — View Material Specifications**<br>
+An Employee views the approved specification limits associated with a material and property type. A specification may include a minimum value, maximum value, or both, along with a specification reference. This use case provides the limits needed to determine whether a material-property value is compliant. It depends on approved specification information being available from Edwards.
+
+**UC9 — View Material Properties**<br>
+An Employee opens an approved material record to view its property values and associated units. The system displays material identity, vendor, lot information, source type, property values, and available source-document and review context. Units and numeric precision are shown clearly because engineering decisions require accurate interpretation of each value.
+
+**UC10 — View Material Processing Information**<br>
+An Employee views the available material-processing information associated with an approved record. This information may include ordered processing steps, treatments, or other process details present in the original source document. It supports investigation into relationships between processing history and material behavior or properties.
+
+<h4>Material Analysis</h4>
+
+**UC11 — Compare Data to Specifications**<br>
+An Employee compares an approved material-property value with the applicable specification limit for the material and property type. The system displays the measured value, unit, relevant lower or upper limit, specification reference, and comparison result. The system should not perform a compliance comparison when no matching specification exists or when units cannot be compared reliably.
+
+**UC12 — View Historical Material Trends**<br>
+An Employee views compatible material-property values over time. The system organizes approved property values using available historical information, such as the source-document issue date. This use case helps Employees identify changes in material behavior, supplier variation, lot-to-lot variation, or possible long-term trends.
+
+**UC13 — Identify Out-of-Spec Materials**<br>
+An Employee identifies approved material records that contain property values outside applicable specification limits. The system determines this by comparing approved values with the minimum and maximum limits for the relevant material and property type. This result is intended to support investigation and quality review; it does not replace engineering judgment.
+
+**UC14 — View Mechanical Property Ranges**<br>
+An Employee views the observed range of compatible values for a selected mechanical property. The system calculates and displays the minimum and maximum approved values for the selected dataset. This helps Employees understand historical variation and select appropriate data for engineering analysis or modeling. Values with incompatible units or unmatched property types are excluded from the range calculation.
+
+**UC17 — Export Results**<br>
+An Employee exports authorized material information in PDF, DOC, or CSV format. Exportable information may include search results, selected records, material-property values, comparisons, trends, or ranges. The system applies the same access rules used in the application and records the export as an audit event.
+
+<h4>System Administration</h4>
+
+**UC15 — Manage User Permissions**<br>
+A Manager manages user access to the Material Data Management System. This includes authorizing or deactivating users and assigning Manager-level administrative access when appropriate. Normal Employees are not divided into R&D, Modeling, or Manufacturing permission groups; all authorized Employees have the same operational use cases.
+
+**UC16 — Monitor Processing Jobs**<br>
+A Manager monitors document-processing activity and job status. The system provides information about documents and batches that are queued, running, completed, failed, unsupported, low-confidence, pending validation, rejected, or awaiting retry. This allows the Manager to identify problems in the document-processing workflow and ensure that records requiring attention are not overlooked.
+
+**UC18 — Export Audit Logs**<br>
+A Manager exports the system audit log. The audit log records significant activity, including uploads, processing events, validation actions, corrections, approvals, record access where required, exports, and administrative changes. Audit-log export supports accountability, traceability, quality review, and investigation of system activity.
 
 ![Use Case Diagram](../docs/design/use-case.png)
+<br>[[task:#36]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36)<br>
 
 *Figure 1. Use Case Diagram.*
 
@@ -223,7 +307,6 @@ Key: Diamond = decision; oval = user entity; cylindar = database; rectangles = p
 ### Specification and design documents
 | Document | Kind | Covers | Issues |
 |----------|------|--------|--------|
-|[Use Case Diagram](../docs/design/use-case.md)|Design|Maps interactions between external users or systems with the software application's core functions within the system| [#36](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/36) |
 |[ER Diagram](../docs/design/er-diagram.md)|Design|This defines the relational data model for the material data the system extracts and it verifies them as well, following the company requirements and to meet reliability. The way it works is it stores each uploaded CoC or test report, the material, lot and vendor it describes, and every mechanical property value with its unit and extraction confidence which then could be used to re-review the document to correct any mistakes. Each material record links to exactly one source document so any value can be traced back to its PDF (#20). To keep everything documented as well, every correction and approval is logged. Specification limits also support the out of spec and comparison use cases in the use case diagram, although the details may change upon receiving a test document from the company. The DBMS and the final list of properties are not decided yet; the full diagram with every column is in docs/design/er-diagram.md.|[[task:#38]](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/38)|
 |[System Architecture](../docs/design/system-architecture-diagram.md)|Design|Maps out relationships between core components within the system; exported image: [PNG](../docs/design/system-architecture-diagram.png)|[#39](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/39)|
 |[Data Flow Diagram](../docs/design/data-flow.md)|Design|Maps how information moves, transforms, and stored within the system. Diagram demonstrates how desired media is scanned, stored, and how data is scraped, reviewed, then stored.|[#40](https://github.com/CPSC490-Team-Proj/CPSC490-G07-MightyMorphin/issues/40)|
