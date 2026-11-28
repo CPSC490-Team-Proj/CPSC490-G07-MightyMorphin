@@ -5,10 +5,8 @@ Owner: Liam Wilson · Sprint: 2 · Status: draft
 ```mermaid
 flowchart LR
     %% Actors
-    RD["R&D"]
-    MFG["Manufacturing"]
-    MDL["Modeling"]
-    SYSAD["System Administrator"]
+    EMP["Employee"]
+    MNG["Manager"]
 
     %% System Boundary
     subgraph SYSTEM["Material Data Management System"]
@@ -49,70 +47,28 @@ flowchart LR
         end
     end
 
-    %% R&D
-    RD --- UC1
-    RD --- UC2
-    RD --- UC3
-    RD --- UC6
-    RD --- UC7
-    RD --- UC8
-    RD --- UC9
-    RD --- UC10
-    RD --- UC17
+    %% All operational capabilities are available to every Employee
+    EMP --- UC1
+    EMP --- UC2
+    EMP --- UC3
+    EMP --- UC4
+    EMP --- UC5
+    EMP --- UC6
+    EMP --- UC7
+    EMP --- UC8
+    EMP --- UC9
+    EMP --- UC10
+    EMP --- UC11
+    EMP --- UC12
+    EMP --- UC13
+    EMP --- UC14
+    EMP --- UC17
 
-    %% Manufacturing
-    MFG --- UC1
-    MFG --- UC2
-    MFG --- UC3
-    MFG --- UC4
-    MFG --- UC5
-    MFG --- UC6
-    MFG --- UC7
-    MFG --- UC8
-    MFG --- UC9
-    MFG --- UC10
-    MFG --- UC11
-    MFG --- UC12
-    MFG --- UC13
-    MFG --- UC17
+    %% Administrative capabilities
+    MNG --- UC15
+    MNG --- UC16
+    MNG --- UC18
 
-    %% Modeling
-    MDL --- UC1
-    MDL --- UC2
-    MDL --- UC3
-    MDL --- UC5
-    MDL --- UC6
-    MDL --- UC7
-    MDL --- UC12
-    MDL --- UC14
-    MDL --- UC17
-
-    %% System Administrator
-    SYSAD --- UC15
-    SYSAD --- UC16
-    SYSAD --- UC18
-
-
-
-    class RD,MFG,MDL,SYSAD actor
+    class EMP,MNG actor
     class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17,UC18 usecase
 ```
-
-## What the diagram shows
-
-Four groups of Edwards employees use the system. Any employee in R&D,
-Manufacturing or Modeling can import and batch-process PDF documents (to be
-confirmed with the sponsor); Manufacturing also validates extracted data and
-compares it to specifications. All three groups search, view and export
-results (PDF, DOC, CSV; export is planned as one of the last features). The
-System Administrator manages permissions, monitors processing jobs, and is the
-only role that can export the audit log, which records every user action and
-is not shown elsewhere in the web app. Everyone signs in with Edwards'
-Microsoft SSO.
-
-## What is NOT designed yet
-
-- **The role list** will be reviewed by the team later (#78); which role may
-  validate and approve data is not final.
-- **Specification comparisons** (Compare Data to Specifications, Identify
-  Out-of-Spec Materials) depend on Edwards supplying specification limits.
