@@ -128,6 +128,11 @@ function render(data) {
     );
 
     const source = data.source || {};
+    const copy = data.stored_copy;
+    el('stored-copy').classList.toggle('hidden', !copy);
+    el('stored-copy').textContent = copy
+        ? `Stored copy: ${copy.s3_object_key} (${source.available ? 'checksum verified' : source.problem})`
+        : '';
     el('pdf-frame').classList.toggle('hidden', !source.available);
     el('pdf-missing').classList.toggle('hidden', readOnly || source.available);
     el('pdf-readonly').classList.toggle('hidden', !readOnly);

@@ -7,6 +7,15 @@ PROCESSING_JOB, PROCESSING_STEP and MATERIAL_SPEC are left out, as are
 columns page 3 does not use. One column is added that the ER diagram lacks:
 SOURCE_DOCUMENT.filename, shown in the page title.
 
+Source traceability (#109): every MATERIAL_RECORD points at the
+SOURCE_DOCUMENT it was extracted from, and that document row holds the S3
+object key, the checksum and whether it is a CoC or a test report. Database
+triggers make the link permanent: a record cannot be moved to another
+document, replaced or deleted; a document's id, key, checksum and type cannot
+be edited; and a document cannot be replaced or deleted while records point
+at it. Replacing a PDF (not built yet) is therefore meant to add a new
+SOURCE_DOCUMENT row, never an overwrite.
+
 Every change is one transaction, as in the sequence diagram: if any statement
 fails, the whole change is rolled back and the record keeps its previous
 values and its PENDING or FLAGGED status. ``fail_next_write`` forces such a
@@ -65,7 +74,7 @@ CREATE TABLE SOURCE_DOCUMENT (
     filename      TEXT NOT NULL,
     doc_type      TEXT NOT NULL CHECK (doc_type IN ('COC', 'TEST_REPORT')),
     input_type    TEXT NOT NULL CHECK (input_type IN ('DIGITAL', 'SCANNED')),
-    s3_object_key TEXT NOT NULL,
+    s3_object_key TEXT NOT NULL UNIQUE,
     checksum      TEXT NOT NULL,
     status        TEXT NOT NULL,
     uploaded_at   TEXT NOT NULL
@@ -102,7 +111,47 @@ CREATE TABLE AUDIT_EVENT (
     note         TEXT,
     created_at   TEXT NOT NULL
 );
+
+-- #109: the link from a record to its source PDF never changes or disappears.
+-- The triggers fire whether or not a connection turns foreign keys on.
+CREATE TRIGGER source_reference_is_fixed
+BEFORE UPDATE OF document_id, s3_object_key, checksum, doc_type ON SOURCE_DOCUMENT
+BEGIN
+    SELECT RAISE(ABORT, 'a source document reference cannot be changed');
+END;
+CREATE TRIGGER source_document_not_replaced
+BEFORE INSERT ON SOURCE_DOCUMENT
+WHEN EXISTS (SELECT 1 FROM SOURCE_DOCUMENT WHERE document_id = NEW.document_id)
+BEGIN
+    -- REPLACE INTO would otherwise delete and re-insert the row unnoticed.
+    SELECT RAISE(ABORT, 'a source document cannot be replaced');
+END;
+CREATE TRIGGER record_keeps_its_source
+BEFORE UPDATE OF record_id, document_id ON MATERIAL_RECORD
+BEGIN
+    SELECT RAISE(ABORT, 'a material record cannot change its source document');
+END;
+CREATE TRIGGER record_not_replaced
+BEFORE INSERT ON MATERIAL_RECORD
+WHEN EXISTS (SELECT 1 FROM MATERIAL_RECORD WHERE record_id = NEW.record_id)
+BEGIN
+    SELECT RAISE(ABORT, 'a material record cannot be replaced');
+END;
+CREATE TRIGGER record_is_kept
+BEFORE DELETE ON MATERIAL_RECORD
+BEGIN
+    SELECT RAISE(ABORT, 'material records are not deleted; they keep their source');
+END;
+CREATE TRIGGER referenced_source_is_kept
+BEFORE DELETE ON SOURCE_DOCUMENT
+WHEN EXISTS (SELECT 1 FROM MATERIAL_RECORD WHERE document_id = OLD.document_id)
+BEGIN
+    SELECT RAISE(ABORT, 'a source document with material records cannot be deleted');
+END;
 """
+
+SOURCE_COLUMNS = """d.document_id, d.filename, d.doc_type, d.input_type, d.s3_object_key,
+                   d.checksum, d.status AS document_status, d.uploaded_at, vd.name AS vendor"""
 
 
 class StoreUnavailable(Exception):
@@ -248,6 +297,20 @@ class Store:
         )
         return [dict(row) for row in rows]
 
+    def source_reference(self, record_id: int) -> dict | None:
+        """The source document a record was extracted from (#109)."""
+        rows = self._query(
+            f"""
+            SELECT r.record_id, {SOURCE_COLUMNS}
+              FROM MATERIAL_RECORD r
+              JOIN SOURCE_DOCUMENT d ON d.document_id = r.document_id
+              LEFT JOIN VENDOR vd ON vd.vendor_id = d.vendor_id
+             WHERE r.record_id = ?
+            """,
+            (record_id,),
+        )
+        return dict(rows[0]) if rows else None
+
     def approved_materials(self) -> list[dict]:
         """What search and analysis may use: APPROVED records only."""
         rows = self._query(
@@ -270,6 +333,9 @@ class Store:
                 {k: v[k] for k in ("property_name", "value", "standard_unit")}
                 for v in self.property_values(item["record_id"])
             ]
+            source = self.source_reference(item["record_id"])
+            item["source"] = {k: source[k] for k in (
+                "document_id", "doc_type", "s3_object_key", "checksum", "vendor")}
             result.append(item)
         return result
 
@@ -329,6 +395,86 @@ class Store:
             "INSERT INTO LOT (material_id, vendor_id, lot_number) VALUES (?, ?, ?)",
             (material_id, vendor_id, lot_number),
         ).lastrowid
+
+    def add_source_document(self, *, filename: str, doc_type: str, input_type: str,
+                            s3_object_key: str, checksum: str, uploaded_by: int,
+                            vendor: str | None, uploaded_at: str | None = None) -> int:
+        """Record a PDF saved to S3 at processing time and return its document_id."""
+        with self._lock:
+            conn = self._conn
+            try:
+                conn.execute("BEGIN IMMEDIATE")
+                vendor_id = None
+                if vendor:
+                    row = conn.execute("SELECT vendor_id FROM VENDOR WHERE name = ?",
+                                       (vendor,)).fetchone()
+                    vendor_id = row["vendor_id"] if row else conn.execute(
+                        "INSERT INTO VENDOR (name) VALUES (?)", (vendor,)).lastrowid
+                document_id = conn.execute(
+                    """INSERT INTO SOURCE_DOCUMENT (vendor_id, uploaded_by, filename, doc_type,
+                           input_type, s3_object_key, checksum, status, uploaded_at)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, 'DONE', ?)""",
+                    (vendor_id, uploaded_by, filename, doc_type, input_type,
+                     s3_object_key, checksum, uploaded_at or utc_now()),
+                ).lastrowid
+                conn.execute("COMMIT")
+                return document_id
+            except BaseException:
+                self._rollback()
+                raise
+
+    def add_extracted_record(self, document_id: int, material_code: str,
+                             lot_number: str | None,
+                             values: list[tuple[str, str | None, float, str | None]],
+                             extracted_at: str | None = None) -> int:
+        """The extraction step's hand-off: store a candidate record linked to
+        the document it came from, in one transaction, and return its id.
+
+        ``values`` holds (property name, value or None, confidence, flag reason
+        or None). The record starts FLAGGED if any value is flagged, otherwise
+        PENDING; it is never stored as approved data.
+        """
+        with self._lock:
+            conn = self._conn
+            try:
+                conn.execute("BEGIN IMMEDIATE")
+                if not values:
+                    raise ValueError("an extracted record needs at least one property value")
+                document = conn.execute(
+                    "SELECT vendor_id FROM SOURCE_DOCUMENT WHERE document_id = ?", (document_id,)
+                ).fetchone()
+                if document is None:
+                    raise RecordNotFound(document_id)
+                material_id = self._material_id(conn, material_code)
+                lot_id = (self._lot_id(conn, material_id, document["vendor_id"], lot_number)
+                          if lot_number else None)
+                flagged = any(flag for _, _, _, flag in values)
+                record_id = conn.execute(
+                    """INSERT INTO MATERIAL_RECORD (document_id, material_id, lot_id,
+                           review_status, extracted_at)
+                       VALUES (?, ?, ?, ?, ?)""",
+                    (document_id, material_id, lot_id,
+                     "FLAGGED" if flagged else "PENDING", extracted_at or utc_now()),
+                ).lastrowid
+                for name, value, confidence, flag in values:
+                    ptype = conn.execute(
+                        "SELECT property_type_id, standard_unit FROM PROPERTY_TYPE WHERE name = ?",
+                        (name,),
+                    ).fetchone()
+                    if ptype is None:
+                        raise ValueError(f"unknown property type: {name!r}")
+                    conn.execute(
+                        """INSERT INTO PROPERTY_VALUE (record_id, property_type_id, value,
+                               unit_as_printed, confidence, flag_reason)
+                           VALUES (?, ?, ?, ?, ?, ?)""",
+                        (record_id, ptype["property_type_id"], value, ptype["standard_unit"],
+                         confidence, flag),
+                    )
+                conn.execute("COMMIT")
+                return record_id
+            except BaseException:
+                self._rollback()
+                raise
 
     def save_draft(self, record_id: int, user_id: int, draft: Draft) -> DraftResult:
         """Write a checked draft in one transaction.
@@ -434,14 +580,14 @@ class Store:
                 self._rollback()
                 raise
 
-    def approve(self, record_id: int, user_id: int) -> str:
+    def approve(self, record_id: int, user_id: int, when: str | None = None) -> str:
         """Set APPROVED, approved_by, approved_at and add an APPROVE event.
 
         Status and flags are checked again inside the transaction, so the
         record cannot be approved twice or with a flag that opened meanwhile.
         Returns the approval timestamp.
         """
-        when = utc_now()
+        when = when or utc_now()
         with self._lock:
             conn = self._conn
             try:
